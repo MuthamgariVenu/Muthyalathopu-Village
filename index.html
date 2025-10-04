@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ముత్యాలతోపు గ్రామ దర్శిని</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse for CSV -->
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    /* Flash News ticker (slow) */
     .ticker { white-space: nowrap; overflow: hidden; }
     .ticker__move { display:inline-block; padding-left:100%; animation: ticker 55s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0);} 100% { transform: translateX(-100%);} }
-
     .sidebar-backdrop { background: rgba(0,0,0,0.45); }
     .card-img { object-fit: cover; }
   </style>
@@ -28,7 +26,7 @@
       <div class="flex items-center gap-3">
         <button id="menuToggle" class="sm:hidden p-2 rounded bg-gray-100">☰</button>
         <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
-        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాతోపు గ్రామ దర్శిని</h1>
+        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామ దర్శిని</h1>
       </div>
     </div>
 
@@ -56,12 +54,13 @@
         <div class="flex items-center gap-3">
           <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
           <div>
-            <div class="text-base font-semibold telugu">ముత్యాతోపు</div>
+            <div class="text-base font-semibold telugu">ముత్యాలతోపు</div>
             <div class="text-sm text-gray-500 telugu">మెనూ</div>
           </div>
         </div>
         <button onclick="toggleSidebar(false)" class="p-2 rounded">✕</button>
       </div>
+
       <nav class="space-y-3">
         <a onclick="toggleSidebar(false); aboutScroll()" class="block p-3 rounded bg-gray-100 telugu">గ్రామం గురించి</a>
         <a onclick="toggleSidebar(false); schemesScroll()" class="block p-3 rounded bg-gray-100 telugu">పథకాలు</a>
@@ -81,14 +80,38 @@
       </div>
     </section>
 
-    <!-- Village Peddalu -->
+    <!-- Peddalu + Sachivalayam (two-column) -->
     <section id="peddaluSection" class="bg-white rounded shadow p-3">
       <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
-      <div class="relative">
-        <div id="peddaluCarousel" class="overflow-hidden rounded"></div>
-        <div class="flex gap-2 justify-center mt-3">
-          <button id="prevP" class="px-3 py-1 rounded bg-gray-100 telugu">ముందుకు</button>
-          <button id="nextP" class="px-3 py-1 rounded bg-gray-100 telugu">తర్వాత</button>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Left: carousel (takes 2/3 width on large screens) -->
+        <div class="lg:col-span-2 bg-white rounded p-2">
+          <div id="peddaluCarousel" class="overflow-hidden rounded"></div>
+
+          <div class="flex gap-2 justify-center mt-3">
+            <button id="prevP" class="px-3 py-1 rounded bg-gray-100 telugu">ముందుకు</button>
+            <button id="nextP" class="px-3 py-1 rounded bg-gray-100 telugu">తర్వాత</button>
+          </div>
+        </div>
+
+        <!-- Right: static Sachivalayam card (non-sliding) -->
+        <div class="bg-white rounded p-4 shadow">
+          <h3 class="text-md font-semibold telugu mb-2">సచివాలయం సమాచారం</h3>
+
+          <!-- You can edit the below static details -->
+          <div class="space-y-2 text-sm telugu">
+            <div><span class="font-semibold">సచివాలయ అధికారి (Secretary):</span><br> ఎం. సీతారాం</div>
+            <div><span class="font-semibold">సచివాలయం కాంటాక్ట్:</span><br> +91 98765 43210</div>
+            <div><span class="font-semibold">VRO (విలేజ్ రికార్డ్ అధికారి):</span><br> బి. రవికాంత్</div>
+            <div><span class="font-semibold">VRO కాంటాక్ట్:</span><br> +91 99887 66554</div>
+            <div><span class="font-semibold">గ్రామ పంచాయితీ కార్యాలయం:</span><br> ముత్యాలతోపు, తోటపల్లిగూడూరు మండల్</div>
+            <div><span class="font-semibold">పహంచాయత్ దఫరుకు సమీప సమయం:</span><br> సోమ–శుక్ర: 10:00 AM – 5:00 PM</div>
+          </div>
+
+          <div class="mt-4">
+            <button id="callSecretary" class="w-full bg-green-600 text-white py-2 rounded telugu">సచివాలయానికి కాల్ చేయండి</button>
+          </div>
         </div>
       </div>
     </section>
@@ -99,20 +122,14 @@
       <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     </section>
 
-    <!-- Google Maps Embed (Mutyalathopupalem) -->
+    <!-- Map (Google embed) -->
     <section id="mapSection" class="bg-white rounded shadow p-3">
       <h2 class="text-lg font-semibold telugu mb-2">గ్రామ మ్యాప్</h2>
-
-      <!-- Google Maps embed centered on Mutyalathopupalem.
-           If you prefer exact coordinates, replace the q= value with lat,lon (e.g. q=14.437123,80.022345) -->
-      <div style="width:100%;height:480px;border-radius:8px;overflow:hidden;">
-        <iframe
-          width="100%" height="100%" frameborder="0" style="border:0"
-          src="https://www.google.com/maps?q=Mutyalathopupalem%2C%20Nellore%2C%20Andhra%20Pradesh&output=embed"
-          allowfullscreen="" loading="lazy"></iframe>
+      <div style="width:100%;height:420px;border-radius:8px;overflow:hidden;">
+        <iframe width="100%" height="100%" frameborder="0" style="border:0"
+          src="https://www.google.com/maps?q=Mutyalathopupalem%2C%20Nellore%2C%20Andhra%20Pradesh&output=embed" allowfullscreen="" loading="lazy"></iframe>
       </div>
-
-      <div class="text-sm text-gray-500 mt-2 telugu">Google Maps ద్వారా satellite లేదా road view లో గ్రామాన్ని చూడండి; మరింత సమాచారం కోసం markers/links ఉపయోగించండి.</div>
+      <div class="text-sm text-gray-500 mt-2 telugu">Google Maps ద్వారా satellite లేదా road view లో గ్రామాన్ని చూడండి.</div>
     </section>
 
   </main>
@@ -129,14 +146,12 @@
   </div>
 
 <script>
-/* Sidebar toggle */
+/* Sidebar */
 const sidebarEl = document.getElementById('sidebar');
-function toggleSidebar(show){
-  sidebarEl.classList.toggle('hidden', !show);
-}
+function toggleSidebar(show){ sidebarEl.classList.toggle('hidden', !show); }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
 
-/* CSV loader (PapaParse) */
+/* CSV loader */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -145,18 +160,14 @@ function loadCSV(path){
   });
 }
 
-/* FLASH NEWS: load from Data/flash_news.csv (Telugu) */
+/* FLASH NEWS */
 async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
   let items = [];
   try { items = await loadCSV('Data/flash_news.csv'); } catch(e){ items = []; }
-  if(!items.length){
-    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return;
-  }
-  // Build Telugu text pieces
+  if(!items.length){ ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return; }
   const parts = items.map(it => {
     const date = it.date ? `[ ${it.date} ] ` : '';
-    // prefer Telugu content if present — assume CSV already in Telugu
     return `${date}${it.title || ''} — ${it.description || ''}`;
   });
   const mover = document.createElement('div');
@@ -165,7 +176,7 @@ async function renderFlash(){
   ticker.innerHTML = ''; ticker.appendChild(mover);
 }
 
-/* PEDDALU carousel: Data/village_peddalu.csv */
+/* PEDDALU carousel (role + note; name removed) */
 let idx = 0, slides = [], timer;
 async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
@@ -177,22 +188,22 @@ async function renderPeddalu(){
   function show(i){
     idx = (i + slides.length) % slides.length;
     const it = slides[idx];
+    // Show only role + note (no name)
     wrap.innerHTML = `
       <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
         <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
-          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
+          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.role||''}" class="w-full h-full object-cover">
         </div>
         <div>
-          <div class="text-sm text-gray-500 telugu">${it.role||''}</div>
-          <div class="text-xl font-bold telugu">${it.name||''}</div>
-          <div class="text-sm text-gray-500 telugu">${it.note||''}</div>
+          <div class="text-lg font-semibold telugu">${it.role || ''}</div>
+          <div class="text-sm text-gray-500 telugu mt-1">${it.note || ''}</div>
         </div>
       </div>
     `;
   }
 
-  document.getElementById('prevP').onclick = () => { show(idx-1); resetAuto(); };
-  document.getElementById('nextP').onclick = () => { show(idx+1); resetAuto(); };
+  document.getElementById('prevP').onclick = ()=>{ show(idx-1); resetAuto(); };
+  document.getElementById('nextP').onclick = ()=>{ show(idx+1); resetAuto(); };
 
   show(0);
   function auto(){ timer = setInterval(()=> show(idx+1), 4500); }
@@ -200,14 +211,14 @@ async function renderPeddalu(){
   auto();
 }
 
-/* PHOTOS grid: Data/village_photos.csv */
+/* PHOTOS */
 async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
   let items = [];
   try { items = await loadCSV('Data/village_photos.csv'); } catch(e){ items = []; }
   if(!items.length){ grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>'; return; }
   grid.innerHTML = '';
-  items.forEach(it => {
+  items.forEach(it=>{
     const img = document.createElement('img');
     img.src = it.image_url || it.image || '';
     img.alt = it.title || '';
@@ -228,12 +239,18 @@ document.getElementById('closeModal').addEventListener('click', ()=>{
   document.getElementById('imgModal').classList.remove('flex');
 });
 
-/* Init all */
+/* Static Sachivalayam Call Button handler */
+document.getElementById('callSecretary')?.addEventListener('click', ()=> {
+  // static number listed above; opens dialer on mobile
+  window.location.href = 'tel:+919876543210';
+});
+
+/* Init */
 renderFlash();
 renderPeddalu();
 renderPhotos();
 
-/* Scroll nav helpers */
+/* Scroll nav */
 function aboutScroll(){ window.scrollTo({top:200,behavior:'smooth'}); }
 function schemesScroll(){ window.scrollTo({top:480,behavior:'smooth'}); }
 function adminScroll(){ window.scrollTo({top:760,behavior:'smooth'}); }
