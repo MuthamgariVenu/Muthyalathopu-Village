@@ -3,278 +3,275 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>గ్రామ డేటా — Schemes Summary</title>
+  <title>Welcome to Muthyalathopu Village</title>
 
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- PapaParse for CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    body { font-family: Inter, system-ui, -apple-system, "Noto Sans Telugu", "Poppins", sans-serif; }
-    .telugu { font-family: "Noto Sans Telugu", "Poppins", sans-serif; }
-    .count-pill { font-size: 12px; padding: 2px 8px; border-radius: 999px; background:#eef2ff; color:#3730a3; margin-left:6px; }
-    .card-small { border-radius:8px; padding:10px; background:white; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+    /* small extras */
+    .ticker { white-space: nowrap; overflow: hidden; }
+    .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
+    .card-img { object-fit: cover; }
+    .modal-backdrop { background: rgba(0,0,0,0.6); }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body id="body" class="bg-gray-50 text-gray-900 transition-colors duration-300">
 
-  <header class="bg-white shadow-sm sticky top-0 z-20">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div>
-        <h1 id="appTitle" class="text-lg font-semibold telugu">గ్రామ డేటా డ్యాష్‌బోర్డ్</h1>
-        <div id="appSubtitle" class="text-xs text-gray-500 telugu">Schemes summary — click a scheme to see counts & details</div>
+  <!-- Header -->
+  <header id="header" class="sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex-1">
+        <h1 id="mainTitle" class="text-xl sm:text-2xl font-semibold">Welcome to Muthyalathopu Village</h1>
       </div>
 
       <div class="flex items-center gap-3">
-        <input id="fileInput" type="file" accept=".xlsx,.xls" class="form-control form-control-sm" />
+        <label class="text-sm hidden sm:inline">Ln:</label>
+        <select id="langSelect" class="border rounded p-1 text-sm">
+          <option value="te">తెలుగు</option>
+          <option value="en">English</option>
+        </select>
+
+        <button id="themeToggle" class="ml-1 p-1 text-xl" title="Toggle theme">🌙</button>
       </div>
     </div>
+
+    <!-- Modules -->
+    <nav class="max-w-6xl mx-auto px-4 pb-3">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <a id="aboutBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+          <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
+          <div class="text-sm text-gray-500">About</div>
+        </a>
+        <a id="schemesBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+          <div class="text-lg font-semibold telugu">పథకాలు</div>
+          <div class="text-sm text-gray-500">Schemes</div>
+        </a>
+        <a id="adminBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+          <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
+          <div class="text-sm text-gray-500">Admin</div>
+        </a>
+      </div>
+    </nav>
   </header>
 
-  <main class="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-    <!-- Sidebar -->
-    <aside class="md:col-span-1">
-      <div class="bg-white rounded p-3 shadow-sm">
-        <h3 class="text-sm font-medium telugu">పథకాలు (Schemes)</h3>
-        <div id="schemesList" class="mt-2 text-sm"></div>
-      </div>
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto p-4 space-y-6">
 
-      <div id="uploadNotice" class="bg-white rounded p-3 mt-4 shadow-sm telugu text-sm">
-        Upload the Excel file to load data. Make sure sheet names: <b>Schemes</b> and <b>SchemeBeneficiaries</b>.
-      </div>
-    </aside>
-
-    <!-- Main content -->
-    <section class="md:col-span-3">
-      <div id="schemeSummary" class="mb-3 hidden">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="card-small">
-            <div class="text-xs text-gray-500 telugu">Total Eligible</div>
-            <div id="totalEligible" class="text-2xl font-semibold">0</div>
-          </div>
-          <div class="card-small">
-            <div class="text-xs text-gray-500 telugu">Total Paid</div>
-            <div id="totalPaid" class="text-2xl font-semibold">0</div>
-          </div>
-          <div class="card-small">
-            <div class="text-xs text-gray-500 telugu">Total Pending</div>
-            <div id="totalPending" class="text-2xl font-semibold">0</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tableWrap" class="bg-white rounded p-2 shadow-sm overflow-auto">
-        <table id="dataTable" class="table table-sm table-hover w-full">
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
+    <!-- Flash News -->
+    <section id="flashSection" class="bg-orange-50 border-l-4 border-orange-400 rounded p-3">
+      <div class="flex items-center gap-3">
+        <div class="text-orange-600 font-semibold">📢 Flash News</div>
+        <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800"></div>
       </div>
     </section>
+
+    <!-- Village Peddalu (carousel) -->
+    <section id="peddaluSection" class="bg-white rounded shadow p-3">
+      <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
+      <div class="relative">
+        <div id="peddaluCarousel" class="overflow-hidden rounded">
+          <!-- slides inserted here -->
+        </div>
+
+        <!-- controls -->
+        <div class="flex gap-2 justify-center mt-3">
+          <button id="prevP" class="px-3 py-1 bg-gray-100 rounded">Prev</button>
+          <button id="nextP" class="px-3 py-1 bg-gray-100 rounded">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Village Photos -->
+    <section id="photosSection" class="bg-white rounded shadow p-3">
+      <h2 class="text-lg font-semibold mb-2 telugu">మా గ్రామపు చిత్రాలు</h2>
+      <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <!-- images inserted here -->
+      </div>
+    </section>
+
   </main>
 
-  <!-- Row Modal -->
-  <div class="modal fade" id="rowModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="rowModalTitle" class="modal-title telugu">వివరాలు</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="rowModalBody" style="max-height:60vh;overflow:auto"></div>
-        <div class="modal-footer">
-          <a id="mapsLink" class="btn btn-primary" target="_blank" style="display:none">Google Maps లో చూడండి</a>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+  <!-- Image modal -->
+  <div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="modal-backdrop absolute inset-0"></div>
+    <div class="relative z-10 max-w-3xl mx-auto p-4">
+      <div class="bg-white rounded shadow-lg overflow-hidden">
+        <div class="p-2 text-right"><button id="closeModal" class="px-2">Close</button></div>
+        <div class="p-2"><img id="modalImg" src="" alt="photo" class="w-full h-96 object-contain" /></div>
       </div>
     </div>
   </div>
 
 <script>
-/* Logic:
- - parse Excel
- - build schemes map from "Schemes" (code -> name)
- - read "SchemeBeneficiaries" entries and compute counts per scheme
- - render left list with counts pill
- - clicking scheme shows summary and the filtered table
- - clicking row opens modal with full row details
-*/
+/* Configuration: folder names (Data with capital D) */
+const DATA_FOLDER = '/Data';
 
-let workbook = null;
-let parsed = {};
-const schemesMap = {};   // code -> {nameTel, nameEn, amount}
-const schemeRows = {};   // code -> [rows]
+/* Utility: fetch CSV and parse with PapaParse (returns Promise of array of objects) */
+async function loadCSV(path) {
+  return new Promise((res, rej) => {
+    Papa.parse(path, { download: true, header: true, skipEmptyLines: true,
+      complete: (results) => res(results.data),
+      error: (err) => rej(err)
+    });
+  });
+}
 
-// file input
-document.getElementById('fileInput').addEventListener('change', async (e)=>{
-  const f = e.target.files[0];
-  if(!f) return alert('Choose Excel file');
-  const ab = await f.arrayBuffer();
-  workbook = XLSX.read(ab, {type:'array'});
-  parseSheets();
-  renderSchemesSidebar();
-});
-
-// parse expected sheets
-function parseSheets(){
-  parsed = {};
-  schemesMapClear();
-  for(const name of workbook.SheetNames){
-    parsed[name] = XLSX.utils.sheet_to_json(workbook.Sheets[name], {defval: ''});
+/* Theme toggle (day / moonlight) */
+const body = document.getElementById('body');
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(dark) {
+  if (dark) {
+    body.classList.remove('bg-gray-50','text-gray-900');
+    body.classList.add('bg-gradient-to-r','from-indigo-950','via-blue-900','to-slate-800','text-white');
+    themeToggle.textContent = '🌞';
+  } else {
+    body.classList.remove('bg-gradient-to-r','from-indigo-950','via-blue-900','to-slate-800','text-white');
+    body.classList.add('bg-gray-50','text-gray-900');
+    themeToggle.textContent = '🌙';
   }
-  // load schemes
-  const schemes = parsed['Schemes'] || parsed['scheme'] || [];
-  schemes.forEach(row => {
-    const code = (row['Scheme Code'] || row['scheme code'] || '').toString().trim();
-    if(!code) return;
-    schemesMap[code] = {
-      code,
-      nameTel: row['Scheme Name (Telugu)'] || row['Scheme Name'] || row['scheme name (telugu)'] || '',
-      nameEn: row['Scheme Name (English)'] || row['Scheme Name'] || '',
-      amount: row['Amount (₹)'] || row['Amount'] || 0
-    };
-    schemeRows[code] = [];
-  });
+  localStorage.setItem('moonMode', dark ? '1' : '0');
+}
+const initialMoon = localStorage.getItem('moonMode') === '1';
+applyTheme(initialMoon);
+themeToggle.addEventListener('click', () => applyTheme(localStorage.getItem('moonMode') === '1' ? false : true));
 
-  // load beneficiaries
-  const bens = parsed['SchemeBeneficiaries'] || parsed['Schemebeneficiaries'] || parsed['schemebeneficiaries'] || [];
-  bens.forEach(row => {
-    const code = (row['Scheme Code'] || row['scheme code'] || '').toString().trim();
-    if(!code) return;
-    if(!schemeRows[code]) schemeRows[code] = [];
-    // normalize status field
-    const statusRaw = (row['Status'] || row['status'] || '').toString().trim().toLowerCase();
-    const status = normalizeStatus(statusRaw);
-    row.__status_norm = status;
-    schemeRows[code].push(row);
-    // if scheme missing in map, add a stub
-    if(!schemesMap[code]) schemesMap[code] = { code, nameTel: code, nameEn: code, amount: 0 };
+/* Language (simple labels only) */
+const langSelect = document.getElementById('langSelect');
+langSelect.value = localStorage.getItem('lang') || 'te';
+langSelect.addEventListener('change', e => { localStorage.setItem('lang', e.target.value); applyLang(); });
+function applyLang(){
+  const l = localStorage.getItem('lang') || 'te';
+  // small labels (could be expanded)
+  document.querySelectorAll('.telugu').forEach(el => {
+    if (l === 'te') { el.style.display = ''; }
+    else { /* leave visible but can change text if needed */ }
   });
 }
+applyLang();
 
-// normalize common statuses
-function normalizeStatus(s){
-  if(!s) return 'eligible';
-  if(['paid','paid_on','received'].includes(s)) return 'paid';
-  if(['eligible','applied','approved','pending','pending_approval'].includes(s)) return 'pending';
-  return s;
+/* ---------- Load and render CSV data ---------- */
+
+async function initDashboard(){
+  try {
+    // flash news
+    const flash = await loadCSV(`${DATA_FOLDER}/flash_news.csv`).catch(()=>[]);
+    renderFlash(flash);
+
+    // peddalu
+    const peddalu = await loadCSV(`${DATA_FOLDER}/village_peddalu.csv`).catch(()=>[]);
+    renderPeddalu(peddalu);
+
+    // photos
+    const photos = await loadCSV(`${DATA_FOLDER}/village_photos.csv`).catch(()=>[]);
+    renderPhotos(photos);
+
+  } catch (err) {
+    console.error('Load error', err);
+  }
 }
 
-function schemesMapClear(){ Object.keys(schemesMap).forEach(k=>delete schemesMap[k]); Object.keys(schemeRows).forEach(k=>delete schemeRows[k]); }
-
-// render left sidebar
-function renderSchemesSidebar(){
-  const container = document.getElementById('schemesList');
-  container.innerHTML = '';
-  const codes = Object.keys(schemesMap);
-  if(codes.length === 0){
-    container.innerHTML = '<div class="text-sm text-gray-500 telugu">No schemes found in Excel</div>';
+/* Flash news: convert rows to ticker text */
+function renderFlash(items) {
+  const ticker = document.getElementById('flashTicker');
+  if (!items || items.length === 0) {
+    ticker.innerHTML = '<div class="text-sm text-orange-700">No flash news</div>';
     return;
   }
-  codes.forEach(code=>{
-    const s = schemesMap[code];
-    const rows = schemeRows[code] || [];
-    const total = rows.length;
-    const paid = rows.filter(r=>r.__status_norm === 'paid').length;
-    const pending = rows.filter(r=>r.__status_norm === 'pending').length;
-    const div = document.createElement('div');
-    div.className = 'p-2 rounded hover:bg-gray-50 flex items-center justify-between';
-    div.innerHTML = `
-      <div>
-        <div class="font-medium">${s.nameTel || s.nameEn || code}</div>
-        <div class="text-xs text-gray-500">${s.code}</div>
-      </div>
-      <div class="text-right">
-        <div><span class="count-pill telugu">Total ${total}</span></div>
-        <div class="mt-1">
-          <span class="text-xs text-gray-500">Paid: ${paid}</span><br/>
-          <span class="text-xs text-gray-500">Pending: ${pending}</span>
-        </div>
-      </div>`;
-    div.addEventListener('click', ()=> onSchemeClick(code));
-    container.appendChild(div);
-  });
+  // sort by date descending if date exists
+  items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
+  // build moving element
+  const mover = document.createElement('div');
+  mover.className = 'ticker__move';
+  mover.textContent = parts.join('  ⚫  ');
+  ticker.innerHTML = '';
+  ticker.appendChild(mover);
 }
 
-// when scheme clicked: show summary and table
-function onSchemeClick(code){
-  const s = schemesMap[code];
-  const rows = schemeRows[code] || [];
-  document.getElementById('schemeSummary').classList.remove('hidden');
-  document.getElementById('totalEligible').textContent = rows.length;
-  document.getElementById('totalPaid').textContent = rows.filter(r=>r.__status_norm==='paid').length;
-  document.getElementById('totalPending').textContent = rows.filter(r=>r.__status_norm==='pending').length;
-  // build table with these rows
-  renderTableForScheme(code, rows);
-}
+/* Peddalu carousel */
+let peddaluIndex = 0;
+let peddaluSlides = [];
+let peddaluTimer = null;
 
-// render table
-function renderTableForScheme(code, rows){
-  const thead = document.getElementById('tableHead');
-  const tbody = document.getElementById('tableBody');
-  thead.innerHTML = '';
-  tbody.innerHTML = '';
-  if(rows.length === 0){
-    thead.innerHTML = '<tr><th>No beneficiaries</th></tr>'; return;
+function renderPeddalu(items) {
+  const wrap = document.getElementById('peddaluCarousel');
+  wrap.innerHTML = '';
+  peddaluSlides = items || [];
+  if (!peddaluSlides || peddaluSlides.length === 0) {
+    wrap.innerHTML = '<div class="p-4 text-sm text-gray-500">No elders data</div>';
+    return;
   }
-  // columns: use keys from first row but show common useful ones first
-  const allKeys = Object.keys(rows[0]);
-  // prefer columns order
-  const prefer = ['Resident ID','Name','Household ID','Village ID','Status','Amount Paid (₹)','Paid Date','Source Reference'];
-  const keys = [];
-  prefer.forEach(k=>{ if(allKeys.includes(k)) keys.push(k); });
-  allKeys.forEach(k=>{ if(!keys.includes(k)) keys.push(k); });
 
-  // header
-  const hr = document.createElement('tr');
-  keys.forEach(k=>{
-    const th = document.createElement('th'); th.className='p-2 text-xs text-gray-700'; th.textContent = k; hr.appendChild(th);
-  });
-  hr.innerHTML += '<th class="p-2 text-xs text-gray-700">Actions</th>';
-  thead.appendChild(hr);
+  // create slides (one at a time)
+  function show(idx) {
+    peddaluIndex = (idx + peddaluSlides.length) % peddaluSlides.length;
+    const it = peddaluSlides[peddaluIndex];
+    wrap.innerHTML = `
+      <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
+        <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
+          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name}" class="w-full h-full object-cover card-img" />
+        </div>
+        <div>
+          <div class="text-lg font-semibold">${it.role || ''}</div>
+          <div class="text-xl font-bold mt-1">${it.name || ''}</div>
+          <div class="text-sm text-gray-500 mt-1">${it.note || ''}</div>
+        </div>
+      </div>
+    `;
+  }
 
-  rows.forEach((row, idx)=>{
-    const tr = document.createElement('tr');
-    tr.className = 'hover:bg-gray-50';
-    keys.forEach(k=>{
-      const td = document.createElement('td'); td.className='p-2 text-sm';
-      let v = row[k];
-      if(k.toLowerCase().includes('date') && v) v = (new Date(v)).toLocaleDateString();
-      td.textContent = v;
-      tr.appendChild(td);
-    });
-    const atd = document.createElement('td'); atd.className='p-2';
-    const btn = document.createElement('button'); btn.className='btn btn-sm btn-outline-primary'; btn.textContent = 'వివరాలు';
-    btn.addEventListener('click', ()=> openRowModal(row));
-    atd.appendChild(btn);
-    tr.appendChild(atd);
-    tbody.appendChild(tr);
+  // controls
+  document.getElementById('prevP').onclick = () => { show(peddaluIndex-1); resetAuto(); };
+  document.getElementById('nextP').onclick = () => { show(peddaluIndex+1); resetAuto(); };
+
+  // start
+  show(0);
+  function auto() { peddaluTimer = setInterval(()=> show(peddaluIndex+1), 4000); }
+  function resetAuto(){ clearInterval(peddaluTimer); auto(); }
+  auto();
+}
+
+/* Photos grid */
+function renderPhotos(items) {
+  const grid = document.getElementById('photosGrid');
+  grid.innerHTML = '';
+  if (!items || items.length === 0) {
+    grid.innerHTML = '<div class="text-sm text-gray-500">No photos</div>';
+    return;
+  }
+  items.forEach(it => {
+    const img = document.createElement('img');
+    img.src = it.image_url || it.image || '';
+    img.alt = it.title || '';
+    img.className = 'w-full h-40 object-cover rounded cursor-pointer';
+    img.addEventListener('click', ()=> openModal(img.src));
+    grid.appendChild(img);
   });
 }
 
-// row modal
-function openRowModal(row){
-  const title = document.getElementById('rowModalTitle');
-  const body = document.getElementById('rowModalBody');
-  title.textContent = 'వివరాలు';
-  body.innerHTML = '<table class="table"><tbody></tbody></table>';
-  const tb = body.querySelector('tbody');
-  let lat=null, lon=null;
-  Object.entries(row).forEach(([k,v])=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<th class="text-end p-2" style="width:35%">${k}</th><td class="p-2">${v}</td>`;
-    tb.appendChild(tr);
-    if(String(k).toLowerCase().includes('lat') && v) lat = v;
-    if(String(k).toLowerCase().includes('lon') && v) lon = v;
-  });
-  const mapsLink = document.getElementById('mapsLink');
-  if(lat && lon){
-    mapsLink.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat+','+lon)}`;
-    mapsLink.style.display = 'inline-block';
-  } else mapsLink.style.display = 'none';
-  const modal = new bootstrap.Modal(document.getElementById('rowModal'));
-  modal.show();
+/* modal */
+function openModal(src){
+  document.getElementById('modalImg').src = src;
+  document.getElementById('imgModal').classList.remove('hidden');
+  document.getElementById('imgModal').classList.add('flex');
 }
+document.getElementById('closeModal').addEventListener('click', ()=> {
+  document.getElementById('imgModal').classList.add('hidden');
+  document.getElementById('imgModal').classList.remove('flex');
+});
+
+/* Init */
+initDashboard();
+
+/* Simple navigation (scroll to sections) */
+document.getElementById('aboutBtn').addEventListener('click', ()=> window.scrollTo({ top: 400, behavior: 'smooth' }));
+document.getElementById('schemesBtn').addEventListener('click', ()=> window.scrollTo({ top: 700, behavior: 'smooth' }));
+document.getElementById('adminBtn').addEventListener('click', ()=> window.scrollTo({ top: 1000, behavior: 'smooth' }));
+
 </script>
 </body>
 </html>
