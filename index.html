@@ -28,7 +28,7 @@
       <div class="flex items-center gap-3">
         <button id="menuToggle" class="sm:hidden p-2 rounded bg-gray-100">☰</button>
         <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
-        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామ దర్శిని</h1>
+        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాగా తొపు గ్రామ దర్శిని</h1>
       </div>
     </div>
 
@@ -143,17 +143,11 @@
             </div>
 
             <div class="pt-2">
-              <a id="downloadContacts" href="Data/sachivalayam_contacts.csv" download class="inline-block w-full text-center bg-green-600 text-white py-2 rounded telugu">సమగ్ర కాంటాక్ట్ లిస్ట్ డౌన్లోడ్ చేయండి</a>
+              <a id="downloadContacts" href="Data/sachivalayam_contacts.csv" download class="inline-block w-full text-center bg-green-600 text-white py-2 rounded telugu">సమగ్ర కాంటాక్ట్ లిస్ట్ డౌన్లోడ్చేయండి</a>
             </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Photos -->
-    <section id="photosSection" class="bg-white rounded shadow p-3">
-      <h2 class="text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
-      <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     </section>
 
     <!-- Map (Google embed) -->
@@ -168,7 +162,7 @@
 
   </main>
 
-  <!-- Image modal -->
+  <!-- Image modal (used by peddalu photos) -->
   <div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="relative z-10 max-w-3xl mx-auto p-4">
@@ -180,7 +174,7 @@
   </div>
 
 <script>
-/* Sidebar */
+/* Sidebar toggle */
 const sidebarEl = document.getElementById('sidebar');
 function toggleSidebar(show){ sidebarEl.classList.toggle('hidden', !show); }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
@@ -222,7 +216,6 @@ async function renderPeddalu(){
   function show(i){
     idx = (i + slides.length) % slides.length;
     const it = slides[idx];
-    // Show role + name + note
     wrap.innerHTML = `
       <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
         <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
@@ -246,23 +239,6 @@ async function renderPeddalu(){
   auto();
 }
 
-/* PHOTOS */
-async function renderPhotos(){
-  const grid = document.getElementById('photosGrid');
-  let items = [];
-  try { items = await loadCSV('Data/village_photos.csv'); } catch(e){ items = []; }
-  if(!items.length){ grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>'; return; }
-  grid.innerHTML = '';
-  items.forEach(it=>{
-    const img = document.createElement('img');
-    img.src = it.image_url || it.image || '';
-    img.alt = it.title || '';
-    img.className = 'w-full h-40 object-cover rounded cursor-pointer';
-    img.addEventListener('click', ()=> openModal(img.src));
-    grid.appendChild(img);
-  });
-}
-
 /* Modal */
 function openModal(src){
   document.getElementById('modalImg').src = src;
@@ -282,7 +258,6 @@ document.getElementById('callSecretary')?.addEventListener('click', ()=> {
 /* Init */
 renderFlash();
 renderPeddalu();
-renderPhotos();
 
 /* Scroll nav */
 function aboutScroll(){ window.scrollTo({top:200,behavior:'smooth'}); }
