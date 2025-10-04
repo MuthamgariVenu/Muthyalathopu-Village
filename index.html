@@ -5,15 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ముత్యాలతోపు గ్రామ దర్శిని</title>
 
-  <!-- Tailwind -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse -->
+  <!-- PapaParse for CSV -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
+    /* Flash News ticker (slow) */
     .ticker { white-space: nowrap; overflow: hidden; }
     .ticker__move { display:inline-block; padding-left:100%; animation: ticker 55s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0);} 100% { transform: translateX(-100%);} }
+
     .sidebar-backdrop { background: rgba(0,0,0,0.45); }
     .card-img { object-fit: cover; }
   </style>
@@ -60,7 +62,6 @@
         </div>
         <button onclick="toggleSidebar(false)" class="p-2 rounded">✕</button>
       </div>
-
       <nav class="space-y-3">
         <a onclick="toggleSidebar(false); aboutScroll()" class="block p-3 rounded bg-gray-100 telugu">గ్రామం గురించి</a>
         <a onclick="toggleSidebar(false); schemesScroll()" class="block p-3 rounded bg-gray-100 telugu">పథకాలు</a>
@@ -97,20 +98,53 @@
 
         <!-- Right: static Sachivalayam card (non-sliding) -->
         <div class="bg-white rounded p-4 shadow">
-          <h3 class="text-md font-semibold telugu mb-2">సచివాలయం సమాచారం</h3>
+          <h3 class="text-md font-semibold telugu mb-3">సచివాలయం సమాచారం</h3>
 
-          <!-- You can edit the below static details -->
-          <div class="space-y-2 text-sm telugu">
-            <div><span class="font-semibold">సచివాలయ అధికారి (Secretary):</span><br> ఎం. సీతారాం</div>
-            <div><span class="font-semibold">సచివాలయం కాంటాక్ట్:</span><br> +91 98765 43210</div>
-            <div><span class="font-semibold">VRO (విలేజ్ రికార్డ్ అధికారి):</span><br> బి. రవికాంత్</div>
-            <div><span class="font-semibold">VRO కాంటాక్ట్:</span><br> +91 99887 66554</div>
-            <div><span class="font-semibold">గ్రామ పంచాయితీ కార్యాలయం:</span><br> ముత్యాలతోపు, తోటపల్లిగూడూరు మండల్</div>
-            <div><span class="font-semibold">పహంచాయత్ దఫరుకు సమీప సమయం:</span><br> సోమ–శుక్ర: 10:00 AM – 5:00 PM</div>
-          </div>
+          <!-- Static details (edit as needed) -->
+          <div id="sachivalayamCard" class="space-y-3 text-sm telugu">
+            <div>
+              <div class="font-semibold">సచివాలయ అధికారి (Secretary):</div>
+              <div id="secName">ఎం. సీతారాం</div>
+              <div><a id="secPhone" href="tel:+919876543210" class="text-blue-600">+91 98765 43210</a></div>
+            </div>
 
-          <div class="mt-4">
-            <button id="callSecretary" class="w-full bg-green-600 text-white py-2 rounded telugu">సచివాలయానికి కాల్ చేయండి</button>
+            <div>
+              <div class="font-semibold">VRO (విలేజ్ రికార్డ్స్ అధికారి):</div>
+              <div id="vroName">బి. రవికాంత్</div>
+              <div><a id="vroPhone" href="tel:+919988766554" class="text-blue-600">+91 99887 66554</a></div>
+            </div>
+
+            <div>
+              <div class="font-semibold">Grievance / Helpline:</div>
+              <div><a id="grievPhone" href="tel:+918000112233" class="text-blue-600">+91 80001 12233</a> (ఫిర్యాదు)</div>
+            </div>
+
+            <div>
+              <div class="font-semibold">పట్టభద్రుల ఆఫీసు చిరునామా:</div>
+              <div id="panchOffice">ముత్యాలతోపు పంచాయితీ కార్యాలయం, తోటపల్లిగూడూరు మండల్, నెల్లూరు జిల్లా</div>
+            </div>
+
+            <div>
+              <div class="font-semibold">కార్యాలయ సమయాలు:</div>
+              <div id="officeHours">సోమ–శుక్ర: 10:00 AM – 5:00 PM</div>
+            </div>
+
+            <div>
+              <div class="font-semibold">ఇమెయిల్:</div>
+              <div><a id="officeEmail" href="mailto:mutyalathopu.panchayat@example.com" class="text-blue-600">mutyalathopu.panchayat@example.com</a></div>
+            </div>
+
+            <div>
+              <div class="font-semibold">అదనపు సంప్రదించవలసిన వారు:</div>
+              <ul class="list-disc pl-5 text-sm">
+                <li>గ్రామ అభివృద్ధి అధికారి: <a href="tel:+919011223344" class="text-blue-600">+91 90112 23344</a></li>
+                <li>విద్యా కార్యదర్శి: <a href="tel:+919022334455" class="text-blue-600">+91 90223 34455</a></li>
+              </ul>
+            </div>
+
+            <div class="pt-2">
+              <a id="downloadContacts" href="Data/sachivalayam_contacts.csv" download class="inline-block w-full text-center bg-green-600 text-white py-2 rounded telugu">సమగ్ర కాంటాక్ట్ లిస్ట్ డౌన్లోడ్ చేయండి</a>
+            </div>
           </div>
         </div>
       </div>
@@ -151,7 +185,7 @@ const sidebarEl = document.getElementById('sidebar');
 function toggleSidebar(show){ sidebarEl.classList.toggle('hidden', !show); }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
 
-/* CSV loader */
+/* CSV loader (PapaParse) */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -176,7 +210,7 @@ async function renderFlash(){
   ticker.innerHTML = ''; ticker.appendChild(mover);
 }
 
-/* PEDDALU carousel (role + note; name removed) */
+/* PEDDALU carousel (show role + name + note) */
 let idx = 0, slides = [], timer;
 async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
@@ -188,14 +222,15 @@ async function renderPeddalu(){
   function show(i){
     idx = (i + slides.length) % slides.length;
     const it = slides[idx];
-    // Show only role + note (no name)
+    // Show role + name + note
     wrap.innerHTML = `
       <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
         <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
-          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.role||''}" class="w-full h-full object-cover">
+          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
         </div>
         <div>
           <div class="text-lg font-semibold telugu">${it.role || ''}</div>
+          <div class="text-xl font-bold telugu mt-1">${it.name || ''}</div>
           <div class="text-sm text-gray-500 telugu mt-1">${it.note || ''}</div>
         </div>
       </div>
@@ -239,9 +274,8 @@ document.getElementById('closeModal').addEventListener('click', ()=>{
   document.getElementById('imgModal').classList.remove('flex');
 });
 
-/* Static Sachivalayam Call Button handler */
+/* Static Sachivalayam Call Button handler (if present) */
 document.getElementById('callSecretary')?.addEventListener('click', ()=> {
-  // static number listed above; opens dialer on mobile
   window.location.href = 'tel:+919876543210';
 });
 
