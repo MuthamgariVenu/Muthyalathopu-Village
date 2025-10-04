@@ -1,22 +1,40 @@
 <!doctype html>
 <html lang="te">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ముత్యాతోపు గ్రామంలో స్వాగతం</title>
+<!-- Header (Telugu only + Logo) -->
+<header id="header" class="sticky top-0 z-30">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <!-- Logo -->
+      <img src="images/logo.png" alt="Village Logo" class="w-10 h-10 rounded-full">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse for CSV -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+      <!-- Title -->
+      <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold telugu">
+        ముత్యాలతోపు గ్రామంలో స్వాగతం
+      </h1>
+    </div>
 
-  <style>
-    .ticker { white-space: nowrap; overflow: hidden; }
-    .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
-    .card-img { object-fit: cover; }
-  </style>
-</head>
+    <!-- Theme toggle -->
+    <div class="flex items-center gap-3">
+      <button id="themeToggle" class="ml-1 p-1 text-2xl" title="రాత్రి/పగలు మార్చు">🌙</button>
+    </div>
+  </div>
+
+  <!-- Modules (Telugu order) -->
+  <nav class="max-w-6xl mx-auto px-4 pb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a id="aboutBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
+      </a>
+      <a id="schemesBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <div class="text-lg font-semibold telugu">పథకాలు</div>
+      </a>
+      <a id="adminBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
+      </a>
+    </div>
+  </nav>
+</header>
+
 
 <body id="body" class="day bg-gray-50 text-gray-900 transition-colors duration-300">
 
