@@ -9,22 +9,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* Flash News ticker slow speed */
-    .ticker { 
-      white-space: nowrap; 
-      overflow: hidden; 
-    }
-    .ticker__move { 
-      display:inline-block; 
-      padding-left:100%; 
-      animation: ticker 55s linear infinite; /* slowed speed */
-    }
-    @keyframes ticker { 
-      0% { transform: translateX(0); } 
-      100% { transform: translateX(-100%);} 
-    }
+    /* Flash News ticker */
+    .ticker { white-space: nowrap; overflow: hidden; }
+    .ticker__move { display:inline-block; padding-left:100%; animation: ticker 55s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
 
     .sidebar-backdrop { background: rgba(0,0,0,0.45); }
     .card-img { object-fit: cover; }
@@ -34,22 +27,15 @@
 <body class="bg-gray-50 text-gray-900">
 
   <!-- HEADER -->
-  <header id="header" class="sticky top-0 z-40 bg-white shadow">
+  <header class="sticky top-0 z-40 bg-white shadow">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-
-      <!-- Left: logo + title -->
+      <!-- Left -->
       <div class="flex items-center gap-3">
-        <!-- Mobile menu -->
         <button id="menuToggle" class="sm:hidden p-2 rounded bg-gray-100">☰</button>
-
-        <!-- Logo -->
         <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
-
-        <!-- Title -->
-        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
+        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామ దర్శిని</h1>
       </div>
     </div>
-
     <!-- Desktop Modules -->
     <nav class="hidden sm:block max-w-6xl mx-auto px-4 pb-3">
       <div class="grid grid-cols-3 gap-4">
@@ -72,7 +58,7 @@
     <aside class="relative z-10 w-72 h-full bg-white p-4 overflow-auto">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
-          <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
+          <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover">
           <div>
             <div class="text-base font-semibold telugu">ముత్యాలతోపు</div>
             <div class="text-sm text-gray-500 telugu">మెనూ</div>
@@ -80,7 +66,6 @@
         </div>
         <button onclick="toggleSidebar(false)" class="p-2 rounded">✕</button>
       </div>
-
       <nav class="space-y-3">
         <a onclick="toggleSidebar(false); aboutScroll()" class="block p-3 rounded bg-gray-100 telugu">గ్రామం గురించి</a>
         <a onclick="toggleSidebar(false); schemesScroll()" class="block p-3 rounded bg-gray-100 telugu">పథకాలు</a>
@@ -105,7 +90,6 @@
       <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
       <div class="relative">
         <div id="peddaluCarousel" class="overflow-hidden rounded"></div>
-
         <div class="flex gap-2 justify-center mt-3">
           <button id="prevP" class="px-3 py-1 rounded bg-gray-100 telugu">ముందుకు</button>
           <button id="nextP" class="px-3 py-1 rounded bg-gray-100 telugu">తర్వాత</button>
@@ -117,6 +101,13 @@
     <section id="photosSection" class="bg-white rounded shadow p-3">
       <h2 class="text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
       <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+    </section>
+
+    <!-- Map -->
+    <section id="mapSection" class="bg-white rounded shadow p-3">
+      <h2 class="text-lg font-semibold telugu mb-2">గ్రామ మ్యాప్</h2>
+      <div id="villageMap" style="width:100%;height:420px;border-radius:8px;"></div>
+      <div class="text-sm text-gray-500 mt-2 telugu">గృహాలను క్లిక్ చేస్తే వివరాలు మరియు Google Maps దిశలు కనిపిస్తాయి.</div>
     </section>
 
   </main>
@@ -135,17 +126,14 @@
 <script>
 /* Sidebar */
 const sidebarEl = document.getElementById('sidebar');
-function toggleSidebar(show){
-  sidebarEl.classList.toggle('hidden', !show);
-}
+function toggleSidebar(show){ sidebarEl.classList.toggle('hidden', !show); }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
 
 /* CSV Loader */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
-      complete: (res)=> resolve(res.data),
-      error: (err)=> reject(err)
+      complete: (res)=> resolve(res.data), error: (err)=> reject(err)
     });
   });
 }
@@ -154,23 +142,15 @@ function loadCSV(path){
 async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
   let items = [];
-  try { 
-    items = await loadCSV('Data/flash_news.csv'); 
-  } catch(e){ 
-    items = []; 
-  }
-
+  try { items = await loadCSV('Data/flash_news.csv'); } catch(e){ items = []; }
   if(!items.length){
     ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>';
     return;
   }
-
-  // Telugu style text
   const parts = items.map(it => {
     const date = it.date ? `[ ${it.date} ] ` : '';
     return `${date}${it.title || ''} — ${it.description || ''}`;
   });
-
   const mover = document.createElement('div');
   mover.className = 'ticker__move text-orange-800 telugu';
   mover.textContent = parts.join('  ⚫  ');
@@ -185,10 +165,7 @@ async function renderPeddalu(){
   let items = [];
   try { items = await loadCSV('Data/village_peddalu.csv'); } catch(e){ items = []; }
   slides = items;
-  if(!slides.length){
-    wrap.innerHTML = '<div class="p-4 telugu text-gray-500">పెద్దల వివరాలు లేవు</div>';
-    return;
-  }
+  if(!slides.length){ wrap.innerHTML = '<div class="p-4 telugu text-gray-500">పెద్దల వివరాలు లేవు</div>'; return; }
   function show(i){
     idx = (i + slides.length) % slides.length;
     const it = slides[idx];
@@ -206,10 +183,8 @@ async function renderPeddalu(){
   }
   document.getElementById('prevP').onclick = ()=>{ show(idx-1); reset(); };
   document.getElementById('nextP').onclick = ()=>{ show(idx+1); reset(); };
-  show(0);
-  function auto(){ timer = setInterval(()=> show(idx+1), 4000); }
-  function reset(){ clearInterval(timer); auto(); }
-  auto();
+  show(0); function auto(){ timer = setInterval(()=> show(idx+1), 4000); }
+  function reset(){ clearInterval(timer); auto(); } auto();
 }
 
 /* Photos */
@@ -217,10 +192,7 @@ async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
   let items = [];
   try { items = await loadCSV('Data/village_photos.csv'); } catch(e){ items = []; }
-  if(!items.length){
-    grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>';
-    return;
-  }
+  if(!items.length){ grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>'; return; }
   grid.innerHTML = '';
   items.forEach(it=>{
     const img = document.createElement('img');
@@ -243,10 +215,45 @@ document.getElementById('closeModal').addEventListener('click', ()=>{
   document.getElementById('imgModal').classList.remove('flex');
 });
 
+/* Map */
+async function initVillageMap() {
+  const defaultCenter = [16.1237, 80.6549]; // replace with your village center coords
+  const map = L.map('villageMap').setView(defaultCenter, 17);
+
+  const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, attribution: 'Tiles © Esri'
+  }).addTo(map);
+
+  const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© OpenStreetMap'
+  });
+  L.control.layers({"Satellite":esri,"Street":street}, null, { collapsed:true }).addTo(map);
+
+  try {
+    const data = await loadCSV('Data/households.csv');
+    const markers = [];
+    data.forEach(row=>{
+      const lat = parseFloat(row.lat), lon = parseFloat(row.lon);
+      if(!isFinite(lat)||!isFinite(lon)) return;
+      const title = row.name || 'అజ్ఞాత';
+      const houseId = row.house_id || '';
+      const popup = `
+        <div style="min-width:180px">
+          <div style="font-weight:600">${title}</div>
+          <div style="font-size:13px;color:#555">${houseId}</div>
+          <div style="margin-top:6px">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}" target="_blank" style="color:#2563eb;font-size:13px">Google Maps దిశలు</a>
+          </div>
+        </div>`;
+      const m = L.marker([lat,lon]).addTo(map).bindPopup(popup);
+      markers.push(m);
+    });
+    if(markers.length){ const g=L.featureGroup(markers); map.fitBounds(g.getBounds().pad(0.2)); }
+  } catch(e){ console.error("Households CSV error", e); }
+}
+
 /* Init */
-renderFlash();
-renderPeddalu();
-renderPhotos();
+renderFlash(); renderPeddalu(); renderPhotos(); initVillageMap();
 
 /* Scroll Nav */
 function aboutScroll(){ window.scrollTo({top:200,behavior:'smooth'}); }
