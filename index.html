@@ -19,10 +19,10 @@
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+<body class="bg-gray-50 text-gray-900">
 
   <!-- HEADER -->
-  <header id="header" class="sticky top-0 z-40 bg-white shadow-sm">
+  <header id="header" class="sticky top-0 z-40 bg-white shadow">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
 
       <!-- Left: logo + title -->
@@ -36,9 +36,6 @@
         <!-- Title -->
         <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
       </div>
-
-      <!-- Right: moon symbol (static visual only) -->
-      <div class="text-2xl">🌙</div>
     </div>
 
     <!-- Desktop Modules -->
@@ -127,7 +124,6 @@
 /* Sidebar */
 const sidebarEl = document.getElementById('sidebar');
 function toggleSidebar(show){
-  if(show === undefined) show = sidebarEl.classList.contains('hidden');
   sidebarEl.classList.toggle('hidden', !show);
 }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
@@ -146,13 +142,15 @@ function loadCSV(path){
 async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
   let items = [];
-  try { items = await loadCSV('/Data/flash_news.csv'); } catch(e){ items = []; }
-  if(!items.length){ ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return; }
-  items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-  const text = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`).join('   ⚫   ');
+  try { items = await loadCSV('Data/flash_news.csv'); } catch(e){ items = []; }
+  if(!items.length){
+    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>';
+    return;
+  }
+  const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
   const mover = document.createElement('div');
   mover.className = 'ticker__move';
-  mover.textContent = text;
+  mover.textContent = parts.join('   ⚫   ');
   ticker.innerHTML = '';
   ticker.appendChild(mover);
 }
@@ -162,10 +160,12 @@ let idx = 0, slides = [], timer;
 async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
   let items = [];
-  try { items = await loadCSV('/Data/village_peddalu.csv'); } catch(e){ items = []; }
+  try { items = await loadCSV('Data/village_peddalu.csv'); } catch(e){ items = []; }
   slides = items;
-  if(!slides.length){ wrap.innerHTML = '<div class="p-4 telugu text-gray-500">పెద్దల వివరాలు లేవు</div>'; return; }
-
+  if(!slides.length){
+    wrap.innerHTML = '<div class="p-4 telugu text-gray-500">పెద్దల వివరాలు లేవు</div>';
+    return;
+  }
   function show(i){
     idx = (i + slides.length) % slides.length;
     const it = slides[idx];
@@ -179,13 +179,12 @@ async function renderPeddalu(){
           <div class="text-xl font-bold telugu">${it.name||''}</div>
           <div class="text-sm text-gray-500 telugu">${it.note||''}</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
   document.getElementById('prevP').onclick = ()=>{ show(idx-1); reset(); };
   document.getElementById('nextP').onclick = ()=>{ show(idx+1); reset(); };
   show(0);
-  function auto(){ timer = setInterval(()=> show(idx+1), 4500); }
+  function auto(){ timer = setInterval(()=> show(idx+1), 4000); }
   function reset(){ clearInterval(timer); auto(); }
   auto();
 }
@@ -194,8 +193,11 @@ async function renderPeddalu(){
 async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
   let items = [];
-  try { items = await loadCSV('/Data/village_photos.csv'); } catch(e){ items = []; }
-  if(!items.length){ grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>'; return; }
+  try { items = await loadCSV('Data/village_photos.csv'); } catch(e){ items = []; }
+  if(!items.length){
+    grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>';
+    return;
+  }
   grid.innerHTML = '';
   items.forEach(it=>{
     const img = document.createElement('img');
@@ -213,7 +215,7 @@ function openModal(src){
   document.getElementById('imgModal').classList.remove('hidden');
   document.getElementById('imgModal').classList.add('flex');
 }
-document.getElementById('closeModal').addEventListener('click', ()=> {
+document.getElementById('closeModal').addEventListener('click', ()=>{
   document.getElementById('imgModal').classList.add('hidden');
   document.getElementById('imgModal').classList.remove('flex');
 });
@@ -223,15 +225,13 @@ renderFlash();
 renderPeddalu();
 renderPhotos();
 
-/* Scroll functions */
+/* Scroll Nav */
 function aboutScroll(){ window.scrollTo({top:200,behavior:'smooth'}); }
 function schemesScroll(){ window.scrollTo({top:480,behavior:'smooth'}); }
 function adminScroll(){ window.scrollTo({top:760,behavior:'smooth'}); }
-
 document.getElementById('aboutBtn').addEventListener('click', aboutScroll);
 document.getElementById('schemesBtn').addEventListener('click', schemesScroll);
 document.getElementById('adminBtn').addEventListener('click', adminScroll);
-
 </script>
 </body>
 </html>
