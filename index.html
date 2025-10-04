@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>గ్రామ డేటా డాష్‌బోర్డ్ / Village Data Viewer</title>
+
+  <!-- Tailwind Play CDN (for quick use) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Bootstrap (for modal & small components) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- SheetJS (xlsx) to parse Excel in browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    /* small style adjustments */
+    body { font-family: Inter, system-ui, -apple-system, "Noto Sans Telugu", "Poppins", sans-serif; }
+    .telugu { font-family: "Noto Sans Telugu", "Poppins", sans-serif; }
+    .flash { animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(59,130,246,0); }
+      100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+    }
+    table th, table td { white-space: nowrap; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <header class="bg-white shadow-sm sticky top-0 z-20">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="" alt="" id="logo" style="width:44px;height:44px;display:none" />
+        <div>
+          <h1 id="appTitle" class="text-lg font-semibold telugu">గ్రామ డేటా డాష్‌బోర్డ్</h1>
+          <div id="appSubtitle" class="text-xs text-gray-500 telugu">Excel అప్లోడ్ చేసి మీ గ్రామాల డేటా చూడండి</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <label class="text-sm text-gray-600 telugu" id="langLabel">భాష</label>
+        <select id="langToggle" class="form-select form-select-sm">
+          <option value="te">తెలుగు (Default)</option>
+          <option value="en">English</option>
+        </select>
+
+        <input id="fileInput" type="file" accept=".xlsx,.xls" class="form-control form-control-sm" />
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-4">
+    <div id="topNotice" class="mb-4 p-3 bg-white rounded border text-sm telugu">
+      ఫైలు ఎక్కించండి: మీ Excel (.xlsx) ఫైల్ ఎంచుకోండి — అప్పుడు సిస్టమ్ అన్ని షీట్‌లను చూపిస్తుంది.
+    </div>
+
+    <div id="appBody" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Left: sheets list -->
+      <aside class="md:col-span-1">
+        <div class="bg-white rounded p-3 shadow-sm">
+          <h3 id="sheetsTitle" class="text-sm font-medium telugu">షీట్లు</h3>
+          <ul id="sheetsList" class="mt-2 space-y-1 text-sm"></ul>
+        </div>
+
+        <div id="quickActions" class="bg-white rounded p-3 mt-4 shadow-sm">
+          <h4 class="text-sm font-medium telugu">Quick Actions</h4>
+          <div class="mt-2 space-y-2">
+            <button id="exportCsvBtn" class="btn btn-primary btn-sm w-full">Export current sheet CSV</button>
+            <button id="downloadExcelBtn" class="btn btn-outline-secondary btn-sm w-full">Download uploaded Excel</button>
+          </div>
+        </div>
+
+        <div id="searchBox" class="bg-white rounded p-3 mt-4 shadow-sm">
+          <label class="form-label telugu">Search in current sheet</label>
+          <input id="sheetSearch" type="text" class="form-control form-control-sm" placeholder="Search..." />
+        </div>
+      </aside>
+
+      <!-- Right: sheet view -->
+      <section class="md:col-span-3">
+        <div id="sheetMeta" class="mb-2"></div>
+
+        <div id="tableWrap" class="bg-white rounded p-2 shadow-sm overflow-auto">
+          <table id="dataTable" class="table table-sm table-hover w-full">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="rowActions" class="mt-3 hidden">
+          <button id="openInMapsBtn" class="btn btn-success btn-sm">Open Selected Row in Google Maps</button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="max-w-5xl mx-auto mt-6 text-xs text-gray-500">
+      <div class="telugu">Default language: తెలుగు. Data stays in your Excel file. Admin-only data should be handled carefully.</div>
+    </footer>
+  </main>
+
+  <!-- Bootstrap modal for row details -->
+  <div class="modal fade" id="rowModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="rowModalTitle" class="modal-title telugu">Row Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="rowModalBody" style="max-height:60vh;overflow:auto"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a id="mapsLinkAnchor" class="btn btn-primary" target="_blank">Open in Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  Village Excel Viewer
+  - Uses SheetJS to parse uploaded Excel
+  - Default language Telugu ('te'), English available
+  - Shows sheet list, renders tables, search filter
+  - Export current sheet to CSV
+  - View row details and open map if lat/lon columns exist
+
+  Save file as index.html and open in browser.
+*/
+
+const i18n = {
+  te: {
+    appTitle: "గ్రామ డేటా డాష్‌బోర్డ్",
+    appSubtitle: "Excel అప్లోడ్ చేసి మీ గ్రామాల డేటా చూడండి",
+    sheets: "షీట్లు",
+    quickActions: "Quick Actions",
+    exportCsv: "Export current sheet CSV",
+    downloadExcel: "Download uploaded Excel",
+    searchLabel: "ప్రస్తుత షీట్‌లో వెతకొనండి",
+    rowDetails: "వివరాలు",
+    openInMaps: "గూగుల్ మ్యాప్స్‌లో తెరవండి",
+    fileNotice: "ఫైలు ఎక్కించండి: మీ Excel (.xlsx) ఫైల్ ఎంచుకోండి — అప్పుడు సిస్టమ్ అన్ని షీట్‌లను చూపిస్తుంది."
+  },
+  en: {
+    appTitle: "Village Data Dashboard",
+    appSubtitle: "Upload an Excel file and view village data",
+    sheets: "Sheets",
+    quickActions: "Quick Actions",
+    exportCsv: "Export current sheet CSV",
+    downloadExcel: "Download uploaded Excel",
+    searchLabel: "Search in current sheet",
+    rowDetails: "Row Details",
+    openInMaps: "Open in Google Maps",
+    fileNotice: "Upload Excel (.xlsx) file — app will display all sheets."
+  }
+};
+
+let lang = localStorage.getItem('lang') || 'te';
+document.getElementById('langToggle').value = lang;
+
+function t(key){
+  return (i18n[lang] && i18n[lang][key]) ? i18n[lang][key] : key;
+}
+function applyTranslations(){
+  document.getElementById('appTitle').textContent = t('appTitle');
+  document.getElementById('appSubtitle').textContent = t('appSubtitle');
+  document.getElementById('sheetsTitle').textContent = t('sheets');
+  document.getElementById('exportCsvBtn').textContent = t('exportCsv');
+  document.getElementById('downloadExcelBtn').textContent = t('downloadExcel');
+  document.getElementById('sheetSearch').placeholder = t('searchLabel');
+  document.getElementById('topNotice').textContent = t('fileNotice');
+}
+applyTranslations();
+
+document.getElementById('langToggle').addEventListener('change', (e)=>{
+  lang = e.target.value;
+  localStorage.setItem('lang', lang);
+  // update html lang attr
+  document.documentElement.lang = lang === 'te' ? 'te' : 'en';
+  applyTranslations();
+});
+
+// Globals
+let workbook = null;
+let currentSheetName = null;
+let currentSheetJson = [];
+let uploadedFileBlobUrl = null;
+
+// File input handling
+document.getElementById('fileInput').addEventListener('change', async (ev)=>{
+  const f = ev.target.files[0];
+  if(!f) return;
+  const data = await f.arrayBuffer();
+  workbook = XLSX.read(data, {type:'array'});
+  renderSheetList();
+  // create downloadable blob
+  const blob = new Blob([data], {type: f.type || 'application/octet-stream'});
+  if(uploadedFileBlobUrl) URL.revokeObjectURL(uploadedFileBlobUrl);
+  uploadedFileBlobUrl = URL.createObjectURL(blob);
+  document.getElementById('downloadExcelBtn').onclick = ()=> window.open(uploadedFileBlobUrl, '_blank');
+});
+
+// Render sheet list
+function renderSheetList(){
+  const list = document.getElementById('sheetsList');
+  list.innerHTML = '';
+  workbook.SheetNames.forEach((name, idx)=>{
+    const li = document.createElement('li');
+    li.className = 'p-1 rounded hover:bg-gray-50';
+    li.innerHTML = `<button class="text-left w-full" data-sheet="${name}">${name}</button>`;
+    li.querySelector('button').addEventListener('click', ()=> {
+      showSheet(name);
+    });
+    list.appendChild(li);
+    // auto-open first
+    if(idx === 0) showSheet(name);
+  });
+}
+
+// Show sheet as table
+function showSheet(name){
+  currentSheetName = name;
+  const ws = workbook.Sheets[name];
+  const json = XLSX.utils.sheet_to_json(ws, {defval: ''});
+  currentSheetJson = json;
+  document.getElementById('sheetMeta').innerHTML = `<div class="mb-2"><strong class="telugu">${name}</strong> — ${json.length} rows</div>`;
+  renderTable(json);
+}
+
+// Render HTML table from JSON
+function renderTable(data){
+  const thead = document.getElementById('tableHead');
+  const tbody = document.getElementById('tableBody');
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  if(!data || data.length === 0){
+    thead.innerHTML = '<tr><th>No data</th></tr>';
+    return;
+  }
+  const keys = Object.keys(data[0]);
+
+  // header
+  const tr = document.createElement('tr');
+  keys.forEach(k=>{
+    const th = document.createElement('th');
+    th.className = 'p-2 text-xs text-gray-700';
+    th.textContent = k;
+    tr.appendChild(th);
+  });
+  tr.innerHTML += '<th class="p-2 text-xs text-gray-700">Actions</th>';
+  thead.appendChild(tr);
+
+  // rows
+  data.forEach((row, i)=>{
+    const r = document.createElement('tr');
+    r.className = 'hover:bg-gray-50';
+    keys.forEach(k=>{
+      const td = document.createElement('td');
+      td.className = 'p-2 text-sm';
+      td.textContent = row[k];
+      r.appendChild(td);
+    });
+    // actions
+    const aTd = document.createElement('td');
+    aTd.className = 'p-2';
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'btn btn-sm btn-outline-primary';
+    viewBtn.textContent = lang === 'te' ? 'వివరాలు' : 'Details';
+    viewBtn.addEventListener('click', ()=> openRowModal(row));
+    aTd.appendChild(viewBtn);
+    r.appendChild(aTd);
+
+    tbody.appendChild(r);
+  });
+
+  // wire up search
+  document.getElementById('sheetSearch').oninput = (e)=>{
+    const q = e.target.value.trim().toLowerCase();
+    if(!q) return renderTable(currentSheetJson);
+    const filtered = currentSheetJson.filter(r=>{
+      return Object.values(r).some(v => String(v).toLowerCase().includes(q));
+    });
+    renderTable(filtered);
+  };
+}
+
+// Row details modal
+function openRowModal(row){
+  const modalTitle = document.getElementById('rowModalTitle');
+  const modalBody = document.getElementById('rowModalBody');
+  modalTitle.textContent = t('rowDetails');
+  modalBody.innerHTML = '<table class="table"><tbody></tbody></table>';
+  const tbody = modalBody.querySelector('tbody');
+  let lat = null, lon = null;
+  Object.entries(row).forEach(([k,v])=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<th class="text-end p-2" style="width:35%">${k}</th><td class="p-2">${v}</td>`;
+    tbody.appendChild(tr);
+    // detect lat/lon columns
+    if(String(k).toLowerCase().includes('lat') && v !== '') lat = v;
+    if(String(k).toLowerCase().includes('lon') && v !== '') lon = v;
+  });
+
+  // maps button
+  const mapsLink = document.getElementById('mapsLinkAnchor');
+  if(lat && lon){
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + ',' + lon)}`;
+    mapsLink.href = url;
+    mapsLink.style.display = 'inline-block';
+  } else {
+    mapsLink.style.display = 'none';
+  }
+
+  // show modal
+  const modalEl = new bootstrap.Modal(document.getElementById('rowModal'));
+  modalEl.show();
+}
+
+// Export current sheet to CSV
+document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
+  if(!currentSheetName || !workbook) return alert('No sheet selected');
+  const ws = workbook.Sheets[currentSheetName];
+  const csv = XLSX.utils.sheet_to_csv(ws);
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = currentSheetName.replace(/\s+/g,'_') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// initial translations
+applyTranslations();
+
+</script>
+</body>
+</html>
