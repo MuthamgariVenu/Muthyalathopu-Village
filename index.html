@@ -1,95 +1,117 @@
 <!doctype html>
 <html lang="te">
-<!-- Header (Telugu only + Logo) -->
-<header id="header" class="sticky top-0 z-30">
-  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-    <div class="flex items-center gap-3">
-      <!-- Logo -->
-      <img src="images/logo.png" alt="Village Logo" class="w-10 h-10 rounded-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ముత్యాలతోపు గ్రామంలో స్వాగతం</title>
 
-      <!-- Title -->
-      <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold telugu">
-        ముత్యాలతోపు గ్రామంలో స్వాగతం
-      </h1>
-    </div>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-    <!-- Theme toggle -->
-    <div class="flex items-center gap-3">
-      <button id="themeToggle" class="ml-1 p-1 text-2xl" title="రాత్రి/పగలు మార్చు">🌙</button>
-    </div>
-  </div>
+  <style>
+    .ticker { white-space: nowrap; overflow: hidden; }
+    .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
 
-  <!-- Modules (Telugu order) -->
-  <nav class="max-w-6xl mx-auto px-4 pb-4">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a id="aboutBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
-        <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
-      </a>
-      <a id="schemesBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
-        <div class="text-lg font-semibold telugu">పథకాలు</div>
-      </a>
-      <a id="adminBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
-        <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
-      </a>
-    </div>
-  </nav>
-</header>
+    /* Sidebar styles */
+    .sidebar-backdrop { background: rgba(0,0,0,0.45); }
+    /* small card img */
+    .card-img { object-fit: cover; }
 
+    /* night overrides handled in JS by inline styles */
+  </style>
+</head>
 
 <body id="body" class="day bg-gray-50 text-gray-900 transition-colors duration-300">
 
-  <!-- Header (Telugu only) -->
-  <header id="header" class="sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-      <div>
-        <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
+  <!-- HEADER -->
+  <header id="header" class="sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+
+      <!-- Left: logo + title -->
+      <div class="flex items-center gap-3">
+        <!-- Mobile: sidebar toggle -->
+        <button id="menuToggle" class="sm:hidden p-2 rounded bg-white shadow">
+          ☰
+        </button>
+
+        <!-- Logo -->
+        <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
+
+        <!-- Title -->
+        <div>
+          <h1 id="titleTelugu" class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
+        </div>
       </div>
 
+      <!-- Right: theme toggle -->
       <div class="flex items-center gap-3">
-        <!-- Theme toggle only -->
         <button id="themeToggle" class="ml-1 p-1 text-2xl" title="రాత్రి/పగలు మార్చు">🌙</button>
       </div>
+
     </div>
 
-    <!-- Modules (Telugu order: About, Schemes, Admin) -->
-    <nav class="max-w-6xl mx-auto px-4 pb-4">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <a id="aboutBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+    <!-- Modules: visible on desktop (sm and up). on mobile use sidebar -->
+    <nav class="hidden sm:block max-w-6xl mx-auto px-4 pb-3">
+      <div class="grid grid-cols-3 gap-4">
+        <a id="aboutBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
-          <div class="text-sm text-gray-500">About</div>
+          <div class="text-sm text-gray-500 telugu">About</div>
         </a>
-        <a id="schemesBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="schemesBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">పథకాలు</div>
-          <div class="text-sm text-gray-500">Schemes</div>
+          <div class="text-sm text-gray-500 telugu">Schemes</div>
         </a>
-        <a id="adminBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="adminBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
-          <div class="text-sm text-gray-500">Admin</div>
+          <div class="text-sm text-gray-500 telugu">Admin</div>
         </a>
       </div>
     </nav>
   </header>
 
-  <!-- Main -->
+  <!-- MOBILE SIDEBAR (hidden by default) -->
+  <div id="sidebar" class="fixed inset-0 z-50 hidden">
+    <div id="sidebarBackdrop" class="absolute inset-0 sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+    <aside class="relative z-10 w-72 max-w-full h-full bg-white p-4 overflow-auto">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
+          <div>
+            <div class="text-base font-semibold telugu">ముత్యాతోపు</div>
+            <div class="text-sm text-gray-500 telugu">మెనూ</div>
+          </div>
+        </div>
+        <button onclick="toggleSidebar(false)" class="p-2 rounded">✕</button>
+      </div>
+
+      <nav class="space-y-3">
+        <a onclick="toggleSidebar(false); aboutScroll()" class="block p-3 rounded bg-gray-100 telugu">గ్రామం గురించి</a>
+        <a onclick="toggleSidebar(false); schemesScroll()" class="block p-3 rounded bg-gray-100 telugu">పథకాలు</a>
+        <a onclick="toggleSidebar(false); adminScroll()" class="block p-3 rounded bg-gray-100 telugu">నిర్వాహకులు</a>
+      </nav>
+    </aside>
+  </div>
+
+  <!-- MAIN -->
   <main class="max-w-6xl mx-auto p-4 space-y-6">
 
-    <!-- Flash News (తెలుగు label) -->
+    <!-- Flash News -->
     <section id="flashSection" class="card-bg rounded p-3 border-l-4 border-orange-400">
       <div class="flex items-center gap-3">
         <div class="text-orange-600 font-semibold telugu">📢 తాజా వార్తలు</div>
-        <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800"></div>
+        <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800 telugu"></div>
       </div>
     </section>
 
-    <!-- Village Peddalu (carousel) -->
+    <!-- Village Peddalu -->
     <section id="peddaluSection" class="card-bg rounded p-3">
       <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
       <div class="relative">
-        <div id="peddaluCarousel" class="overflow-hidden rounded">
-          <!-- slides inserted here -->
-        </div>
+        <div id="peddaluCarousel" class="overflow-hidden rounded"></div>
 
-        <!-- controls -->
         <div class="flex gap-2 justify-center mt-3">
           <button id="prevP" class="px-3 py-1 rounded bg-gray-100 telugu">ముందుకు</button>
           <button id="nextP" class="px-3 py-1 rounded bg-gray-100 telugu">తర్వాత</button>
@@ -100,9 +122,7 @@
     <!-- Village Photos -->
     <section id="photosSection" class="card-bg rounded p-3">
       <h2 class="text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
-      <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <!-- images inserted here -->
-      </div>
+      <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     </section>
 
   </main>
@@ -112,22 +132,32 @@
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="relative z-10 max-w-3xl mx-auto p-4">
       <div class="bg-white rounded shadow-lg overflow-hidden">
-        <div class="p-2 text-right"><button id="closeModal" class="px-2 telugu">మూసివేయಿ</button></div>
+        <div class="p-2 text-right"><button id="closeModal" class="px-2 telugu">మూసివేయి</button></div>
         <div class="p-2"><img id="modalImg" src="" alt="photo" class="w-full h-96 object-contain" /></div>
       </div>
     </div>
   </div>
 
 <script>
-/* CONFIG: Data folder (capital D) */
-const DATA_FOLDER = '/Data';
+/* CONFIG */
+const DATA_FOLDER = '/Data'; // capital D
 
-/* Theme toggle: Day / Moon (affects whole page) */
+/* Sidebar control */
+const sidebarEl = document.getElementById('sidebar');
+function toggleSidebar(show){
+  if(show === undefined) show = sidebarEl.classList.contains('hidden');
+  if(show){
+    sidebarEl.classList.remove('hidden');
+  } else {
+    sidebarEl.classList.add('hidden');
+  }
+}
+document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
+
+/* Theme toggle */
 const themeToggle = document.getElementById('themeToggle');
 function setMoonMode(on){
   if(on){
-    document.body.classList.remove('day');
-    document.body.classList.add('night');
     document.body.style.background = 'linear-gradient(120deg,#081029 0%, #0f2744 40%, #08243a 100%)';
     document.body.style.color = '#e6f0ff';
     document.querySelectorAll('.module').forEach(el=>{
@@ -141,8 +171,6 @@ function setMoonMode(on){
     });
     themeToggle.textContent = '🌞';
   } else {
-    document.body.classList.remove('night');
-    document.body.classList.add('day');
     document.body.style.background = '';
     document.body.style.color = '';
     document.querySelectorAll('.module').forEach(el=>{
@@ -162,7 +190,7 @@ const savedMoon = localStorage.getItem('moonMode') === '1';
 setMoonMode(savedMoon);
 themeToggle.addEventListener('click', ()=> setMoonMode(localStorage.getItem('moonMode') === '1' ? false : true));
 
-/* CSV loader (PapaParse) */
+/* PapaParse loader */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -172,13 +200,13 @@ function loadCSV(path){
   });
 }
 
-/* Render Flash News (తెలుగు) */
+/* FLASH NEWS */
 async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
   let items = [];
   try { items = await loadCSV(`${DATA_FOLDER}/flash_news.csv`); } catch(e){ items = []; }
   if(!items || items.length===0){
-    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">మార్చి వార్తలు లేవు</div>'; return;
+    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return;
   }
   items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
   const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
@@ -186,7 +214,7 @@ async function renderFlash(){
   ticker.innerHTML = ''; ticker.appendChild(mover);
 }
 
-/* Render Peddalu carousel (తెలుగు) */
+/* PEDDALU carousel */
 let peddaluIndex = 0, peddaluSlides = [], peddaluTimer;
 async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
@@ -224,7 +252,7 @@ async function renderPeddalu(){
   auto();
 }
 
-/* Render Photos grid (తెలుగు) */
+/* PHOTOS grid */
 async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
   let items = [];
@@ -241,19 +269,24 @@ async function renderPhotos(){
   });
 }
 
-/* Modal */
+/* modal */
 function openModal(src){ document.getElementById('modalImg').src = src; document.getElementById('imgModal').classList.remove('hidden'); document.getElementById('imgModal').classList.add('flex'); }
 document.getElementById('closeModal').addEventListener('click', ()=> { document.getElementById('imgModal').classList.add('hidden'); document.getElementById('imgModal').classList.remove('flex'); });
 
-/* Initialize all */
+/* init */
 renderFlash();
 renderPeddalu();
 renderPhotos();
 
-/* Simple navigation scroll (approx) */
-document.getElementById('aboutBtn').addEventListener('click', ()=> window.scrollTo({top:220,behavior:'smooth'}));
-document.getElementById('schemesBtn').addEventListener('click', ()=> window.scrollTo({top:480,behavior:'smooth'}));
-document.getElementById('adminBtn').addEventListener('click', ()=> window.scrollTo({top:760,behavior:'smooth'}));
+/* quick nav functions for sidebar */
+function aboutScroll(){ window.scrollTo({top:220,behavior:'smooth'}); }
+function schemesScroll(){ window.scrollTo({top:480,behavior:'smooth'}); }
+function adminScroll(){ window.scrollTo({top:760,behavior:'smooth'}); }
+
+/* connect desktop module clicks too */
+document.getElementById('aboutBtn').addEventListener('click', aboutScroll);
+document.getElementById('schemesBtn').addEventListener('click', schemesScroll);
+document.getElementById('adminBtn').addEventListener('click', adminScroll);
 
 </script>
 </body>
