@@ -14,73 +14,58 @@
     .ticker { white-space: nowrap; overflow: hidden; }
     .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
-
-    /* Sidebar styles */
     .sidebar-backdrop { background: rgba(0,0,0,0.45); }
-    /* small card img */
     .card-img { object-fit: cover; }
-
-    /* night overrides handled in JS by inline styles */
   </style>
 </head>
 
-<body id="body" class="day bg-gray-50 text-gray-900 transition-colors duration-300">
+<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
 
   <!-- HEADER -->
-  <header id="header" class="sticky top-0 z-40">
+  <header id="header" class="sticky top-0 z-40 bg-white shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
 
       <!-- Left: logo + title -->
       <div class="flex items-center gap-3">
-        <!-- Mobile: sidebar toggle -->
-        <button id="menuToggle" class="sm:hidden p-2 rounded bg-white shadow">
-          ☰
-        </button>
+        <!-- Mobile menu -->
+        <button id="menuToggle" class="sm:hidden p-2 rounded bg-gray-100">☰</button>
 
         <!-- Logo -->
         <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
 
         <!-- Title -->
-        <div>
-          <h1 id="titleTelugu" class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
-        </div>
+        <h1 class="text-lg sm:text-2xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
       </div>
 
-      <!-- Right: theme toggle -->
-      <div class="flex items-center gap-3">
-        <button id="themeToggle" class="ml-1 p-1 text-2xl" title="రాత్రి/పగలు మార్చు">🌙</button>
-      </div>
-
+      <!-- Right: moon symbol (static visual only) -->
+      <div class="text-2xl">🌙</div>
     </div>
 
-    <!-- Modules: visible on desktop (sm and up). on mobile use sidebar -->
+    <!-- Desktop Modules -->
     <nav class="hidden sm:block max-w-6xl mx-auto px-4 pb-3">
       <div class="grid grid-cols-3 gap-4">
-        <a id="aboutBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="aboutBtn" class="bg-white rounded-2xl p-5 text-center block shadow hover:bg-green-50 transition">
           <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
-          <div class="text-sm text-gray-500 telugu">About</div>
         </a>
-        <a id="schemesBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="schemesBtn" class="bg-white rounded-2xl p-5 text-center block shadow hover:bg-green-50 transition">
           <div class="text-lg font-semibold telugu">పథకాలు</div>
-          <div class="text-sm text-gray-500 telugu">Schemes</div>
         </a>
-        <a id="adminBtn" class="module bg-white rounded-2xl p-5 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="adminBtn" class="bg-white rounded-2xl p-5 text-center block shadow hover:bg-green-50 transition">
           <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
-          <div class="text-sm text-gray-500 telugu">Admin</div>
         </a>
       </div>
     </nav>
   </header>
 
-  <!-- MOBILE SIDEBAR (hidden by default) -->
+  <!-- MOBILE SIDEBAR -->
   <div id="sidebar" class="fixed inset-0 z-50 hidden">
     <div id="sidebarBackdrop" class="absolute inset-0 sidebar-backdrop" onclick="toggleSidebar(false)"></div>
-    <aside class="relative z-10 w-72 max-w-full h-full bg-white p-4 overflow-auto">
+    <aside class="relative z-10 w-72 h-full bg-white p-4 overflow-auto">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
           <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
           <div>
-            <div class="text-base font-semibold telugu">ముత్యాతోపు</div>
+            <div class="text-base font-semibold telugu">ముత్యాలతోపు</div>
             <div class="text-sm text-gray-500 telugu">మెనూ</div>
           </div>
         </div>
@@ -99,15 +84,15 @@
   <main class="max-w-6xl mx-auto p-4 space-y-6">
 
     <!-- Flash News -->
-    <section id="flashSection" class="card-bg rounded p-3 border-l-4 border-orange-400">
+    <section id="flashSection" class="bg-orange-50 rounded p-3 border-l-4 border-orange-400">
       <div class="flex items-center gap-3">
         <div class="text-orange-600 font-semibold telugu">📢 తాజా వార్తలు</div>
         <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800 telugu"></div>
       </div>
     </section>
 
-    <!-- Village Peddalu -->
-    <section id="peddaluSection" class="card-bg rounded p-3">
+    <!-- Peddalu -->
+    <section id="peddaluSection" class="bg-white rounded shadow p-3">
       <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
       <div class="relative">
         <div id="peddaluCarousel" class="overflow-hidden rounded"></div>
@@ -119,15 +104,15 @@
       </div>
     </section>
 
-    <!-- Village Photos -->
-    <section id="photosSection" class="card-bg rounded p-3">
+    <!-- Photos -->
+    <section id="photosSection" class="bg-white rounded shadow p-3">
       <h2 class="text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
       <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     </section>
 
   </main>
 
-  <!-- Image modal -->
+  <!-- MODAL -->
   <div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="relative z-10 max-w-3xl mx-auto p-4">
@@ -139,58 +124,15 @@
   </div>
 
 <script>
-/* CONFIG */
-const DATA_FOLDER = '/Data'; // capital D
-
-/* Sidebar control */
+/* Sidebar */
 const sidebarEl = document.getElementById('sidebar');
 function toggleSidebar(show){
   if(show === undefined) show = sidebarEl.classList.contains('hidden');
-  if(show){
-    sidebarEl.classList.remove('hidden');
-  } else {
-    sidebarEl.classList.add('hidden');
-  }
+  sidebarEl.classList.toggle('hidden', !show);
 }
 document.getElementById('menuToggle').addEventListener('click', ()=> toggleSidebar(true));
 
-/* Theme toggle */
-const themeToggle = document.getElementById('themeToggle');
-function setMoonMode(on){
-  if(on){
-    document.body.style.background = 'linear-gradient(120deg,#081029 0%, #0f2744 40%, #08243a 100%)';
-    document.body.style.color = '#e6f0ff';
-    document.querySelectorAll('.module').forEach(el=>{
-      el.style.background = 'rgba(255,255,255,0.03)';
-      el.style.boxShadow = 'none';
-      el.style.color = '#e6f0ff';
-    });
-    document.querySelectorAll('.card-bg').forEach(el=>{
-      el.style.background = 'rgba(255,255,255,0.02)';
-      el.style.borderColor = 'rgba(255,255,255,0.06)';
-    });
-    themeToggle.textContent = '🌞';
-  } else {
-    document.body.style.background = '';
-    document.body.style.color = '';
-    document.querySelectorAll('.module').forEach(el=>{
-      el.style.background = '';
-      el.style.boxShadow = '';
-      el.style.color = '';
-    });
-    document.querySelectorAll('.card-bg').forEach(el=>{
-      el.style.background = '';
-      el.style.borderColor = '';
-    });
-    themeToggle.textContent = '🌙';
-  }
-  localStorage.setItem('moonMode', on ? '1' : '0');
-}
-const savedMoon = localStorage.getItem('moonMode') === '1';
-setMoonMode(savedMoon);
-themeToggle.addEventListener('click', ()=> setMoonMode(localStorage.getItem('moonMode') === '1' ? false : true));
-
-/* PapaParse loader */
+/* CSV Loader */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -200,65 +142,61 @@ function loadCSV(path){
   });
 }
 
-/* FLASH NEWS */
+/* Flash News */
 async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
   let items = [];
-  try { items = await loadCSV(`${DATA_FOLDER}/flash_news.csv`); } catch(e){ items = []; }
-  if(!items || items.length===0){
-    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return;
-  }
+  try { items = await loadCSV('/Data/flash_news.csv'); } catch(e){ items = []; }
+  if(!items.length){ ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">తాజా వార్తలు లేవు</div>'; return; }
   items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-  const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
-  const mover = document.createElement('div'); mover.className = 'ticker__move'; mover.textContent = parts.join('   ⚫   ');
-  ticker.innerHTML = ''; ticker.appendChild(mover);
+  const text = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`).join('   ⚫   ');
+  const mover = document.createElement('div');
+  mover.className = 'ticker__move';
+  mover.textContent = text;
+  ticker.innerHTML = '';
+  ticker.appendChild(mover);
 }
 
-/* PEDDALU carousel */
-let peddaluIndex = 0, peddaluSlides = [], peddaluTimer;
+/* Peddalu */
+let idx = 0, slides = [], timer;
 async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
   let items = [];
-  try { items = await loadCSV(`${DATA_FOLDER}/village_peddalu.csv`); } catch(e){ items = []; }
-  peddaluSlides = items || [];
-  if(!peddaluSlides.length){ wrap.innerHTML = '<div class="p-6 text-gray-500 telugu">పెద్దల వివరాలు లేవు</div>'; return; }
+  try { items = await loadCSV('/Data/village_peddalu.csv'); } catch(e){ items = []; }
+  slides = items;
+  if(!slides.length){ wrap.innerHTML = '<div class="p-4 telugu text-gray-500">పెద్దల వివరాలు లేవు</div>'; return; }
 
   function show(i){
-    peddaluIndex = (i + peddaluSlides.length) % peddaluSlides.length;
-    const it = peddaluSlides[peddaluIndex];
+    idx = (i + slides.length) % slides.length;
+    const it = slides[idx];
     wrap.innerHTML = `
       <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
         <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
-          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
+          <img src="${it.photo_url || 'images/pedda.jpg'}" class="w-full h-full object-cover" alt="">
         </div>
         <div>
           <div class="text-sm text-gray-500 telugu">${it.role||''}</div>
-          <div class="text-xl font-bold mt-1 telugu">${it.name||''}</div>
-          <div class="text-sm text-gray-500 telugu mt-1">${it.note||''}</div>
+          <div class="text-xl font-bold telugu">${it.name||''}</div>
+          <div class="text-sm text-gray-500 telugu">${it.note||''}</div>
         </div>
       </div>
     `;
-    if(localStorage.getItem('moonMode') === '1'){
-      document.querySelectorAll('.text-gray-500').forEach(el=> el.style.color = '#cbd5e1');
-    }
   }
-
-  document.getElementById('prevP').onclick = ()=> { show(peddaluIndex-1); resetAuto(); };
-  document.getElementById('nextP').onclick = ()=> { show(peddaluIndex+1); resetAuto(); };
-
+  document.getElementById('prevP').onclick = ()=>{ show(idx-1); reset(); };
+  document.getElementById('nextP').onclick = ()=>{ show(idx+1); reset(); };
   show(0);
-  function auto(){ peddaluTimer = setInterval(()=> show(peddaluIndex+1), 4500); }
-  function resetAuto(){ clearInterval(peddaluTimer); auto(); }
+  function auto(){ timer = setInterval(()=> show(idx+1), 4500); }
+  function reset(){ clearInterval(timer); auto(); }
   auto();
 }
 
-/* PHOTOS grid */
+/* Photos */
 async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
   let items = [];
-  try { items = await loadCSV(`${DATA_FOLDER}/village_photos.csv`); } catch(e){ items = []; }
+  try { items = await loadCSV('/Data/village_photos.csv'); } catch(e){ items = []; }
+  if(!items.length){ grid.innerHTML = '<div class="p-4 telugu text-gray-500">ఫోటోలు లేవు</div>'; return; }
   grid.innerHTML = '';
-  if(!items || !items.length){ grid.innerHTML = '<div class="p-4 text-gray-500 telugu">ఫోటోలు లేవు</div>'; return; }
   items.forEach(it=>{
     const img = document.createElement('img');
     img.src = it.image_url || it.image || '';
@@ -269,21 +207,27 @@ async function renderPhotos(){
   });
 }
 
-/* modal */
-function openModal(src){ document.getElementById('modalImg').src = src; document.getElementById('imgModal').classList.remove('hidden'); document.getElementById('imgModal').classList.add('flex'); }
-document.getElementById('closeModal').addEventListener('click', ()=> { document.getElementById('imgModal').classList.add('hidden'); document.getElementById('imgModal').classList.remove('flex'); });
+/* Modal */
+function openModal(src){
+  document.getElementById('modalImg').src = src;
+  document.getElementById('imgModal').classList.remove('hidden');
+  document.getElementById('imgModal').classList.add('flex');
+}
+document.getElementById('closeModal').addEventListener('click', ()=> {
+  document.getElementById('imgModal').classList.add('hidden');
+  document.getElementById('imgModal').classList.remove('flex');
+});
 
-/* init */
+/* Init */
 renderFlash();
 renderPeddalu();
 renderPhotos();
 
-/* quick nav functions for sidebar */
-function aboutScroll(){ window.scrollTo({top:220,behavior:'smooth'}); }
+/* Scroll functions */
+function aboutScroll(){ window.scrollTo({top:200,behavior:'smooth'}); }
 function schemesScroll(){ window.scrollTo({top:480,behavior:'smooth'}); }
 function adminScroll(){ window.scrollTo({top:760,behavior:'smooth'}); }
 
-/* connect desktop module clicks too */
 document.getElementById('aboutBtn').addEventListener('click', aboutScroll);
 document.getElementById('schemesBtn').addEventListener('click', schemesScroll);
 document.getElementById('adminBtn').addEventListener('click', adminScroll);
