@@ -3,64 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ముత్యాలతోపు గ్రామంలో స్వాగతం</title>
+  <title>ముత్యాతోపు గ్రామంలో స్వాగతం</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse -->
+  <!-- PapaParse for CSV -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
     .ticker { white-space: nowrap; overflow: hidden; }
     .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
-
-    /* night-specific card overrides */
-    .night .card-bg { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
-    .night .module { background: rgba(255,255,255,0.04); color: #e6f0ff; box-shadow: none; }
-    .night .section-title { color: #dbeafe; }
-    .night .muted { color: #cbd5e1; }
-    .day .module { background: white; color: #064e3b; }
-    .day .card-bg { background: white; }
+    .card-img { object-fit: cover; }
   </style>
 </head>
+
 <body id="body" class="day bg-gray-50 text-gray-900 transition-colors duration-300">
 
-  <!-- Header -->
+  <!-- Header (Telugu only) -->
   <header id="header" class="sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
       <div>
-        <!-- Telugu main title -->
-        <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
-        <!-- English subtitle -->
-        <div id="titleEnglish" class="text-sm text-gray-300 mt-1">Welcome to Muthyalathopu Village</div>
+        <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold telugu">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
       </div>
 
       <div class="flex items-center gap-3">
-        <label class="text-sm hidden sm:inline muted">Ln:</label>
-        <select id="langSelect" class="border rounded p-1 text-sm">
-          <option value="te">తెలుగు</option>
-          <option value="en">English</option>
-        </select>
-
-        <button id="themeToggle" class="ml-1 p-1 text-2xl" title="Toggle theme">🌙</button>
+        <!-- Theme toggle only -->
+        <button id="themeToggle" class="ml-1 p-1 text-2xl" title="రాత్రి/పగలు మార్చు">🌙</button>
       </div>
     </div>
 
-    <!-- Modules -->
+    <!-- Modules (Telugu order: About, Schemes, Admin) -->
     <nav class="max-w-6xl mx-auto px-4 pb-4">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <a id="aboutBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="aboutBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
-          <div class="text-sm muted">About</div>
+          <div class="text-sm text-gray-500">About</div>
         </a>
-        <a id="schemesBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="schemesBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">పథకాలు</div>
-          <div class="text-sm muted">Schemes</div>
+          <div class="text-sm text-gray-500">Schemes</div>
         </a>
-        <a id="adminBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
+        <a id="adminBtn" class="module bg-white rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
-          <div class="text-sm muted">Admin</div>
+          <div class="text-sm text-gray-500">Admin</div>
         </a>
       </div>
     </nav>
@@ -69,34 +55,35 @@
   <!-- Main -->
   <main class="max-w-6xl mx-auto p-4 space-y-6">
 
-    <!-- Flash News -->
+    <!-- Flash News (తెలుగు label) -->
     <section id="flashSection" class="card-bg rounded p-3 border-l-4 border-orange-400">
       <div class="flex items-center gap-3">
-        <div class="text-orange-600 font-semibold">📢 Flash News</div>
+        <div class="text-orange-600 font-semibold telugu">📢 తాజా వార్తలు</div>
         <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800"></div>
       </div>
     </section>
 
     <!-- Village Peddalu (carousel) -->
     <section id="peddaluSection" class="card-bg rounded p-3">
-      <h2 class="section-title text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
+      <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
       <div class="relative">
         <div id="peddaluCarousel" class="overflow-hidden rounded">
-          <!-- slides go here -->
+          <!-- slides inserted here -->
         </div>
 
+        <!-- controls -->
         <div class="flex gap-2 justify-center mt-3">
-          <button id="prevP" class="px-3 py-1 rounded bg-gray-100">Prev</button>
-          <button id="nextP" class="px-3 py-1 rounded bg-gray-100">Next</button>
+          <button id="prevP" class="px-3 py-1 rounded bg-gray-100 telugu">ముందుకు</button>
+          <button id="nextP" class="px-3 py-1 rounded bg-gray-100 telugu">తర్వాత</button>
         </div>
       </div>
     </section>
 
     <!-- Village Photos -->
     <section id="photosSection" class="card-bg rounded p-3">
-      <h2 class="section-title text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
+      <h2 class="text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
       <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <!-- images -->
+        <!-- images inserted here -->
       </div>
     </section>
 
@@ -106,41 +93,34 @@
   <div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="relative z-10 max-w-3xl mx-auto p-4">
-      <div class="bg-white dark:bg-slate-900 rounded shadow-lg overflow-hidden">
-        <div class="p-2 text-right"><button id="closeModal" class="px-2">Close</button></div>
+      <div class="bg-white rounded shadow-lg overflow-hidden">
+        <div class="p-2 text-right"><button id="closeModal" class="px-2 telugu">మూసివేయಿ</button></div>
         <div class="p-2"><img id="modalImg" src="" alt="photo" class="w-full h-96 object-contain" /></div>
       </div>
     </div>
   </div>
 
 <script>
-/* CONFIG */
-const DATA_FOLDER = '/Data'; // capital D
+/* CONFIG: Data folder (capital D) */
+const DATA_FOLDER = '/Data';
 
-/* Theme handling: apply to body class and some element classes */
-const body = document.getElementById('body') || document.documentElement;
+/* Theme toggle: Day / Moon (affects whole page) */
 const themeToggle = document.getElementById('themeToggle');
-
-function setMoonMode(on) {
-  if (on) {
-    // add night classes
+function setMoonMode(on){
+  if(on){
     document.body.classList.remove('day');
     document.body.classList.add('night');
-    // adjust background to moon gradient
-    document.body.style.background = 'linear-gradient(120deg,#0b1226 0%, #13263f 40%, #0b2540 100%)';
+    document.body.style.background = 'linear-gradient(120deg,#081029 0%, #0f2744 40%, #08243a 100%)';
     document.body.style.color = '#e6f0ff';
-    // modules/card adjustments
     document.querySelectorAll('.module').forEach(el=>{
-      el.classList.remove('bg-white','shadow');
-      el.classList.add('module');
       el.style.background = 'rgba(255,255,255,0.03)';
       el.style.boxShadow = 'none';
+      el.style.color = '#e6f0ff';
     });
     document.querySelectorAll('.card-bg').forEach(el=>{
-      el.style.background = 'rgba(255,255,255,0.03)';
+      el.style.background = 'rgba(255,255,255,0.02)';
       el.style.borderColor = 'rgba(255,255,255,0.06)';
     });
-    document.querySelectorAll('.muted').forEach(el=> el.style.color = '#cbd5e1');
     themeToggle.textContent = '🌞';
   } else {
     document.body.classList.remove('night');
@@ -148,28 +128,25 @@ function setMoonMode(on) {
     document.body.style.background = '';
     document.body.style.color = '';
     document.querySelectorAll('.module').forEach(el=>{
-      el.classList.add('bg-white','shadow');
       el.style.background = '';
       el.style.boxShadow = '';
+      el.style.color = '';
     });
     document.querySelectorAll('.card-bg').forEach(el=>{
       el.style.background = '';
       el.style.borderColor = '';
     });
-    document.querySelectorAll('.muted').forEach(el=> el.style.color = '#6b7280');
     themeToggle.textContent = '🌙';
   }
   localStorage.setItem('moonMode', on ? '1' : '0');
 }
-
-/* initialize from localStorage */
-const isMoon = localStorage.getItem('moonMode') === '1';
-setMoonMode(isMoon);
+const savedMoon = localStorage.getItem('moonMode') === '1';
+setMoonMode(savedMoon);
 themeToggle.addEventListener('click', ()=> setMoonMode(localStorage.getItem('moonMode') === '1' ? false : true));
 
-/* Simple CSV loader using PapaParse */
-function loadCSV(path) {
-  return new Promise((resolve, reject)=>{
+/* CSV loader (PapaParse) */
+function loadCSV(path){
+  return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
       complete: (res)=> resolve(res.data),
       error: (err)=> reject(err)
@@ -177,39 +154,28 @@ function loadCSV(path) {
   });
 }
 
-/* RENDER functions */
-async function init(){
-  try {
-    const flash = await loadCSV(`${DATA_FOLDER}/flash_news.csv`).catch(()=>[]);
-    renderFlash(flash);
-
-    const peddalu = await loadCSV(`${DATA_FOLDER}/village_peddalu.csv`).catch(()=>[]);
-    renderPeddalu(peddalu);
-
-    const photos = await loadCSV(`${DATA_FOLDER}/village_photos.csv`).catch(()=>[]);
-    renderPhotos(photos);
-  } catch(e) {
-    console.error(e);
-  }
-}
-
-/* Flash */
-function renderFlash(items){
+/* Render Flash News (తెలుగు) */
+async function renderFlash(){
   const ticker = document.getElementById('flashTicker');
-  if(!items || items.length===0){ ticker.innerHTML = '<div class="text-sm muted">No flash news</div>'; return; }
+  let items = [];
+  try { items = await loadCSV(`${DATA_FOLDER}/flash_news.csv`); } catch(e){ items = []; }
+  if(!items || items.length===0){
+    ticker.innerHTML = '<div class="text-sm text-orange-800 telugu">మార్చి వార్తలు లేవు</div>'; return;
+  }
   items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
   const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
   const mover = document.createElement('div'); mover.className = 'ticker__move'; mover.textContent = parts.join('   ⚫   ');
   ticker.innerHTML = ''; ticker.appendChild(mover);
 }
 
-/* Peddalu */
+/* Render Peddalu carousel (తెలుగు) */
 let peddaluIndex = 0, peddaluSlides = [], peddaluTimer;
-function renderPeddalu(items){
+async function renderPeddalu(){
   const wrap = document.getElementById('peddaluCarousel');
-  wrap.innerHTML = '';
+  let items = [];
+  try { items = await loadCSV(`${DATA_FOLDER}/village_peddalu.csv`); } catch(e){ items = []; }
   peddaluSlides = items || [];
-  if(!peddaluSlides.length){ wrap.innerHTML = '<div class="p-6 muted">No elders data</div>'; return; }
+  if(!peddaluSlides.length){ wrap.innerHTML = '<div class="p-6 text-gray-500 telugu">పెద్దల వివరాలు లేవు</div>'; return; }
 
   function show(i){
     peddaluIndex = (i + peddaluSlides.length) % peddaluSlides.length;
@@ -220,55 +186,53 @@ function renderPeddalu(items){
           <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
         </div>
         <div>
-          <div class="text-sm muted">${it.role||''}</div>
-          <div class="text-xl font-bold mt-1">${it.name||''}</div>
-          <div class="text-sm muted mt-1">${it.note||''}</div>
+          <div class="text-sm text-gray-500 telugu">${it.role||''}</div>
+          <div class="text-xl font-bold mt-1 telugu">${it.name||''}</div>
+          <div class="text-sm text-gray-500 telugu mt-1">${it.note||''}</div>
         </div>
       </div>
     `;
-    // update colors if night mode on
     if(localStorage.getItem('moonMode') === '1'){
-      document.querySelectorAll('.muted').forEach(el=> el.style.color = '#cbd5e1');
+      document.querySelectorAll('.text-gray-500').forEach(el=> el.style.color = '#cbd5e1');
     }
   }
 
-  document.getElementById('prevP').onclick = ()=> { show(peddaluIndex-1); reset(); };
-  document.getElementById('nextP').onclick = ()=> { show(peddaluIndex+1); reset(); };
+  document.getElementById('prevP').onclick = ()=> { show(peddaluIndex-1); resetAuto(); };
+  document.getElementById('nextP').onclick = ()=> { show(peddaluIndex+1); resetAuto(); };
 
   show(0);
   function auto(){ peddaluTimer = setInterval(()=> show(peddaluIndex+1), 4500); }
-  function reset(){ clearInterval(peddaluTimer); auto(); }
+  function resetAuto(){ clearInterval(peddaluTimer); auto(); }
   auto();
 }
 
-/* Photos */
-function renderPhotos(items){
+/* Render Photos grid (తెలుగు) */
+async function renderPhotos(){
   const grid = document.getElementById('photosGrid');
+  let items = [];
+  try { items = await loadCSV(`${DATA_FOLDER}/village_photos.csv`); } catch(e){ items = []; }
   grid.innerHTML = '';
-  if(!items || !items.length){ grid.innerHTML = '<div class="p-4 muted">No photos</div>'; return; }
+  if(!items || !items.length){ grid.innerHTML = '<div class="p-4 text-gray-500 telugu">ఫోటోలు లేవు</div>'; return; }
   items.forEach(it=>{
     const img = document.createElement('img');
     img.src = it.image_url || it.image || '';
     img.alt = it.title || '';
     img.className = 'w-full h-40 object-cover rounded cursor-pointer';
-    img.onclick = ()=> openModal(img.src);
+    img.addEventListener('click', ()=> openModal(img.src));
     grid.appendChild(img);
   });
 }
 
 /* Modal */
-function openModal(src){
-  document.getElementById('modalImg').src = src;
-  document.getElementById('imgModal').classList.remove('hidden'); document.getElementById('imgModal').classList.add('flex');
-}
-document.getElementById('closeModal').addEventListener('click', ()=> {
-  document.getElementById('imgModal').classList.add('hidden'); document.getElementById('imgModal').classList.remove('flex');
-});
+function openModal(src){ document.getElementById('modalImg').src = src; document.getElementById('imgModal').classList.remove('hidden'); document.getElementById('imgModal').classList.add('flex'); }
+document.getElementById('closeModal').addEventListener('click', ()=> { document.getElementById('imgModal').classList.add('hidden'); document.getElementById('imgModal').classList.remove('flex'); });
 
-/* init */
-init();
+/* Initialize all */
+renderFlash();
+renderPeddalu();
+renderPhotos();
 
-/* nav scroll (approx positions) */
+/* Simple navigation scroll (approx) */
 document.getElementById('aboutBtn').addEventListener('click', ()=> window.scrollTo({top:220,behavior:'smooth'}));
 document.getElementById('schemesBtn').addEventListener('click', ()=> window.scrollTo({top:480,behavior:'smooth'}));
 document.getElementById('adminBtn').addEventListener('click', ()=> window.scrollTo({top:760,behavior:'smooth'}));
