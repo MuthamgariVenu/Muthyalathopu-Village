@@ -3,56 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Welcome to Muthyalathopu Village</title>
+  <title>ముత్యాలతోపు గ్రామంలో స్వాగతం</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse for CSV -->
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    /* small extras */
     .ticker { white-space: nowrap; overflow: hidden; }
     .ticker__move { display:inline-block; padding-left:100%; animation: ticker 18s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%);} }
-    .card-img { object-fit: cover; }
-    .modal-backdrop { background: rgba(0,0,0,0.6); }
+
+    /* night-specific card overrides */
+    .night .card-bg { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+    .night .module { background: rgba(255,255,255,0.04); color: #e6f0ff; box-shadow: none; }
+    .night .section-title { color: #dbeafe; }
+    .night .muted { color: #cbd5e1; }
+    .day .module { background: white; color: #064e3b; }
+    .day .card-bg { background: white; }
   </style>
 </head>
-<body id="body" class="bg-gray-50 text-gray-900 transition-colors duration-300">
+<body id="body" class="day bg-gray-50 text-gray-900 transition-colors duration-300">
 
   <!-- Header -->
   <header id="header" class="sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <div class="flex-1">
-        <h1 id="mainTitle" class="text-xl sm:text-2xl font-semibold">Welcome to Muthyalathopu Village</h1>
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        <!-- Telugu main title -->
+        <h1 id="titleTelugu" class="text-xl sm:text-3xl font-bold">ముత్యాలతోపు గ్రామంలో స్వాగతం</h1>
+        <!-- English subtitle -->
+        <div id="titleEnglish" class="text-sm text-gray-300 mt-1">Welcome to Muthyalathopu Village</div>
       </div>
 
       <div class="flex items-center gap-3">
-        <label class="text-sm hidden sm:inline">Ln:</label>
+        <label class="text-sm hidden sm:inline muted">Ln:</label>
         <select id="langSelect" class="border rounded p-1 text-sm">
           <option value="te">తెలుగు</option>
           <option value="en">English</option>
         </select>
 
-        <button id="themeToggle" class="ml-1 p-1 text-xl" title="Toggle theme">🌙</button>
+        <button id="themeToggle" class="ml-1 p-1 text-2xl" title="Toggle theme">🌙</button>
       </div>
     </div>
 
     <!-- Modules -->
-    <nav class="max-w-6xl mx-auto px-4 pb-3">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <a id="aboutBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+    <nav class="max-w-6xl mx-auto px-4 pb-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a id="aboutBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">గ్రామం గురించి</div>
-          <div class="text-sm text-gray-500">About</div>
+          <div class="text-sm muted">About</div>
         </a>
-        <a id="schemesBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+        <a id="schemesBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">పథకాలు</div>
-          <div class="text-sm text-gray-500">Schemes</div>
+          <div class="text-sm muted">Schemes</div>
         </a>
-        <a id="adminBtn" class="block bg-white rounded-2xl shadow p-4 text-center hover:bg-green-50">
+        <a id="adminBtn" class="module rounded-2xl p-6 text-center block shadow hover:scale-[1.01] transition-transform">
           <div class="text-lg font-semibold telugu">నిర్వాహకులు</div>
-          <div class="text-sm text-gray-500">Admin</div>
+          <div class="text-sm muted">Admin</div>
         </a>
       </div>
     </nav>
@@ -62,7 +70,7 @@
   <main class="max-w-6xl mx-auto p-4 space-y-6">
 
     <!-- Flash News -->
-    <section id="flashSection" class="bg-orange-50 border-l-4 border-orange-400 rounded p-3">
+    <section id="flashSection" class="card-bg rounded p-3 border-l-4 border-orange-400">
       <div class="flex items-center gap-3">
         <div class="text-orange-600 font-semibold">📢 Flash News</div>
         <div id="flashTicker" class="flex-1 ticker text-sm text-orange-800"></div>
@@ -70,26 +78,25 @@
     </section>
 
     <!-- Village Peddalu (carousel) -->
-    <section id="peddaluSection" class="bg-white rounded shadow p-3">
-      <h2 class="text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
+    <section id="peddaluSection" class="card-bg rounded p-3">
+      <h2 class="section-title text-lg font-semibold telugu mb-2">గ్రామ పెద్దల వివరాలు</h2>
       <div class="relative">
         <div id="peddaluCarousel" class="overflow-hidden rounded">
-          <!-- slides inserted here -->
+          <!-- slides go here -->
         </div>
 
-        <!-- controls -->
         <div class="flex gap-2 justify-center mt-3">
-          <button id="prevP" class="px-3 py-1 bg-gray-100 rounded">Prev</button>
-          <button id="nextP" class="px-3 py-1 bg-gray-100 rounded">Next</button>
+          <button id="prevP" class="px-3 py-1 rounded bg-gray-100">Prev</button>
+          <button id="nextP" class="px-3 py-1 rounded bg-gray-100">Next</button>
         </div>
       </div>
     </section>
 
     <!-- Village Photos -->
-    <section id="photosSection" class="bg-white rounded shadow p-3">
-      <h2 class="text-lg font-semibold mb-2 telugu">మా గ్రామపు చిత్రాలు</h2>
+    <section id="photosSection" class="card-bg rounded p-3">
+      <h2 class="section-title text-lg font-semibold telugu mb-2">మా గ్రామపు చిత్రాలు</h2>
       <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <!-- images inserted here -->
+        <!-- images -->
       </div>
     </section>
 
@@ -97,9 +104,9 @@
 
   <!-- Image modal -->
   <div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
-    <div class="modal-backdrop absolute inset-0"></div>
+    <div class="absolute inset-0 bg-black/60"></div>
     <div class="relative z-10 max-w-3xl mx-auto p-4">
-      <div class="bg-white rounded shadow-lg overflow-hidden">
+      <div class="bg-white dark:bg-slate-900 rounded shadow-lg overflow-hidden">
         <div class="p-2 text-right"><button id="closeModal" class="px-2">Close</button></div>
         <div class="p-2"><img id="modalImg" src="" alt="photo" class="w-full h-96 object-contain" /></div>
       </div>
@@ -107,170 +114,164 @@
   </div>
 
 <script>
-/* Configuration: folder names (Data with capital D) */
-const DATA_FOLDER = '/Data';
+/* CONFIG */
+const DATA_FOLDER = '/Data'; // capital D
 
-/* Utility: fetch CSV and parse with PapaParse (returns Promise of array of objects) */
-async function loadCSV(path) {
-  return new Promise((res, rej) => {
-    Papa.parse(path, { download: true, header: true, skipEmptyLines: true,
-      complete: (results) => res(results.data),
-      error: (err) => rej(err)
+/* Theme handling: apply to body class and some element classes */
+const body = document.getElementById('body') || document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+
+function setMoonMode(on) {
+  if (on) {
+    // add night classes
+    document.body.classList.remove('day');
+    document.body.classList.add('night');
+    // adjust background to moon gradient
+    document.body.style.background = 'linear-gradient(120deg,#0b1226 0%, #13263f 40%, #0b2540 100%)';
+    document.body.style.color = '#e6f0ff';
+    // modules/card adjustments
+    document.querySelectorAll('.module').forEach(el=>{
+      el.classList.remove('bg-white','shadow');
+      el.classList.add('module');
+      el.style.background = 'rgba(255,255,255,0.03)';
+      el.style.boxShadow = 'none';
+    });
+    document.querySelectorAll('.card-bg').forEach(el=>{
+      el.style.background = 'rgba(255,255,255,0.03)';
+      el.style.borderColor = 'rgba(255,255,255,0.06)';
+    });
+    document.querySelectorAll('.muted').forEach(el=> el.style.color = '#cbd5e1');
+    themeToggle.textContent = '🌞';
+  } else {
+    document.body.classList.remove('night');
+    document.body.classList.add('day');
+    document.body.style.background = '';
+    document.body.style.color = '';
+    document.querySelectorAll('.module').forEach(el=>{
+      el.classList.add('bg-white','shadow');
+      el.style.background = '';
+      el.style.boxShadow = '';
+    });
+    document.querySelectorAll('.card-bg').forEach(el=>{
+      el.style.background = '';
+      el.style.borderColor = '';
+    });
+    document.querySelectorAll('.muted').forEach(el=> el.style.color = '#6b7280');
+    themeToggle.textContent = '🌙';
+  }
+  localStorage.setItem('moonMode', on ? '1' : '0');
+}
+
+/* initialize from localStorage */
+const isMoon = localStorage.getItem('moonMode') === '1';
+setMoonMode(isMoon);
+themeToggle.addEventListener('click', ()=> setMoonMode(localStorage.getItem('moonMode') === '1' ? false : true));
+
+/* Simple CSV loader using PapaParse */
+function loadCSV(path) {
+  return new Promise((resolve, reject)=>{
+    Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
+      complete: (res)=> resolve(res.data),
+      error: (err)=> reject(err)
     });
   });
 }
 
-/* Theme toggle (day / moonlight) */
-const body = document.getElementById('body');
-const themeToggle = document.getElementById('themeToggle');
-function applyTheme(dark) {
-  if (dark) {
-    body.classList.remove('bg-gray-50','text-gray-900');
-    body.classList.add('bg-gradient-to-r','from-indigo-950','via-blue-900','to-slate-800','text-white');
-    themeToggle.textContent = '🌞';
-  } else {
-    body.classList.remove('bg-gradient-to-r','from-indigo-950','via-blue-900','to-slate-800','text-white');
-    body.classList.add('bg-gray-50','text-gray-900');
-    themeToggle.textContent = '🌙';
-  }
-  localStorage.setItem('moonMode', dark ? '1' : '0');
-}
-const initialMoon = localStorage.getItem('moonMode') === '1';
-applyTheme(initialMoon);
-themeToggle.addEventListener('click', () => applyTheme(localStorage.getItem('moonMode') === '1' ? false : true));
-
-/* Language (simple labels only) */
-const langSelect = document.getElementById('langSelect');
-langSelect.value = localStorage.getItem('lang') || 'te';
-langSelect.addEventListener('change', e => { localStorage.setItem('lang', e.target.value); applyLang(); });
-function applyLang(){
-  const l = localStorage.getItem('lang') || 'te';
-  // small labels (could be expanded)
-  document.querySelectorAll('.telugu').forEach(el => {
-    if (l === 'te') { el.style.display = ''; }
-    else { /* leave visible but can change text if needed */ }
-  });
-}
-applyLang();
-
-/* ---------- Load and render CSV data ---------- */
-
-async function initDashboard(){
+/* RENDER functions */
+async function init(){
   try {
-    // flash news
     const flash = await loadCSV(`${DATA_FOLDER}/flash_news.csv`).catch(()=>[]);
     renderFlash(flash);
 
-    // peddalu
     const peddalu = await loadCSV(`${DATA_FOLDER}/village_peddalu.csv`).catch(()=>[]);
     renderPeddalu(peddalu);
 
-    // photos
     const photos = await loadCSV(`${DATA_FOLDER}/village_photos.csv`).catch(()=>[]);
     renderPhotos(photos);
-
-  } catch (err) {
-    console.error('Load error', err);
+  } catch(e) {
+    console.error(e);
   }
 }
 
-/* Flash news: convert rows to ticker text */
-function renderFlash(items) {
+/* Flash */
+function renderFlash(items){
   const ticker = document.getElementById('flashTicker');
-  if (!items || items.length === 0) {
-    ticker.innerHTML = '<div class="text-sm text-orange-700">No flash news</div>';
-    return;
-  }
-  // sort by date descending if date exists
+  if(!items || items.length===0){ ticker.innerHTML = '<div class="text-sm muted">No flash news</div>'; return; }
   items.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
   const parts = items.map(it => `${it.date ? '['+it.date+'] ' : ''}${it.title} — ${it.description || ''}`);
-  // build moving element
-  const mover = document.createElement('div');
-  mover.className = 'ticker__move';
-  mover.textContent = parts.join('  ⚫  ');
-  ticker.innerHTML = '';
-  ticker.appendChild(mover);
+  const mover = document.createElement('div'); mover.className = 'ticker__move'; mover.textContent = parts.join('   ⚫   ');
+  ticker.innerHTML = ''; ticker.appendChild(mover);
 }
 
-/* Peddalu carousel */
-let peddaluIndex = 0;
-let peddaluSlides = [];
-let peddaluTimer = null;
-
-function renderPeddalu(items) {
+/* Peddalu */
+let peddaluIndex = 0, peddaluSlides = [], peddaluTimer;
+function renderPeddalu(items){
   const wrap = document.getElementById('peddaluCarousel');
   wrap.innerHTML = '';
   peddaluSlides = items || [];
-  if (!peddaluSlides || peddaluSlides.length === 0) {
-    wrap.innerHTML = '<div class="p-4 text-sm text-gray-500">No elders data</div>';
-    return;
-  }
+  if(!peddaluSlides.length){ wrap.innerHTML = '<div class="p-6 muted">No elders data</div>'; return; }
 
-  // create slides (one at a time)
-  function show(idx) {
-    peddaluIndex = (idx + peddaluSlides.length) % peddaluSlides.length;
+  function show(i){
+    peddaluIndex = (i + peddaluSlides.length) % peddaluSlides.length;
     const it = peddaluSlides[peddaluIndex];
     wrap.innerHTML = `
       <div class="flex flex-col sm:flex-row items-center gap-4 p-4">
         <div class="w-28 h-28 rounded-full overflow-hidden bg-gray-100">
-          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name}" class="w-full h-full object-cover card-img" />
+          <img src="${it.photo_url || 'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
         </div>
         <div>
-          <div class="text-lg font-semibold">${it.role || ''}</div>
-          <div class="text-xl font-bold mt-1">${it.name || ''}</div>
-          <div class="text-sm text-gray-500 mt-1">${it.note || ''}</div>
+          <div class="text-sm muted">${it.role||''}</div>
+          <div class="text-xl font-bold mt-1">${it.name||''}</div>
+          <div class="text-sm muted mt-1">${it.note||''}</div>
         </div>
       </div>
     `;
+    // update colors if night mode on
+    if(localStorage.getItem('moonMode') === '1'){
+      document.querySelectorAll('.muted').forEach(el=> el.style.color = '#cbd5e1');
+    }
   }
 
-  // controls
-  document.getElementById('prevP').onclick = () => { show(peddaluIndex-1); resetAuto(); };
-  document.getElementById('nextP').onclick = () => { show(peddaluIndex+1); resetAuto(); };
+  document.getElementById('prevP').onclick = ()=> { show(peddaluIndex-1); reset(); };
+  document.getElementById('nextP').onclick = ()=> { show(peddaluIndex+1); reset(); };
 
-  // start
   show(0);
-  function auto() { peddaluTimer = setInterval(()=> show(peddaluIndex+1), 4000); }
-  function resetAuto(){ clearInterval(peddaluTimer); auto(); }
+  function auto(){ peddaluTimer = setInterval(()=> show(peddaluIndex+1), 4500); }
+  function reset(){ clearInterval(peddaluTimer); auto(); }
   auto();
 }
 
-/* Photos grid */
-function renderPhotos(items) {
+/* Photos */
+function renderPhotos(items){
   const grid = document.getElementById('photosGrid');
   grid.innerHTML = '';
-  if (!items || items.length === 0) {
-    grid.innerHTML = '<div class="text-sm text-gray-500">No photos</div>';
-    return;
-  }
-  items.forEach(it => {
+  if(!items || !items.length){ grid.innerHTML = '<div class="p-4 muted">No photos</div>'; return; }
+  items.forEach(it=>{
     const img = document.createElement('img');
     img.src = it.image_url || it.image || '';
     img.alt = it.title || '';
     img.className = 'w-full h-40 object-cover rounded cursor-pointer';
-    img.addEventListener('click', ()=> openModal(img.src));
+    img.onclick = ()=> openModal(img.src);
     grid.appendChild(img);
   });
 }
 
-/* modal */
+/* Modal */
 function openModal(src){
   document.getElementById('modalImg').src = src;
-  document.getElementById('imgModal').classList.remove('hidden');
-  document.getElementById('imgModal').classList.add('flex');
+  document.getElementById('imgModal').classList.remove('hidden'); document.getElementById('imgModal').classList.add('flex');
 }
 document.getElementById('closeModal').addEventListener('click', ()=> {
-  document.getElementById('imgModal').classList.add('hidden');
-  document.getElementById('imgModal').classList.remove('flex');
+  document.getElementById('imgModal').classList.add('hidden'); document.getElementById('imgModal').classList.remove('flex');
 });
 
-/* Init */
-initDashboard();
+/* init */
+init();
 
-/* Simple navigation (scroll to sections) */
-document.getElementById('aboutBtn').addEventListener('click', ()=> window.scrollTo({ top: 400, behavior: 'smooth' }));
-document.getElementById('schemesBtn').addEventListener('click', ()=> window.scrollTo({ top: 700, behavior: 'smooth' }));
-document.getElementById('adminBtn').addEventListener('click', ()=> window.scrollTo({ top: 1000, behavior: 'smooth' }));
+/* nav scroll (approx positions) */
+document.getElementById('aboutBtn').addEventListener('click', ()=> window.scrollTo({top:220,behavior:'smooth'}));
+document.getElementById('schemesBtn').addEventListener('click', ()=> window.scrollTo({top:480,behavior:'smooth'}));
+document.getElementById('adminBtn').addEventListener('click', ()=> window.scrollTo({top:760,behavior:'smooth'}));
 
 </script>
 </body>
