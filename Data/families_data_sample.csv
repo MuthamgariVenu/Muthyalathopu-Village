@@ -1,0 +1,501 @@
+village_id,village_name,family_head,members_count,applied_schemes_json
+1,Village-1,Venkatesh 78,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+1,Village-1,Shyam 50,7,[]
+1,Village-1,Sowmya 82,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+1,Village-1,Ravi 91,5,[]
+1,Village-1,Latha 33,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+2,Village-2,Krishna 35,5,[]
+2,Village-2,Mohan 60,6,[]
+2,Village-2,Shyam 13,4,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+2,Village-2,Subba 79,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+2,Village-2,Latha 91,4,[]
+3,Village-3,Sowmya 50,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+3,Village-3,Uma 29,2,[]
+3,Village-3,Kumari 74,5,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+3,Village-3,Sowmya 78,5,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+3,Village-3,Shyam 33,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+4,Village-4,Venkatesh 5,2,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+4,Village-4,Manoj 28,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+4,Village-4,Manoj 60,2,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+4,Village-4,Vinod 75,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+4,Village-4,Pradeep 2,6,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+5,Village-5,Reddy 92,5,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+5,Village-5,Radha 61,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+5,Village-5,Subba 54,2,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+5,Village-5,Geeta 83,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+5,Village-5,Pradeep 70,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+6,Village-6,Suresh 3,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+6,Village-6,Manoj 52,5,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+6,Village-6,Anita 37,3,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+6,Village-6,Kumari 13,3,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+6,Village-6,Reddy 64,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+7,Village-7,Koteswar 50,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+7,Village-7,Latha 44,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+7,Village-7,Hari 79,6,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+7,Village-7,Reddy 20,5,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+7,Village-7,Subba 1,5,[]
+8,Village-8,Geeta 95,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+8,Village-8,Lakshmi 96,6,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+8,Village-8,Padma 77,5,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+8,Village-8,Vinod 55,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+8,Village-8,Divya 49,4,[]
+9,Village-9,Krishna 74,4,[]
+9,Village-9,Vinod 77,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+9,Village-9,Bala 99,3,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+9,Village-9,Vinod 84,7,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+9,Village-9,Ramu 73,7,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+10,Village-10,Hari 24,2,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+10,Village-10,Latha 1,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+10,Village-10,Seetha 3,2,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+10,Village-10,Anita 40,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+10,Village-10,Sita 2,3,[]
+11,Village-11,Mohan 60,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+11,Village-11,Seetha 19,6,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+11,Village-11,Suresh 87,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+11,Village-11,Sita 41,5,[]
+11,Village-11,Sowmya 51,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+12,Village-12,Raja 65,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+12,Village-12,Lakshmi 94,3,[]
+12,Village-12,Sowmya 88,4,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+12,Village-12,Padma 85,3,[]
+12,Village-12,Seetha 20,7,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+13,Village-13,Raja 78,7,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+13,Village-13,Ramu 19,4,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+13,Village-13,Krishna 56,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+13,Village-13,Divya 7,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+13,Village-13,Koteswar 62,6,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+14,Village-14,Kumari 30,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+14,Village-14,Uma 57,7,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+14,Village-14,Manoj 8,7,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+14,Village-14,Seetha 18,7,[]
+14,Village-14,Kumari 78,7,[]
+15,Village-15,Subba 30,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+15,Village-15,Bala 71,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+15,Village-15,Krishna 1,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+15,Village-15,Krishna 28,6,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+15,Village-15,Anita 47,3,[]
+16,Village-16,Ravi 85,4,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+16,Village-16,Hari 87,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+16,Village-16,Radha 83,2,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+16,Village-16,Chandra 61,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+16,Village-16,Hari 9,2,[]
+17,Village-17,Krishna 4,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+17,Village-17,Sowmya 78,7,[]
+17,Village-17,Uma 26,5,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+17,Village-17,Radha 48,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+17,Village-17,Raja 18,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+18,Village-18,Suresh 19,7,[]
+18,Village-18,Geeta 27,3,[]
+18,Village-18,Sowmya 7,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+18,Village-18,Ravi 87,6,[]
+18,Village-18,Sita 29,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+19,Village-19,Krishna 13,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+19,Village-19,Anita 22,4,[]
+19,Village-19,Pradeep 75,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+19,Village-19,Latha 75,5,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+19,Village-19,Divya 61,6,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+20,Village-20,Bala 41,5,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+20,Village-20,Bala 66,5,[]
+20,Village-20,Kumari 99,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+20,Village-20,Krishna 70,7,[]
+20,Village-20,Radha 83,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+21,Village-21,Bala 9,3,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+21,Village-21,Narayana 62,4,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+21,Village-21,Radha 30,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+21,Village-21,Venkatesh 27,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+21,Village-21,Bala 24,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+22,Village-22,Shyam 72,4,[]
+22,Village-22,Bala 55,7,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+22,Village-22,Hari 41,7,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+22,Village-22,Mohan 31,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+22,Village-22,Sowmya 86,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+23,Village-23,Padma 41,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+23,Village-23,Suresh 36,4,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+23,Village-23,Radha 64,7,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+23,Village-23,Venkatesh 3,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+23,Village-23,Lakshmi 31,4,[]
+24,Village-24,Geeta 92,2,[]
+24,Village-24,Raja 87,4,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+24,Village-24,Divya 53,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+24,Village-24,Seetha 70,2,[]
+24,Village-24,Mohan 81,7,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+25,Village-25,Subba 30,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+25,Village-25,Pradeep 85,2,[]
+25,Village-25,Ravi 19,7,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+25,Village-25,Krishna 94,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+25,Village-25,Geeta 56,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+26,Village-26,Divya 81,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+26,Village-26,Vinod 69,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+26,Village-26,Geeta 97,5,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+26,Village-26,Seetha 84,7,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+26,Village-26,Geeta 78,2,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+27,Village-27,Radha 54,3,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+27,Village-27,Radha 30,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+27,Village-27,Anita 46,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+27,Village-27,Raja 10,5,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+27,Village-27,Pradeep 75,3,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+28,Village-28,Lakshmi 80,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+28,Village-28,Latha 70,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+28,Village-28,Subba 28,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+28,Village-28,Pradeep 69,5,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+28,Village-28,Krishna 31,7,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+29,Village-29,Vinod 91,2,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+29,Village-29,Radha 40,6,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+29,Village-29,Reddy 44,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+29,Village-29,Koteswar 2,6,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+29,Village-29,Radha 32,3,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+30,Village-30,Sita 80,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+30,Village-30,Ramu 5,5,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+30,Village-30,Sowmya 55,7,[]
+30,Village-30,Anita 63,2,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+30,Village-30,Divya 73,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+31,Village-31,Lakshman 65,6,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+31,Village-31,Ravi 71,6,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+31,Village-31,Hari 73,2,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+31,Village-31,Latha 36,3,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+31,Village-31,Sita 20,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+32,Village-32,Sowmya 71,3,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+32,Village-32,Sita 46,4,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+32,Village-32,Padma 16,7,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+32,Village-32,Hari 68,3,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+32,Village-32,Sowmya 74,5,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+33,Village-33,Lakshmi 81,4,[]
+33,Village-33,Krishna 9,5,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+33,Village-33,Lakshmi 31,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+33,Village-33,Anita 88,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+33,Village-33,Krishna 5,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+34,Village-34,Ramu 35,4,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+34,Village-34,Divya 92,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+34,Village-34,Hari 75,5,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+34,Village-34,Suresh 39,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+34,Village-34,Lakshman 97,6,[]
+35,Village-35,Subba 28,2,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+35,Village-35,Lakshmi 96,4,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+35,Village-35,Subba 63,7,[]
+35,Village-35,Chandra 25,4,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+35,Village-35,Radha 31,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+36,Village-36,Manoj 49,2,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+36,Village-36,Lakshmi 91,4,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+36,Village-36,Lakshmi 81,4,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+36,Village-36,Geeta 93,2,[]
+36,Village-36,Sowmya 82,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+37,Village-37,Hari 27,5,[]
+37,Village-37,Seetha 27,3,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+37,Village-37,Geeta 33,4,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+37,Village-37,Latha 36,6,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+37,Village-37,Padma 20,4,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+38,Village-38,Padma 70,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+38,Village-38,Hari 56,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+38,Village-38,Ramu 45,5,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+38,Village-38,Anita 28,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+38,Village-38,Koteswar 90,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+39,Village-39,Sowmya 91,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+39,Village-39,Anita 1,6,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+39,Village-39,Bala 32,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+39,Village-39,Subba 2,7,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+39,Village-39,Uma 82,4,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+40,Village-40,Shyam 76,4,[]
+40,Village-40,Geeta 51,5,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+40,Village-40,Suresh 24,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+40,Village-40,Padma 8,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+40,Village-40,Lakshmi 67,2,[]
+41,Village-41,Suresh 85,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+41,Village-41,Kumari 13,2,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+41,Village-41,Ramu 18,7,[]
+41,Village-41,Mohan 57,4,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+41,Village-41,Shyam 61,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+42,Village-42,Koteswar 64,3,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+42,Village-42,Geeta 17,5,[]
+42,Village-42,Manoj 26,3,[]
+42,Village-42,Ramu 54,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+42,Village-42,Geeta 69,2,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+43,Village-43,Uma 91,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+43,Village-43,Raja 90,4,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+43,Village-43,Ravi 13,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+43,Village-43,Anita 15,4,[]
+43,Village-43,Sita 5,4,[]
+44,Village-44,Radha 80,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+44,Village-44,Ravi 24,4,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+44,Village-44,Radha 99,6,[]
+44,Village-44,Manoj 21,2,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+44,Village-44,Ramu 86,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+45,Village-45,Narayana 69,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+45,Village-45,Raja 17,6,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+45,Village-45,Koteswar 31,7,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+45,Village-45,Ravi 54,3,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+45,Village-45,Ravi 89,3,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+46,Village-46,Manoj 32,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+46,Village-46,Mohan 74,6,[]
+46,Village-46,Latha 19,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+46,Village-46,Uma 29,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+46,Village-46,Pradeep 33,6,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+47,Village-47,Ravi 22,5,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+47,Village-47,Bala 39,3,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+47,Village-47,Sowmya 90,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+47,Village-47,Mohan 56,6,[]
+47,Village-47,Sita 83,2,[]
+48,Village-48,Krishna 80,6,[]
+48,Village-48,Seetha 34,3,[]
+48,Village-48,Seetha 12,4,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+48,Village-48,Ramu 27,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+48,Village-48,Mohan 10,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+49,Village-49,Ravi 32,4,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+49,Village-49,Mohan 29,5,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+49,Village-49,Hari 6,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+49,Village-49,Sowmya 11,4,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+49,Village-49,Radha 65,7,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+50,Village-50,Mohan 18,4,[]
+50,Village-50,Anita 29,6,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+50,Village-50,Lakshman 90,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+50,Village-50,Ramu 83,2,[]
+50,Village-50,Pradeep 57,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+51,Village-51,Ravi 2,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+51,Village-51,Shyam 2,5,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+51,Village-51,Chandra 20,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+51,Village-51,Ramu 5,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+51,Village-51,Suresh 57,5,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+52,Village-52,Koteswar 61,3,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+52,Village-52,Chandra 3,7,[]
+52,Village-52,Reddy 99,3,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+52,Village-52,Manoj 64,6,[]
+52,Village-52,Vinod 68,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+53,Village-53,Shyam 37,5,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+53,Village-53,Kumari 21,6,[]
+53,Village-53,Seetha 84,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+53,Village-53,Hari 17,4,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+53,Village-53,Geeta 89,2,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+54,Village-54,Latha 45,3,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+54,Village-54,Manoj 72,2,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+54,Village-54,Lakshmi 44,7,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+54,Village-54,Seetha 73,7,[]
+54,Village-54,Mohan 40,7,[]
+55,Village-55,Mohan 15,6,[]
+55,Village-55,Ravi 85,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+55,Village-55,Kumari 44,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+55,Village-55,Bala 35,7,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+55,Village-55,Koteswar 37,3,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+56,Village-56,Uma 76,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+56,Village-56,Padma 21,4,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+56,Village-56,Mohan 35,6,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+56,Village-56,Uma 34,4,[]
+56,Village-56,Hari 15,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+57,Village-57,Anita 35,7,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+57,Village-57,Chandra 95,3,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+57,Village-57,Kumari 93,6,[]
+57,Village-57,Bala 19,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+57,Village-57,Manoj 35,7,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+58,Village-58,Narayana 14,2,[]
+58,Village-58,Raja 93,3,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+58,Village-58,Kumari 5,4,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+58,Village-58,Vinod 36,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+58,Village-58,Chandra 57,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+59,Village-59,Anita 51,6,[]
+59,Village-59,Koteswar 43,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+59,Village-59,Vinod 65,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+59,Village-59,Latha 28,4,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+59,Village-59,Pradeep 87,6,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+60,Village-60,Chandra 60,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+60,Village-60,Ravi 62,6,[]
+60,Village-60,Bala 49,7,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+60,Village-60,Suresh 2,3,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+60,Village-60,Chandra 87,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+61,Village-61,Ravi 85,5,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+61,Village-61,Ravi 29,5,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+61,Village-61,Sita 37,2,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+61,Village-61,Padma 85,4,[]
+61,Village-61,Koteswar 75,6,[]
+62,Village-62,Lakshman 49,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+62,Village-62,Koteswar 32,6,[]
+62,Village-62,Anita 84,5,[]
+62,Village-62,Geeta 31,7,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+62,Village-62,Krishna 51,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+63,Village-63,Hari 81,2,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+63,Village-63,Radha 41,4,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+63,Village-63,Anita 18,6,[]
+63,Village-63,Bala 33,5,[]
+63,Village-63,Geeta 56,7,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+64,Village-64,Koteswar 57,2,[]
+64,Village-64,Shyam 67,6,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+64,Village-64,Reddy 69,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+64,Village-64,Ramu 92,3,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+64,Village-64,Chandra 98,4,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+65,Village-65,Venkatesh 46,4,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+65,Village-65,Narayana 74,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+65,Village-65,Ramu 76,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+65,Village-65,Seetha 64,2,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+65,Village-65,Vinod 75,6,[]
+66,Village-66,Anita 72,3,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+66,Village-66,Hari 44,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+66,Village-66,Vinod 2,2,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+66,Village-66,Ravi 74,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+66,Village-66,Padma 77,7,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+67,Village-67,Subba 81,2,[]
+67,Village-67,Subba 96,7,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+67,Village-67,Reddy 52,2,[]
+67,Village-67,Latha 22,4,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+67,Village-67,Subba 36,3,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+68,Village-68,Sita 69,5,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+68,Village-68,Seetha 5,3,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+68,Village-68,Raja 79,3,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+68,Village-68,Lakshmi 50,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+68,Village-68,Venkatesh 12,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+69,Village-69,Krishna 28,7,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+69,Village-69,Sita 3,7,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+69,Village-69,Reddy 11,5,[]
+69,Village-69,Ramu 69,6,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+69,Village-69,Vinod 72,6,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+70,Village-70,Venkatesh 97,2,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+70,Village-70,Sowmya 29,6,[]
+70,Village-70,Sita 23,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+70,Village-70,Lakshman 47,6,[]
+70,Village-70,Subba 51,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+71,Village-71,Lakshmi 93,3,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+71,Village-71,Radha 84,3,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+71,Village-71,Anita 3,3,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+71,Village-71,Lakshman 33,5,[]
+71,Village-71,Vinod 1,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+72,Village-72,Latha 88,7,[]
+72,Village-72,Lakshman 94,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+72,Village-72,Ravi 49,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+72,Village-72,Raja 62,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+72,Village-72,Krishna 62,7,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+73,Village-73,Uma 63,5,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+73,Village-73,Ramu 29,3,[]
+73,Village-73,Radha 81,2,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+73,Village-73,Anita 97,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+73,Village-73,Radha 20,4,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+74,Village-74,Vinod 11,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+74,Village-74,Suresh 74,7,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+74,Village-74,Lakshman 45,7,[]
+74,Village-74,Ramu 76,7,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+74,Village-74,Bala 12,5,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+75,Village-75,Lakshman 73,5,[]
+75,Village-75,Shyam 91,6,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+75,Village-75,Bala 74,4,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+75,Village-75,Mohan 81,7,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+75,Village-75,Vinod 79,2,[]
+76,Village-76,Ramu 74,6,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+76,Village-76,Anita 67,2,[]
+76,Village-76,Sita 56,5,[]
+76,Village-76,Ravi 74,2,[]
+76,Village-76,Krishna 31,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+77,Village-77,Ramu 20,7,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+77,Village-77,Padma 74,2,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+77,Village-77,Manoj 94,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+77,Village-77,Lakshman 13,6,[]
+77,Village-77,Geeta 99,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+78,Village-78,Manoj 42,2,[]
+78,Village-78,Kumari 34,4,[]
+78,Village-78,Venkatesh 9,4,[]
+78,Village-78,Shyam 89,5,[]
+78,Village-78,Suresh 4,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+79,Village-79,Divya 82,3,[]
+79,Village-79,Pradeep 48,4,[]
+79,Village-79,Latha 42,5,[]
+79,Village-79,Seetha 63,2,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+79,Village-79,Subba 4,6,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+80,Village-80,Krishna 61,5,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+80,Village-80,Lakshman 85,5,[]
+80,Village-80,Uma 79,4,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+80,Village-80,Kumari 3,7,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+80,Village-80,Chandra 11,3,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+81,Village-81,Divya 17,6,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+81,Village-81,Venkatesh 93,5,[]
+81,Village-81,Lakshman 30,7,[]
+81,Village-81,Pradeep 72,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+81,Village-81,Mohan 23,7,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+82,Village-82,Uma 48,4,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+82,Village-82,Radha 22,4,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+82,Village-82,Sita 72,4,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+82,Village-82,Bala 31,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+82,Village-82,Subba 23,2,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+83,Village-83,Lakshmi 45,7,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+83,Village-83,Radha 69,2,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+83,Village-83,Suresh 11,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+83,Village-83,Ramu 4,4,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+83,Village-83,Reddy 40,4,[]
+84,Village-84,Sowmya 89,3,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+84,Village-84,Narayana 34,5,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+84,Village-84,Shyam 78,6,[]
+84,Village-84,Lakshmi 87,5,[]
+84,Village-84,Seetha 83,3,[]
+85,Village-85,Seetha 11,4,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+85,Village-85,Divya 42,2,[]
+85,Village-85,Shyam 74,2,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+85,Village-85,Sita 24,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+85,Village-85,Ravi 85,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+86,Village-86,Pradeep 20,3,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+86,Village-86,Sita 33,5,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+86,Village-86,Krishna 81,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+86,Village-86,Ramu 2,2,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+86,Village-86,Subba 62,2,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+87,Village-87,Krishna 84,3,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+87,Village-87,Lakshmi 49,3,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+87,Village-87,Lakshman 59,6,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+87,Village-87,Hari 12,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+87,Village-87,Ravi 44,3,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+88,Village-88,Subba 84,4,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+88,Village-88,Lakshmi 75,7,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+88,Village-88,Sowmya 16,2,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+88,Village-88,Raja 68,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+88,Village-88,Lakshmi 46,5,[]
+89,Village-89,Bala 56,2,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+89,Village-89,Mohan 90,3,"[{""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+89,Village-89,Raja 60,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+89,Village-89,Reddy 6,2,[]
+89,Village-89,Hari 45,6,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+90,Village-90,Manoj 15,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+90,Village-90,Geeta 62,6,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+90,Village-90,Sowmya 81,4,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+90,Village-90,Mohan 39,2,"[{""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+90,Village-90,Ramu 10,7,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+91,Village-91,Ramu 72,2,[]
+91,Village-91,Uma 29,4,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+91,Village-91,Divya 26,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+91,Village-91,Manoj 99,4,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+91,Village-91,Suresh 55,5,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+92,Village-92,Anita 53,5,[]
+92,Village-92,Radha 42,4,"[{""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+92,Village-92,Uma 66,2,[]
+92,Village-92,Bala 17,6,[]
+92,Village-92,Shyam 11,3,[]
+93,Village-93,Ramu 77,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+93,Village-93,Chandra 21,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+93,Village-93,Chandra 46,5,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""MGNREGA"", ""status"": ""Approved"", ""reason"": """"}]"
+93,Village-93,Krishna 29,6,"[{""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+93,Village-93,Suresh 36,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+94,Village-94,Radha 92,7,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+94,Village-94,Hari 35,5,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+94,Village-94,Lakshman 2,3,[]
+94,Village-94,Ramu 25,2,[]
+94,Village-94,Narayana 8,7,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+95,Village-95,Narayana 78,4,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
+95,Village-95,Manoj 94,2,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+95,Village-95,Reddy 94,7,[]
+95,Village-95,Anita 5,7,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+95,Village-95,Krishna 55,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+96,Village-96,Raja 61,2,[]
+96,Village-96,Geeta 18,7,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+96,Village-96,Krishna 43,3,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}]"
+96,Village-96,Shyam 49,7,[]
+96,Village-96,Kumari 61,4,"[{""name"": ""Water+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+97,Village-97,Pradeep 1,7,[]
+97,Village-97,Manoj 6,3,"[{""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+97,Village-97,Sita 30,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+97,Village-97,Chandra 32,3,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+97,Village-97,Sita 51,2,"[{""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}]"
+98,Village-98,Manoj 50,2,[]
+98,Village-98,Pradeep 83,2,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Water+"", ""status"": ""Pending"", ""reason"": ""Not eligible""}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+98,Village-98,Subba 77,6,[]
+98,Village-98,Bala 96,5,"[{""name"": ""Scholarship"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+98,Village-98,Koteswar 54,7,[]
+99,Village-99,Vinod 98,2,"[{""name"": ""Sanitation"", ""status"": ""Approved"", ""reason"": """"}]"
+99,Village-99,Chandra 12,6,"[{""name"": ""MGNREGA"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+99,Village-99,Kumari 16,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}]"
+99,Village-99,Manoj 90,4,"[{""name"": ""Crop Insurance"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}]"
+99,Village-99,Sowmya 1,4,[]
+100,Village-100,Ravi 17,5,"[{""name"": ""PMAY"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Scholarship"", ""status"": ""Approved"", ""reason"": """"}]"
+100,Village-100,Venkatesh 97,2,"[{""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Docs missing""}, {""name"": ""PMAY"", ""status"": ""Pending"", ""reason"": ""Docs missing""}]"
+100,Village-100,Kumari 97,6,"[{""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Awas+"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Sanitation"", ""status"": ""Pending"", ""reason"": ""Not eligible""}]"
+100,Village-100,Venkatesh 52,2,"[{""name"": ""Crop Insurance"", ""status"": ""Approved"", ""reason"": """"}]"
+100,Village-100,Uma 81,7,"[{""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}, {""name"": ""Pension"", ""status"": ""Pending"", ""reason"": ""Incomplete form""}, {""name"": ""Pension"", ""status"": ""Approved"", ""reason"": """"}]"
