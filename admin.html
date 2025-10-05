@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="te">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — ముత్యాలలోపు</title>
+
+<!-- PapaParse for CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+  :root{
+    --bg:#f8fafc; --card:#fff; --text:#081226; --muted:#6b7280; --accent:#f97316;
+    --btn-bg:#f3f4f6; --btn-text:#081226; --btn-border:rgba(2,6,23,0.06);
+  }
+  .moon{
+    --bg:#07102a; --card:rgba(255,255,255,0.03); --text:#e6f0ff; --muted:#cbd5e1; --accent:#fb923c;
+    --btn-bg:rgba(255,255,255,0.06); --btn-text:#e6f0ff; --btn-border:rgba(255,255,255,0.06);
+  }
+  html,body{height:100%; margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text);}
+  .container{max-width:1100px;margin:18px auto;padding:12px;}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  h1{margin:0;font-size:1.2rem}
+  .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 3px 10px rgba(2,6,23,0.04); margin-bottom:12px}
+  .muted{color:var(--muted)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{padding:8px 12px;border-radius:8px;background:var(--btn-bg);color:var(--btn-text);border:1px solid var(--btn-border);cursor:pointer;font-weight:600}
+  .input{padding:8px;border-radius:8px;border:1px solid #e5e7eb;background:transparent}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px;border-bottom:1px solid #eef2f7;text-align:left}
+  th{background:transparent;color:var(--muted)}
+  .link{color:var(--accent);cursor:pointer;text-decoration:underline}
+  /* modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:80}
+  .modal .panel{width:94%;max-width:880px;background:var(--card);padding:16px;border-radius:10px;max-height:88vh;overflow:auto}
+  .badge{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef2ff;color:#0f172a;font-weight:600;margin-right:6px}
+  /* responsive */
+  @media(max-width:640px){ .controls{flex-direction:column} table,th,td{font-size:0.95rem} }
+</style>
+</head>
+<body id="page">
+
+<div class="container">
+  <header>
+    <div>
+      <h1 class="telugu">నిర్వాహకుల పేజీ — Admin</h1>
+      <div class="muted tiny telugu">కేవలం అడ్మిన్ శోధన, వీక్షణ కోసం</div>
+    </div>
+    <div>
+      <button id="themeToggle" class="btn">🌙</button>
+    </div>
+  </header>
+
+  <!-- Login Card -->
+  <div id="loginCard" class="card">
+    <h3 class="telugu">అడ్మిన్ లాగిన్</h3>
+    <div class="muted telugu">దయచేసి యూజర్‌నేమ్ & పాస్వర్డ్ ఇచ్చి లోగిన్ అవ్వండి</div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+      <input id="username" class="input" placeholder="username" />
+      <input id="password" class="input" type="password" placeholder="password" />
+      <button id="loginBtn" class="btn telugu">లోగిన్</button>
+      <button id="demoBtn" class="btn telugu">డెమో (సిమ్)</button>
+    </div>
+    <div class="muted" style="margin-top:8px">గమనిక: ఇది client-side login. నిజమైన ప్రొడక్షన్ కోసం బ్యాకెండ్ అవసరం.</div>
+  </div>
+
+  <!-- Admin Dashboard (hidden until login) -->
+  <div id="adminArea" style="display:none;">
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <div>
+          <div class="muted telugu">మొత్తం జనాభా</div>
+          <div id="totalPop" style="font-weight:700;font-size:1.3rem">—</div>
+        </div>
+        <div>
+          <div class="muted telugu">ఇళ్ళ సంఖ్య</div>
+          <div id="totalHouses" style="font-weight:700;font-size:1.3rem">—</div>
+        </div>
+        <div style="margin-left:auto;">
+          <div class="controls">
+            <button id="downloadResidents" class="btn telugu">Residents CSV</button>
+            <button id="downloadHouseholds" class="btn telugu">Households CSV</button>
+            <button id="logoutBtn" class="btn telugu">లాగౌట్</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Village / House list + order control -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div>
+          <label class="muted telugu">స్క్రీన్ ఆర్డర్ ఆధారంగా చూపించు:</label>
+          <select id="orderSelect" class="input">
+            <option value="order">CSV లో ఇచ్చిన order (order column)</option>
+            <option value="name">పేరు (అక్షరానుక్రమం)</option>
+            <option value="age">వয়সు (descending)</option>
+            <option value="house">House ID</option>
+          </select>
+        </div>
+        <div style="margin-left:auto;">
+          <input id="searchBox" class="input" placeholder="పేరు / ఫోన్ వెతకండి" />
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <table id="resTable">
+          <thead><tr><th class="telugu">ID</th><th class="telugu">పేరు</th><th class="telugu">House</th><th class="telugu">Age</th><th class="telugu">Phone</th><th class="telugu">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Resident Details Modal -->
+<div id="modal" class="modal">
+  <div class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <h3 id="modalName" class="telugu"></h3>
+        <div id="modalSubtitle" class="muted"></div>
+      </div>
+      <div>
+        <button id="closeModal" class="btn telugu">మూసివేయి</button>
+      </div>
+    </div>
+
+    <hr style="margin:8px 0" />
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:240px">
+        <div class="muted telugu">వివరాలు</div>
+        <div id="modalDetails" style="margin-top:8px"></div>
+        <div style="margin-top:12px;">
+          <div class="muted telugu">డాక్యుమెంట్స్</div>
+          <div id="docStatus" style="margin-top:6px"></div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:240px">
+        <div class="muted telugu">పథకాలు</div>
+        <div id="modalSchemes" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* -------------------------
+  CONFIG / SAMPLE CREDENTIALS
+   - For demo: username=admin  password=admin123
+   - You can change these or implement real auth later
+   ------------------------- */
+const CREDENTIALS = { user:'admin', pass:'admin123' };
+
+/* theme restore */
+const themeToggle = document.getElementById('themeToggle');
+function applyMoon(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1' : '0'); themeToggle.textContent = v ? '🌞' : '🌙'; }
+applyMoon(localStorage.getItem('muthya_moon') === '1');
+themeToggle.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
+
+/* DOM refs */
+const loginCard = document.getElementById('loginCard');
+const adminArea = document.getElementById('adminArea');
+const loginBtn = document.getElementById('loginBtn');
+const demoBtn = document.getElementById('demoBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+
+const totalPop = document.getElementById('totalPop');
+const totalHouses = document.getElementById('totalHouses');
+const resTableBody = document.querySelector('#resTable tbody');
+const searchBox = document.getElementById('searchBox');
+const orderSelect = document.getElementById('orderSelect');
+
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('closeModal');
+const modalName = document.getElementById('modalName');
+const modalSubtitle = document.getElementById('modalSubtitle');
+const modalDetails = document.getElementById('modalDetails');
+const docStatus = document.getElementById('docStatus');
+const modalSchemes = document.getElementById('modalSchemes');
+
+const downloadResidents = document.getElementById('downloadResidents');
+const downloadHouseholds = document.getElementById('downloadHouseholds');
+
+/* Data holders */
+let residents = []; // from Data/residents.csv
+let households = []; // from Data/households.csv
+let beneficiaries = []; // Data/scheme_beneficiaries.csv
+
+/* Utility: load CSV (PapaParse) */
+function loadCSV(path){ return new Promise((res,rej)=> {
+  Papa.parse(path, { download:true, header:true, skipEmptyLines:true, complete: (r)=> res(r.data), error: (e)=> rej(e) });
+}); }
+
+/* Try to restore logged-in state (simple) */
+function setLoggedIn(state){
+  if(state){
+    loginCard.style.display='none';
+    adminArea.style.display='block';
+  }else{
+    loginCard.style.display='block';
+    adminArea.style.display='none';
+  }
+}
+
+/* LOGIN action */
+loginBtn.addEventListener('click', ()=> {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  if(u===CREDENTIALS.user && p===CREDENTIALS.pass){
+    localStorage.setItem('muthya_admin','1');
+    setLoggedIn(true);
+    initAdminData();
+  } else {
+    alert('Invalid credentials (demo: admin / admin123)');
+  }
+});
+
+/* Demo button => auto login and load sample data from Data/ if present */
+demoBtn.addEventListener('click', ()=> {
+  localStorage.setItem('muthya_admin','1');
+  setLoggedIn(true);
+  initAdminData();
+});
+
+/* Logout */
+logoutBtn.addEventListener('click', ()=> {
+  localStorage.removeItem('muthya_admin');
+  setLoggedIn(false);
+});
+
+/* Open/Close modal */
+closeModal.addEventListener('click', ()=> { modal.style.display='none'; });
+function openModal(){ modal.style.display='flex'; }
+
+/* helper: safe get */
+function getVal(obj,key){ return obj[key] ?? ''; }
+
+/* Render residents table based on order & filter */
+function renderResidents(){
+  const q = (searchBox.value||'').toLowerCase().trim();
+  let list = [...residents];
+  const order = orderSelect.value;
+
+  if(order === 'order'){
+    // if CSV provides `order` column use numeric sort else keep file order
+    if(list.every(r => r.order !== undefined && r.order !== '')) {
+      list.sort((a,b)=> Number(a.order||0) - Number(b.order||0));
+    }
+  } else if(order === 'name'){
+    list.sort((a,b)=> (a.name_tel||a.name||'').localeCompare(b.name_tel||b.name||''));
+  } else if(order === 'age'){
+    list.sort((a,b)=> Number(b.age||0) - Number(a.age||0));
+  } else if(order === 'house'){
+    list.sort((a,b)=> (a.house_id||'').localeCompare(b.house_id||''));
+  }
+
+  // filter by search
+  if(q){
+    list = list.filter(r => (r.name_tel||r.name||'').toLowerCase().includes(q)
+      || (r.phone||'').toLowerCase().includes(q)
+      || (r.house_id||'').toLowerCase().includes(q));
+  }
+
+  // render rows
+  resTableBody.innerHTML = '';
+  list.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.id||''}</td>
+      <td><span class="link">${escapeHtml(r.name_tel||r.name||'—')}</span></td>
+      <td>${escapeHtml(r.house_id||'—')}</td>
+      <td>${escapeHtml(r.age||'—')}</td>
+      <td>${escapeHtml(r.phone||'—')}</td>
+      <td>
+        <button class="btn btn-small" data-id="${r.id}" onclick="viewResident('${r.id}')">View</button>
+      </td>`;
+    // bind name click (open)
+    tr.querySelector('.link').addEventListener('click', ()=> viewResident(r.id));
+    resTableBody.appendChild(tr);
+  });
+}
+
+/* escape for safety when inserting innerHTML */
+function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+/* view resident details by id */
+window.viewResident = function(id){
+  const r = residents.find(x=> (x.id||'') === (id||''));
+  if(!r) { alert('Record not found'); return; }
+  modalName.textContent = r.name_tel || r.name || '';
+  modalSubtitle.textContent = `ID: ${r.id || ''}  •  House: ${r.house_id || ''}`;
+  modalDetails.innerHTML = `
+    <div><strong class="telugu">పేరు:</strong> ${escapeHtml(r.name_tel|| r.name||'')}</div>
+    <div><strong class="telugu">వయసు:</strong> ${escapeHtml(r.age||'—')}</div>
+    <div><strong class="telugu">లింగం:</strong> ${escapeHtml(r.gender||'—')}</div>
+    <div><strong class="telugu">ఫోన్:</strong> <a class="link" href="tel:${r.phone||''}">${escapeHtml(r.phone||'—')}</a></div>
+    <div><strong class="telugu">హౌస్ హెడ్:</strong> ${ (r.head_of_house && (r.head_of_house.toLowerCase()==='yes' || r.head_of_house.toLowerCase()==='true')) ? 'Yes' : 'No' }</div>
+  `;
+
+  // documents
+  const docs = [
+    {k:'aadhar_status', label:'Aadhar'},
+    {k:'ration_status', label:'Ration Card'},
+    {k:'pan_status', label:'PAN'},
+    {k:'voter_status', label:'Voter ID'}
+  ];
+  docStatus.innerHTML = '';
+  docs.forEach(d=>{
+    const s = (r[d.k]||'').toString().toLowerCase();
+    const ok = (s==='yes' || s==='present' || s==='available' || s==='1');
+    const span = document.createElement('span');
+    span.className = 'badge';
+    span.style.background = ok ? '#dcfce7' : '#fff1f0';
+    span.style.color = ok ? '#065f46' : '#7f1d1d';
+    span.textContent = `${d.label}: ${ ok ? 'Yes' : 'No' }`;
+    docStatus.appendChild(span);
+  });
+
+  // schemes for this resident
+  const resSchemes = beneficiaries.filter(b => (b.resident_id || b.resident || '') == (r.id || r.name || ''));
+  if(!resSchemes.length){
+    modalSchemes.innerHTML = '<div class="muted telugu">ఈ వ్యక్తికి పథకాలు కనబడలేదు.</div>';
+  } else {
+    modalSchemes.innerHTML = resSchemes.map(b=>{
+      return `<div style="padding:6px;border-radius:8px;background:var(--btn-bg);margin-bottom:6px;">
+        <div><strong>${escapeHtml(b.scheme_code||b.scheme||'')}</strong> — ₹ ${escapeHtml(b.amount||'0')}</div>
+        <div class="muted tiny">${escapeHtml(b.status||'')}  •  ${escapeHtml(b.date||'')}</div>
+      </div>`;
+    }).join('');
+  }
+
+  openModal();
+};
+
+/* compute totals and populate counts */
+function computeTotals(){
+  const pop = residents.length;
+  const housesCount = (households && households.length) ? households.length : new Set(residents.map(r=> r.house_id)).size;
+  totalPop.textContent = pop;
+  totalHouses.textContent = housesCount;
+}
+
+/* download helpers: generate CSV from arrays */
+function downloadCSV(arr, filename){
+  if(!arr || !arr.length){ alert('No data to download'); return; }
+  const keys = Object.keys(arr[0]);
+  const csv = [keys.join(',')].concat(arr.map(r => keys.map(k => `"${(r[k]||'').toString().replace(/"/g,'""')}"`).join(','))).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* event bindings */
+downloadResidents.addEventListener('click', ()=> downloadCSV(residents, 'residents_export.csv'));
+downloadHouseholds.addEventListener('click', ()=> downloadCSV(households, 'households_export.csv'));
+searchBox.addEventListener('input', renderResidents);
+orderSelect.addEventListener('change', renderResidents);
+
+/* INIT admin data (load CSVs)*/
+async function initAdminData(){
+  try{
+    // load CSV files (if not found, fallback to sample)
+    residents = await loadCSV('Data/residents.csv').catch(()=> []);
+    households = await loadCSV('Data/households.csv').catch(()=> []);
+    beneficiaries = await loadCSV('Data/scheme_beneficiaries.csv').catch(()=> []);
+  }catch(e){
+    console.warn('CSV load issues', e);
+  }
+
+  // fallback sample if empty
+  if(!residents || residents.length===0){
+    residents = [
+      { id:'RES-001', name_tel:'రామయ్య', name:'Ramayya', house_id:'H-001', age:'68', gender:'Male', phone:'+919812345678', aadhar_status:'yes', ration_status:'yes', pan_status:'no', voter_status:'yes', head_of_house:'yes', order:'1' },
+      { id:'RES-002', name_tel:'సీతమ్మ', name:'Seethamma', house_id:'H-001', age:'62', gender:'Female', phone:'+919887654321', aadhar_status:'yes', ration_status:'no', pan_status:'no', voter_status:'yes', head_of_house:'no', order:'2' },
+      { id:'RES-003', name_tel:'రఘు', name:'Raghu', house_id:'H-002', age:'45', gender:'Male', phone:'+919998877665', aadhar_status:'yes', ration_status:'yes', pan_status:'yes', voter_status:'yes', head_of_house:'yes', order:'3' }
+    ];
+  }
+  if(!households || households.length===0){
+    households = [
+      { house_id:'H-001', house_head_name:'రామయ్య', house_no:'1', members_count:'4' },
+      { house_id:'H-002', house_head_name:'రఘు', house_no:'2', members_count:'5' }
+    ];
+  }
+  if(!beneficiaries || beneficiaries.length===0){
+    beneficiaries = [
+      { id:'B-001', scheme_code:'OLD_AGE_PENSION', resident_id:'RES-001', name:'రామయ్య', status:'paid', amount:'4000', date:'2025-09-01' },
+      { id:'B-002', scheme_code:'OLD_AGE_PENSION', resident_id:'RES-002', name:'సీతమ్మ', status:'pending', amount:'4000', date:'2025-09-01' }
+    ];
+  }
+
+  computeTotals();
+  renderResidents();
+}
+
+/* if admin logged in from previous session */
+if(localStorage.getItem('muthya_admin')==='1'){
+  setLoggedIn(true); initAdminData();
+}
+
+/* small helper for global scope functions */
+window.initAdminData = initAdminData;
+
+/* END */
+</script>
+</body>
+</html>
