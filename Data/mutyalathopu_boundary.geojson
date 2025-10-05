@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type":"Feature",
+      "properties": { "name":"Mutyalathopupalem boundary" },
+      "geometry":{
+        "type":"Polygon",
+        "coordinates":[[
+          [80.0185,14.4389],
+          [80.0255,14.4389],
+          [80.0265,14.4338],
+          [80.0205,14.4309],
+          [80.0160,14.4325],
+          [80.0185,14.4389]
+        ]]
+      }
+    }
+  ]
+}
