@@ -42,7 +42,16 @@
 
     .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); }
     .tiny{ font-size:0.88rem; }
-    .toggle-small{ padding:6px; border-radius:8px; font-size:16px; }
+
+    /* elders carousel container */
+    .carousel-wrap{ position:relative; overflow:hidden; border-radius:8px; }
+    .carousel-inner{ display:flex; gap:12px; transition:transform .36s ease; }
+    .carousel-card{ min-width:100%; box-sizing:border-box; padding:12px; display:flex; gap:12px; align-items:center; }
+    .avatar-lg{ width:84px; height:84px; border-radius:9999px; object-fit:cover; background:#f3f4f6; }
+
+    @media(min-width:768px){
+      .carousel-card{ min-width:50%; } /* show 2 per view on desktop */
+    }
   </style>
 </head>
 <body id="body">
@@ -58,20 +67,17 @@
     </div>
 
     <div style="display:flex;align-items:center;gap:8px;">
-      <!-- desktop modules -->
       <nav class="modules">
         <a href="about.html" class="btn telugu tiny">గ్రామం గురించి</a>
         <a href="schemes.html" class="btn telugu tiny">పథకాలు</a>
         <a href="admin.html" class="btn telugu tiny">నిర్వాహకులు</a>
       </nav>
 
-      <!-- mobile hamburger -->
       <button id="openMenuBtn" class="btn md:hidden" aria-label="మెనూ">☰</button>
     </div>
   </div>
 </header>
 
-<!-- mobile menu -->
 <div id="mobileMenu" aria-hidden="true">
   <div class="backdrop" onclick="closeMenu()"></div>
   <div class="panel">
@@ -92,21 +98,31 @@
       <a href="admin.html" class="block p-3 rounded card telugu">నిర్వాహకులు</a>
     </nav>
 
-    <div style="margin-top:18px; display:flex; align-items:center; justify-content:space-between;">
+    <div style="margin-top:18px;">
       <div class="tiny muted telugu">భాష: తెలుగు</div>
-      <!-- small moonlight toggle in sidebar -->
-      <button id="moonToggleSidebar" class="toggle-small" title="రాత్రి/పగలు">🌙</button>
     </div>
-
   </div>
 </div>
 
 <main>
-  <!-- Flash -->
   <section class="card mb-4">
     <div style="display:flex;align-items:center;gap:12px;">
       <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
       <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
+    </div>
+  </section>
+
+  <!-- Elders carousel on dashboard (moved back here) -->
+  <section class="card mb-4">
+    <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
+
+    <div class="carousel-wrap mt-3" id="eldersWrap">
+      <div class="carousel-inner" id="eldersInner"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button id="prevE" class="btn telugu">ముందుకు</button>
+      <button id="nextE" class="btn telugu">తర్వాత</button>
     </div>
   </section>
 
@@ -116,44 +132,25 @@
     <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
   </section>
 
-  <!-- Water & Helpline -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-    <div class="card">
-      <h4 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h4>
-      <div id="waterContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-    </div>
-    <div class="card">
-      <h4 class="font-semibold telugu">అత్యావశ్యక సహాయం & హెల్ప్‌లైన్</h4>
-      <div id="helplineContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-    </div>
-  </div>
-
   <!-- Schemes placeholder -->
   <section class="card mb-4">
     <h4 class="font-semibold telugu">పథకాలు</h4>
-    <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం "పథకాలు" పేజీ చూడండి.</div>
+    <div class="muted mt-2 telugu tiny">పథకాల వివరాలకు పథకాలు పేజీ చూడండి.</div>
   </section>
 
   <footer class="text-center muted tiny telugu mt-6">© ముత్యాలలోపు గ్రామం</footer>
 </main>
 
 <script>
-/* mobile menu open/close */
+/* mobile menu */
 const mobileMenu = document.getElementById('mobileMenu');
 function openMenu(){ mobileMenu.style.display='flex'; mobileMenu.setAttribute('aria-hidden','false'); }
 function closeMenu(){ mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); }
 document.getElementById('openMenuBtn').addEventListener('click', openMenu);
 
-/* moon toggle in sidebar */
-const moonToggleSidebar = document.getElementById('moonToggleSidebar');
-function applyMoon(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1':'0'); moonToggleSidebar.textContent = v ? '🌞':'🌙'; }
-const stored = localStorage.getItem('muthya_moon') === '1';
-applyMoon(stored);
-moonToggleSidebar.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
-
 /* CSV loader */
 function loadCSV(path){
-  return new Promise((res,rej)=> {
+  return new Promise((res,rej)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true, complete: r=> res(r.data), error: e=> rej(e) });
   });
 }
@@ -173,74 +170,93 @@ async function renderFlash(){
     const m = document.createElement('div'); m.className = 'ticker__move telugu tiny';
     m.textContent = parts.join('   ⚫   ');
     el.innerHTML=''; el.appendChild(m);
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">తాజా వార్తలు లేవు</div>';
-  }
+  }catch(e){ el.innerHTML = '<div class="muted telugu tiny">తాజా వార్తలు లేవు</div>'; }
 }
 
 /* Basic info */
 async function renderBasicInfo(){
   const el = document.getElementById('basicInfoContent');
   try{
-    const rows = await loadCSV('Data/village_info.csv');
-    const r = rows && rows[0] ? rows[0] : null;
+    const rows = await loadCSV('Data/village_info.csv'); const r = rows && rows[0] ? rows[0] : null;
     if(!r) throw 'no';
-    const v_tel = r.village_name_tel || r.village_name_en || '';
-    const mandal = (r.mandal_tel || r.mandal) ? (r.mandal_tel || r.mandal) : (r.mandal || '');
-    const district = (r.district_tel || r.district) ? (r.district_tel || r.district) : (r.district || '');
+    const v_tel = r.village_name_tel || r.village_name_en || 'ముత్యలోపు';
+    const mandal = r.mandal_tel || r.mandal || '';
+    const district = r.district_tel || r.district || '';
     el.innerHTML = `
-      <div><strong>గ్రామం:</strong> ${v_tel || 'ముత్యాలలోపు'}</div>
+      <div><strong>గ్రామం:</strong> ${v_tel}</div>
       <div><strong>మండలం:</strong> ${mandal || '—'}</div>
       <div><strong>జిల్లా:</strong> ${district || '—'}</div>
-      <div><strong>సంఖ్యలు:</strong> జనాభా మొత్తం ${r.pop_total||r.population||'—'} (పురుషులు ${r.pop_male||'—'}, మహిళలు ${r.pop_female||'—'})</div>
+      <div><strong>సంఖ్యలు:</strong> జనాభా ${r.pop_total||'—'} (పురుషులు ${r.pop_male||'—'}, మహిళలు ${r.pop_female||'—'})</div>
       <div><strong>ఇళ్ళ సంఖ్య:</strong> ${r.total_houses||'—'}</div>
-      <div><strong>ప్రధాన కార్యకలాపాలు:</strong> ${r.main_occupations||'—'}</div>
     `;
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>';
-  }
+  }catch(e){ el.innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>'; }
 }
 
-/* Water & Helpline (Telugu labels mapping) */
-const waterMap = { 'water_supply_schedule':'నీటి సరఫరా షెడ్యూల్', 'bore':'బోరు', 'bores':'బోర్లు', 'electricity_line':'విద్యుత్ లైన్ / సబ్ స్టేషన్' };
-function translateWaterKey(k){ if(!k) return k; k=k.toLowerCase(); for(const key in waterMap){ if(k.includes(key)) return waterMap[key]; } return k.replace(/_/g,' '); }
+/* Elders carousel (touch swipe + prev/next) */
+let eidx=0, elders=[];
+async function renderElders(){
+  try{ elders = await loadCSV('Data/village_peddalu.csv'); } catch(e){ elders = []; }
+  const inner = document.getElementById('eldersInner');
+  if(!elders.length){ inner.innerHTML = '<div class="carousel-card telugu tiny">గ్రామ పెద్దల వివరాలు లేవు</div>'; return; }
 
-async function renderWater(){
-  const el = document.getElementById('waterContent');
-  try{
-    const rows = await loadCSV('Data/water_elec.csv');
-    if(!rows || !rows.length) throw 'no';
-    let html = '';
-    rows.forEach(r=>{
-      if(r.type && r.detail){
-        html += `<div><strong>${translateWaterKey(r.type)}:</strong> ${r.detail||'—'}</div>`;
-      } else {
-        for(const k in r){ if(!r[k]) continue; html += `<div><strong>${translateWaterKey(k)}:</strong> ${r[k]}</div>`; }
-      }
-    });
-    el.innerHTML = html;
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">నీటి/విద్యుత్ సమాచారం అందుబాటులో లేదు.</div>';
-  }
+  // construct cards (each item as a card element)
+  inner.innerHTML = elders.map(it=>{
+    const role = it.role_tel || it.role || '';
+    const name = it.name_tel || it.name || '';
+    const note = it.note_tel || it.note || '';
+    const photo = it.photo_url || it.photo || 'images/pedda.jpg';
+    return `<div class="carousel-card card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="width:84px;height:84px;border-radius:9999px;overflow:hidden;background:#f3f4f6;">
+          <img src="${photo}" alt="${name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='images/pedda.jpg'">
+        </div>
+        <div>
+          <div class="font-semibold telugu">${role}</div>
+          <div class="text-lg font-bold telugu">${name}</div>
+          <div class="muted telugu tiny mt-1">${note}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // position logic
+  const updatePos = ()=> {
+    const w = document.querySelector('.carousel-wrap').clientWidth;
+    // when desktop shows 2 cards per view (each card min-width 50%), transform by index * (100%)
+    const translate = (eidx) * (100); // percent
+    inner.style.transform = `translateX(-${translate}%)`;
+  };
+
+  document.getElementById('prevE').onclick = ()=> { eidx = (eidx - 1 + elders.length) % elders.length; updatePos(); resetAuto(); };
+  document.getElementById('nextE').onclick = ()=> { eidx = (eidx + 1) % elders.length; updatePos(); resetAuto(); };
+
+  // touch swipe
+  let startX = 0, currentX = 0, isDown = false;
+  inner.addEventListener('touchstart', (e)=> { startX = e.touches[0].clientX; isDown = true; });
+  inner.addEventListener('touchmove', (e)=> { if(!isDown) return; currentX = e.touches[0].clientX; });
+  inner.addEventListener('touchend', ()=> {
+    if(!isDown) return;
+    const diff = startX - currentX;
+    if(Math.abs(diff) > 30){
+      if(diff > 0) eidx = (eidx + 1) % elders.length; else eidx = (eidx - 1 + elders.length) % elders.length;
+      updatePos();
+    }
+    isDown = false; startX = currentX = 0; resetAuto();
+  });
+
+  // auto play
+  let timer = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 5000);
+  function resetAuto(){ clearInterval(timer); timer = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 5000); }
+
+  // initial pos
+  updatePos();
+  // adjust on resize
+  window.addEventListener('resize', updatePos);
 }
 
-async function renderHelpline(){
-  const el = document.getElementById('helplineContent');
-  try{
-    const rows = await loadCSV('Data/helpline.csv');
-    if(!rows || !rows.length) throw 'no';
-    let html = '<ul class="list-disc pl-5 telugu tiny">';
-    rows.forEach(r=> { html += `<li><strong>${r.role_tel || r.role || r.name || '—'}:</strong> <a class="link" href="tel:${r.phone || r.contact || ''}">${r.phone||r.contact||'—'}</a></li>`; });
-    html += '</ul>';
-    el.innerHTML = html;
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">హెల్ప్‌లైన్ సమాచారం అందుబాటులో లేదు.</div>';
-  }
-}
-
-/* Init */
-renderFlash(); renderBasicInfo(); renderWater(); renderHelpline();
-
+renderFlash();
+renderBasicInfo();
+renderElders();
 </script>
 </body>
 </html>
