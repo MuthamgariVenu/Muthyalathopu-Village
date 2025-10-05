@@ -5,43 +5,75 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ముత్యాలలోపు — డాష్‌బోర్డ్</title>
 
-  <!-- Tailwind + PapaParse -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    :root{ --bg:#f8fafc; --card:#fff; --muted:#6b7280; --accent:#f97316; --text:#0f172a; }
-    .moon{ --bg:#07102a; --card:rgba(255,255,255,0.04); --muted:#cbd5e1; --accent:#fb923c; --text:#e6f0ff; }
+    :root{
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #f97316;
+      --text: #0f172a;
+      --header-bg: #fff;
+      --footer-bg: #f8fafc;
+      --sidebar-bg: #ffffff;
+      --sidebar-text: var(--text);
+      --sidebar-btn-bg: #f3f4f6;
+    }
 
-    html,body{height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
-    body{ background:var(--bg); color:var(--text); transition:.18s; }
+    /* MOON (dark) variables */
+    .moon{
+      --bg: #07102a;
+      --card: rgba(255,255,255,0.03);
+      --muted: #cbd5e1;
+      --accent: #fb923c;
+      --text: #e6f0ff;
+      --header-bg: rgba(255,255,255,0.03);
+      --footer-bg: #04102a;
+      --sidebar-bg: #0b1b33;
+      --sidebar-text: #e6f0ff;
+      --sidebar-btn-bg: rgba(255,255,255,0.04);
+    }
 
-    /* Header */
-    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--card); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
+    html,body{ height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text); transition:background .18s, color .18s; }
+    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--header-bg); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
     .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; gap:12px; }
     .logo{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
+
     .title-main{ font-weight:700; font-size:1rem; }
     .title-sub{ font-size:0.78rem; color:var(--muted); }
 
     .modules{ display:none; gap:10px; }
     @media(min-width:768px){ .modules{ display:flex; } .title-main{ font-size:1.2rem; } .hdr{ padding:14px 18px; } }
 
-    main{ max-width:1100px; margin:0 auto; padding:92px 14px 28px; }
+    main{ max-width:1100px; margin:0 auto; padding:92px 14px 88px; } /* leave space for footer */
 
     .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
     .muted{ color:var(--muted); }
     .accent{ color:var(--accent); }
     a.link{ color:var(--accent); text-decoration:none; }
 
-    /* Flash ticker slow */
     .ticker{ white-space:nowrap; overflow:hidden; }
     .ticker__move{ display:inline-block; padding-left:100%; animation:ticker 60s linear infinite; }
     @keyframes ticker{ 0%{ transform:translateX(0);} 100%{ transform:translateX(-100%);} }
 
-    /* mobile menu */
+    /* mobile menu (sidebar) */
     #mobileMenu{ position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:flex-end; }
     #mobileMenu .backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-    #mobileMenu .panel{ position:relative; width:84%; max-width:320px; background:var(--card); height:100%; padding:16px; overflow:auto; box-shadow:-8px 0 20px rgba(2,6,23,0.12); }
+    #mobileMenu .panel{
+      position:relative;
+      width:84%;
+      max-width:320px;
+      height:100%;
+      background:var(--sidebar-bg);
+      color:var(--sidebar-text);
+      padding:16px;
+      overflow:auto;
+      box-shadow:-8px 0 20px rgba(2,6,23,0.12);
+      transition:background .18s, color .18s;
+    }
+    #mobileMenu .panel .btn{ background:var(--sidebar-btn-bg); color:var(--sidebar-text); border:1px solid rgba(255,255,255,0.04); }
 
     .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); }
     .tiny{ font-size:0.88rem; }
@@ -49,109 +81,124 @@
     /* elders carousel container */
     .carousel-wrap{ position:relative; overflow:hidden; border-radius:8px; }
     .carousel-inner{ display:flex; gap:12px; transition:transform .36s ease; }
-    .carousel-card{ min-width:100%; box-sizing:border-box; padding:12px; display:flex; gap:12px; align-items:center; }
+    .carousel-card{ min-width:100%; box-sizing:border-box; padding:12px; display:flex; gap:12px; align-items:center; background:var(--card); }
     .avatar-lg{ width:84px; height:84px; border-radius:9999px; object-fit:cover; background:#f3f4f6; }
 
-    @media(min-width:768px){
-      .carousel-card{ min-width:50%; } /* show 2 per view on desktop */
+    @media(min-width:768px){ .carousel-card{ min-width:50%; } }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:40;
+      background:var(--footer-bg);
+      color:var(--text);
+      padding:12px 14px;
+      box-shadow:0 -2px 6px rgba(2,6,23,0.06);
+      text-align:center;
+      transition:background .18s, color .18s;
+      font-size:0.92rem;
     }
 
-    footer{ margin-top:18px; color:var(--muted); font-size:0.9rem; text-align:center; }
+    /* helper small */
+    .mutebtn{ background:transparent; border:0; cursor:pointer; color:var(--muted); padding:6px; border-radius:6px; }
   </style>
 </head>
 <body id="body">
 
-  <!-- HEADER -->
-  <header>
-    <div class="hdr">
-      <div style="display:flex;gap:10px;align-items:center;min-width:0;">
-        <img src="images/logo.png" alt="లాగో" class="logo" onerror="this.style.display='none'">
-        <div style="min-width:0;">
-          <div class="title-main telugu">ముత్యాలలోపు గ్రామానికి స్వాగతం</div>
-          <div class="title-sub telugu">మన ఊరి సమాచారం — తెలుగు</div>
-        </div>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:8px;">
-        <!-- desktop modules -->
-        <nav class="modules">
-          <a href="about.html" class="btn telugu tiny">గ్రామం గురించి</a>
-          <a href="schemes.html" class="btn telugu tiny">పథకాలు</a>
-          <a href="admin.html" class="btn telugu tiny">నిర్వాహకులు</a>
-        </nav>
-
-        <!-- mobile hamburger -->
-        <button id="openMenuBtn" class="btn md:hidden" aria-label="మెనూ">☰</button>
+<header>
+  <div class="hdr">
+    <div style="display:flex;gap:10px;align-items:center;min-width:0;">
+      <img src="images/logo.png" alt="లాగో" class="logo" onerror="this.style.display='none'">
+      <div style="min-width:0;">
+        <div class="title-main telugu">ముత్యాలలోపు గ్రామానికి స్వాగతం</div>
+        <div class="title-sub telugu">మన ఊరి సమాచారం — తెలుగు</div>
       </div>
     </div>
-  </header>
 
-  <!-- MOBILE MENU PANEL -->
-  <div id="mobileMenu" aria-hidden="true">
-    <div class="backdrop" onclick="closeMenu()"></div>
-    <div class="panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="display:flex;gap:10px;align-items:center;">
-          <img src="images/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
-          <div>
-            <div class="font-semibold telugu">ముత్యాలలోపు</div>
-            <div class="tiny muted telugu">మెనూ</div>
-          </div>
-        </div>
-        <button onclick="closeMenu()" class="btn">✕</button>
-      </div>
-
-      <nav class="space-y-3">
-        <a href="about.html" class="block p-3 rounded card telugu">గ్రామం గురించి</a>
-        <a href="schemes.html" class="block p-3 rounded card telugu">పథకాలు</a>
-        <a href="admin.html" class="block p-3 rounded card telugu">నిర్వాహకులు</a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <nav class="modules">
+        <a href="about.html" class="btn telugu tiny">గ్రామం గురించి</a>
+        <a href="schemes.html" class="btn telugu tiny">పథకాలు</a>
+        <a href="admin.html" class="btn telugu tiny">నిర్వాహకులు</a>
       </nav>
 
-      <div style="margin-top:18px; display:flex; align-items:center; justify-content:space-between;">
-        <div class="tiny muted telugu">భాష: తెలుగు</div>
-        <button id="moonToggleSidebar" class="btn tiny" title="రాత్రి/పగలు">🌙</button>
-      </div>
+      <button id="openMenuBtn" class="btn md:hidden" aria-label="మెనూ">☰</button>
     </div>
   </div>
+</header>
 
-  <!-- MAIN -->
-  <main>
-    <!-- 1) Flash News -->
-    <section class="card mb-4" id="section-flash">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
-        <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
+<!-- MOBILE MENU -->
+<div id="mobileMenu" aria-hidden="true">
+  <div class="backdrop" onclick="closeMenu()"></div>
+  <div class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <img src="images/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+        <div>
+          <div class="font-semibold telugu">ముత్యాలలోపు</div>
+          <div class="tiny muted telugu">మెనూ</div>
+        </div>
       </div>
-    </section>
+      <button onclick="closeMenu()" class="btn">✕</button>
+    </div>
 
-   
+    <nav style="display:flex;flex-direction:column;gap:10px;">
+      <a href="about.html" class="btn telugu">గ్రామం గురించి</a>
+      <a href="schemes.html" class="btn telugu">పథకాలు</a>
+      <a href="admin.html" class="btn telugu">నిర్వాహకులు</a>
+    </nav>
 
-    <!-- 3) Village — Basic Information -->
-    <section class="card mb-4" id="section-basic">
-      <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
-      <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-    </section>
- <!-- 2) Village elders (carousel) -->
-    <section class="card mb-4" id="section-elders">
-      <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
+    <div style="margin-top:18px; display:flex; align-items:center; justify-content:space-between;">
+      <div class="tiny muted telugu">భాష: తెలుగు</div>
+      <button id="moonToggleSidebar" class="btn tiny" title="రాత్రి/పగలు">🌙</button>
+    </div>
 
-      <div class="carousel-wrap mt-3" id="eldersWrap">
-        <div class="carousel-inner" id="eldersInner"></div>
-      </div>
+    <div style="margin-top:18px;" class="muted tiny telugu">
+      <div>ఇక్కడ sidebar యొక్క రంగు moon లో ప్రత్యేకంగా మారుతుంది.</div>
+    </div>
+  </div>
+</div>
 
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <button id="prevE" class="btn telugu">ముందుకు</button>
-        <button id="nextE" class="btn telugu">తర్వాత</button>
-      </div>
-    </section>
-    <!-- 4) Schemes placeholder -->
-    <section class="card mb-4" id="section-schemes">
-      <h4 class="font-semibold telugu">పథకాలు</h4>
-      <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం పథకాలు పేజీ చూడండి.</div>
-    </section>
+<main>
+  <!-- Flash -->
+  <section class="card mb-4" id="section-flash">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
+      <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
+    </div>
+  </section>
 
-    <footer>© ముత్యాలలోపు గ్రామం</footer>
-  </main>
+
+
+  <!-- Basic info -->
+  <section class="card mb-4" id="section-basic">
+    <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
+    <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
+  </section>
+  <!-- Elders carousel -->
+  <section class="card mb-4" id="section-elders">
+    <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
+
+    <div class="carousel-wrap mt-3" id="eldersWrap">
+      <div class="carousel-inner" id="eldersInner"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button id="prevE" class="btn telugu">ముందుకు</button>
+      <button id="nextE" class="btn telugu">తర్వాత</button>
+    </div>
+  </section>
+  <!-- Schemes placeholder -->
+  <section class="card mb-4" id="section-schemes">
+    <h4 class="font-semibold telugu">పథకాలు</h4>
+    <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం పథకాలు పేజీ చూడండి.</div>
+  </section>
+</main>
+
+<footer id="siteFooter">© ముత్యాలలోపు గ్రామం</footer>
 
 <script>
 /* Mobile menu open/close */
@@ -160,14 +207,22 @@ function openMenu(){ mobileMenu.style.display='flex'; mobileMenu.setAttribute('a
 function closeMenu(){ mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); }
 document.getElementById('openMenuBtn').addEventListener('click', openMenu);
 
-/* moon toggle in sidebar */
+/* moon toggle in sidebar and page */
 const moonToggleSidebar = document.getElementById('moonToggleSidebar');
-function applyMoon(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1':'0'); moonToggleSidebar.textContent = v ? '🌞':'🌙'; }
+function applyMoon(v){
+  document.documentElement.classList.toggle('moon', v);
+  localStorage.setItem('muthya_moon', v ? '1' : '0');
+
+  // additional adjustments (if any)
+  // change footer background contrasting in moon mode is done via CSS variables
+  // ensure buttons inside sidebar have visible color (handled by CSS)
+  moonToggleSidebar.textContent = v ? '🌞' : '🌙';
+}
 const stored = localStorage.getItem('muthya_moon') === '1';
 applyMoon(stored);
 moonToggleSidebar.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
 
-/* CSV loader using PapaParse */
+/* CSV loader */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -176,7 +231,7 @@ function loadCSV(path){
   });
 }
 
-/* FLASH */
+/* Flash */
 async function renderFlash(){
   const el = document.getElementById('flashTicker');
   try{
@@ -196,14 +251,14 @@ async function renderFlash(){
   }
 }
 
-/* BASIC INFO */
+/* Basic info */
 async function renderBasicInfo(){
   const el = document.getElementById('basicInfoContent');
   try{
     const rows = await loadCSV('Data/village_info.csv');
     const r = (rows && rows[0]) ? rows[0] : null;
     if(!r) throw 'no';
-    const v_tel = r.village_name_tel || r.village_name_en || 'ముత్యాలలోపు';
+    const v_tel = r.village_name_tel || r.village_name_en || 'ముత్యలోపు';
     const mandal = r.mandal_tel || r.mandal || '';
     const district = r.district_tel || r.district || '';
     el.innerHTML = `
@@ -218,18 +273,12 @@ async function renderBasicInfo(){
   }
 }
 
-/* ELDERS CAROUSEL */
-let eidx = 0, elders = [];
+/* Elders carousel (touch swipe + prev/next + autoplay) */
+let eidx=0, elders=[];
 async function renderElders(){
-  try{
-    elders = await loadCSV('Data/village_peddalu.csv');
-  }catch(e){ elders = []; }
-
+  try{ elders = await loadCSV('Data/village_peddalu.csv'); } catch(e){ elders = []; }
   const inner = document.getElementById('eldersInner');
-  if(!elders || !elders.length){
-    inner.innerHTML = '<div class="carousel-card card telugu tiny">గ్రామ పెద్దల వివరాలు అందుబాటులో లేవు.</div>';
-    return;
-  }
+  if(!elders.length){ inner.innerHTML = '<div class="carousel-card card telugu tiny">గ్రామ పెద్దల వివరాలు లేవు</div>'; return; }
 
   inner.innerHTML = elders.map(it=>{
     const role = it.role_tel || it.role || '';
@@ -250,15 +299,10 @@ async function renderElders(){
     </div>`;
   }).join('');
 
-  function updatePos(){
-    const translatePercent = eidx * 100;
-    document.getElementById('eldersInner').style.transform = `translateX(-${translatePercent}%)`;
-  }
-
+  function updatePos(){ const translatePercent = eidx * 100; document.getElementById('eldersInner').style.transform = `translateX(-${translatePercent}%)`; }
   document.getElementById('prevE').onclick = ()=> { eidx = (eidx - 1 + elders.length) % elders.length; updatePos(); resetAuto(); };
   document.getElementById('nextE').onclick = ()=> { eidx = (eidx + 1) % elders.length; updatePos(); resetAuto(); };
 
-  // touch support
   let sx=0, cx=0, touching=false;
   inner.addEventListener('touchstart', e => { sx = e.touches[0].clientX; touching=true; });
   inner.addEventListener('touchmove', e => { if(!touching) return; cx = e.touches[0].clientX; });
@@ -268,18 +312,16 @@ async function renderElders(){
     touching=false; sx=cx=0; resetAuto();
   });
 
-  // autoplay
   let t = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 4500);
   function resetAuto(){ clearInterval(t); t = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 4500); }
-
   updatePos();
   window.addEventListener('resize', updatePos);
 }
 
 /* init */
 renderFlash();
-renderElders();
 renderBasicInfo();
+renderElders();
 
 </script>
 </body>
