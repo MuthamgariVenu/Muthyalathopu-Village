@@ -24,10 +24,12 @@
     .logo{font-weight:700;font-size:18px}
     .icons{display:flex;gap:12px}
     .icon-btn{background:transparent;border:none;font-size:18px}
+    .back-btn{background:transparent;border:none;font-size:16px;color:var(--accent);display:flex;align-items:center;gap:8px}
 
     /* Hero */
     .hero{position:relative;border-radius:14px;overflow:hidden;background:#111;height:320px;display:flex;align-items:flex-end}
-    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center}
+    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;transition:filter .4s ease}
+    .hero.moon .bg{filter:grayscale(.35) brightness(.6) sepia(.15)}
     .hero .overlay{position:relative;padding:20px;color:white;width:100%}
     .hero h1{margin:0;font-size:26px;line-height:1}
     .tag{margin-top:6px;color:rgba(255,255,255,0.9);font-size:14px}
@@ -36,6 +38,13 @@
     .cta-row{display:flex;gap:8px;margin-top:12px}
     .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:none;font-weight:600;flex:1}
     .btn.secondary{background:transparent;color:white;border:1px solid rgba(255,255,255,0.18)}
+
+    /* Moonlight toggle */
+    .toggle-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+    .toggle{width:44px;height:24px;background:#fff;border-radius:999px;padding:3px;display:inline-flex;align-items:center;cursor:pointer}
+    .toggle .knob{width:18px;height:18px;background:#111;border-radius:50%;transition:transform .2s}
+    .toggle.on{background:rgba(255,255,255,0.18)}
+    .toggle.on .knob{transform:translateX(20px)}
 
     /* Quick facts */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
@@ -76,7 +85,8 @@
     .testi .avatar{width:36px;height:36px;border-radius:50%;background:#eee;display:inline-block;margin-right:8px}
 
     /* Map & contact */
-    .map{height:160px;background:#e6eef0;border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .map{height:220px;background:#e6eef0;border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden}
+    .map iframe{width:100%;height:100%;border:0}
     .contact-row{display:flex;gap:8px;margin-top:10px}
     .phone{background:var(--accent);color:white;padding:10px;border-radius:10px;flex:1;text-align:center}
     .pdf{background:#ffd6a5;color:#663c00;padding:10px;border-radius:10px;flex:1;text-align:center}
@@ -95,7 +105,10 @@
 <body>
   <div class="container">
     <header>
-      <div class="logo">ముత్యాతోపు</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="back-btn" onclick="location.href='index.html'">◀ Back</button>
+        <div class="logo">ముత్యాతోపు</div>
+      </div>
       <div class="icons">
         <button class="icon-btn" aria-label="Share">🔗</button>
         <button class="icon-btn" aria-label="Menu">☰</button>
@@ -103,16 +116,24 @@
     </header>
 
     <!-- HERO -->
-    <section class="hero" aria-labelledby="hero-title">
+    <section id="hero" class="hero" aria-labelledby="hero-title">
       <div class="bg" aria-hidden="true"></div>
       <div class="overlay">
-        <h1 id="hero-title">ముత్యాలతోపు — మా ఊరు, మా గర్వం</h1>
+        <h1 id="hero-title">ముత్యాతోపు — మా ఊరు, మా గర్వం</h1>
         <div class="tag">సాంప్రదాయం, శ్రమ, అభివృద్ధి — చిన్న రూపంలో పెద్ద హృదయం.</div>
         <div class="chips" aria-hidden="false">
           <div class="chip">Population: <strong id="count-pop">1,200</strong></div>
           <div class="chip">Households: <strong id="count-hh">300</strong></div>
           <div class="chip">Last Fund: <strong id="count-fund">₹5,00,000</strong></div>
         </div>
+
+        <div class="toggle-row">
+          <div style="color:white;font-size:13px">Moonlight Mode</div>
+          <div id="moonToggle" class="toggle" role="button" aria-pressed="false">
+            <div class="knob"></div>
+          </div>
+        </div>
+
         <div class="cta-row">
           <button class="btn" id="view-data">గ్రామం వివరాలు చూడండి</button>
           <button class="btn secondary" id="download-pdf">ఒక పేజీ డౌన్లోడ్</button>
@@ -122,15 +143,15 @@
 
     <!-- Quick facts -->
     <section class="grid section" aria-labelledby="quick-facts">
-      <div class="card"><h3>గ్రామ పేరు</h3><p>ముత్యాలోపు</p></div>
-      <div class="card"><h3>పంచాయతీ</h3><p>ముత్యательно</p></div>
+      <div class="card"><h3>గ్రామ పేరు</h3><p>ముత్యాలతోపు</p></div>
+      <div class="card"><h3>పంచాయతీ</h3><p>Koduru 1</p></div>
       <div class="card"><h3>జిల్లా</h3><p>Nellore</p></div>
-      <div class="card"><h3>మండలం</h3><p>Indukurpet</p></div>
+      <div class="card"><h3>మండలం</h3><p>Thotapalleguduru</p></div>
     </section>
 
     <!-- Intro -->
     <section class="section">
-      <p class="lead">ముత్యాలతోపులో సుమారు 1,200 మంది నివాసం. ఇక్కడి ప్రధాన సంపాదన వ్యవసాయం; పల్లె కుటుంబాలు పథకాల ద్వారా అభివృద్ధి చెందుతున్నాయి. ఈ పేజీ ద్వారా గ్రామం యొక్క మౌలిక సౌకర్యాలు, పథకాలు మరియు తాజా వివరాలు ఒకే చోట చూడొచ్చు.</p>
+      <p class="lead">ముత్యాతోపులో సుమారు 1,200 మంది నివాసం. ఇక్కడి ప్రధాన సంపాదన వ్యవసాయం; పల్లె కుటుంబాలు పథకాల ద్వారా అభివృద్ధి చెందుతున్నాయి. ఈ పేజీ ద్వారా గ్రామం యొక్క మౌలిక సౌకర్యాలు, పథకాలు మరియు తాజా వివరాలు ఒకే చోట చూడొచ్చు.</p>
       <div class="bullets">
         <div class="bullet"><div class="dot" aria-hidden></div><div><strong>ఇప్పటివరకు ₹5 లక్షల రూపాయల ఫండ్స్ విడుదలయ్యాయి.</strong></div></div>
         <div class="bullet"><div class="dot" aria-hidden></div><div><strong>గ్రామానికి దగ్గరలో 2 కి.మీ. చిన్న డ్యామ్ ఉంది.</strong></div></div>
@@ -192,21 +213,26 @@
       <h2 id="testi-title">గ్రామం మాటలు</h2>
       <div class="testi">
         <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>రమేష్</strong><div class="meta">రైతు</div></div></div><p style="margin-top:8px;color:var(--muted)">“మన గ్రామానికి పంచాయతీ చేసిన చిన్న మార్పే మన జీవితాలు మార్చేశారు.”</p></div>
-        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>లక్ష్మి</strong><div class="meta">అమ్మ</div></div></div><p style="margin-top:8px;color:var(--muted)">“పాఠశాలలో ఎలక్ట్రాన్ టేబుల్ వచ్చి పిల్లలు ఆనందంగా ఉన్నాయి.”</p></div>
+        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>లక్ష్మి</strong><div class="meta">అమ్మ</div></div></div><p style="margin-top:8px;color:var(--muted)">“పాఠశాలలో ఎలక్ట్రాన్ టేబుల్ వచ్చి పిల్లలు ఆనందంగా ఉంది.”</p></div>
       </div>
     </section>
 
     <!-- Map & Contact -->
     <section class="section">
       <h2>సంప్రదించండి</h2>
-      <div class="map">Map Placeholder — Google Map ఇక్కడ ఎన్బెడ్డు చేయండి</div>
+      <div class="map" id="map-container">
+        <!-- Embedded Google Map centered on example coordinates -->
+        <iframe
+          src="https://www.google.com/maps?q=14.500123,79.900456&z=15&output=embed"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
       <div class="contact-row">
         <a class="phone" href="tel:+919876543210">Admin కి కాల్ చేయండి</a>
         <a class="pdf" href="#">ఒక పేజీ డౌన్లోడ్</a>
       </div>
     </section>
 
-    <footer>Last updated: 2025-09-30 • Muthyalathopu Village</footer>
+    <footer>Last updated: 2025-09-30 • Muthyalathopu Village • Panchayathi: Koduru 1</footer>
   </div>
 
   <script>
@@ -232,7 +258,15 @@
       // values could be filled dynamically from CSV/DB later
       animateValue('count-pop', 0, 1200, 900);
       animateValue('count-hh', 0, 300, 900);
-      // fund is text, skip animation
+
+      // Moonlight toggle
+      var hero = document.getElementById('hero');
+      var moon = document.getElementById('moonToggle');
+      moon.addEventListener('click', function(){
+        var on = moon.classList.toggle('on');
+        moon.setAttribute('aria-pressed', on);
+        if(on) hero.classList.add('moon'); else hero.classList.remove('moon');
+      });
 
       // scroll reveal for timeline
       var items = document.querySelectorAll('.timeline-item');
@@ -254,7 +288,7 @@
 
       // CTA handlers (placeholders)
       document.getElementById('view-data').addEventListener('click', function(){
-        // go to data page
+        // go to data page (dashboard/index)
         window.location.href = './index.html#data' ;
       });
       document.getElementById('download-pdf').addEventListener('click', function(e){
