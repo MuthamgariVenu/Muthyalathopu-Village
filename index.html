@@ -9,20 +9,33 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
+    /* ----- Theme variables ----- */
     :root{
       --bg: #f8fafc;
       --card: #ffffff;
       --muted: #6b7280;
       --accent: #f97316;
       --text: #0f172a;
-      --header-bg: #fff;
+      --header-bg: #ffffff;
       --footer-bg: #f8fafc;
-      --sidebar-bg: #ffffff;
-      --sidebar-text: var(--text);
-      --sidebar-btn-bg: #f3f4f6;
+
+      /* Buttons (day) */
+      --btn-bg: #f3f4f6;
+      --btn-text: #0f172a;
+      --btn-border: rgba(2,6,23,0.06);
+
+      /* subtle pill */
+      --pill-bg: #eef2ff;
+      --pill-text: #0f172a;
+
+      /* special left-bar colors */
+      --bar-pension: #f97316;
+      --bar-state: #10b981;
+      --bar-central: #3b82f6;
+      --bar-other: #94a3b8;
     }
 
-    /* MOON (dark) variables */
+    /* Dark / Moon theme */
     .moon{
       --bg: #07102a;
       --card: rgba(255,255,255,0.03);
@@ -31,11 +44,22 @@
       --text: #e6f0ff;
       --header-bg: rgba(255,255,255,0.03);
       --footer-bg: #04102a;
-      --sidebar-bg: #0b1b33;
-      --sidebar-text: #e6f0ff;
-      --sidebar-btn-bg: rgba(255,255,255,0.04);
+
+      /* Buttons (dark) - visible contrast */
+      --btn-bg: rgba(255,255,255,0.06);
+      --btn-text: #e6f0ff;
+      --btn-border: rgba(255,255,255,0.06);
+
+      --pill-bg: rgba(255,255,255,0.03);
+      --pill-text: #e6f0ff;
+
+      --bar-pension: #fb923c;
+      --bar-state: #34d399;
+      --bar-central: #60a5fa;
+      --bar-other: #94a3b8;
     }
 
+    /* ----- Base styles ----- */
     html,body{ height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text); transition:background .18s, color .18s; }
     header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--header-bg); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
     .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; gap:12px; }
@@ -47,63 +71,64 @@
     .modules{ display:none; gap:10px; }
     @media(min-width:768px){ .modules{ display:flex; } .title-main{ font-size:1.2rem; } .hdr{ padding:14px 18px; } }
 
-    main{ max-width:1100px; margin:0 auto; padding:92px 14px 88px; } /* leave space for footer */
+    main{ max-width:1100px; margin:0 auto; padding:92px 14px 88px; }
 
-    .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
+    .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); color:var(--text); transition:background .18s, color .18s; }
     .muted{ color:var(--muted); }
     .accent{ color:var(--accent); }
     a.link{ color:var(--accent); text-decoration:none; }
 
+    /* Flash ticker slow */
     .ticker{ white-space:nowrap; overflow:hidden; }
     .ticker__move{ display:inline-block; padding-left:100%; animation:ticker 60s linear infinite; }
     @keyframes ticker{ 0%{ transform:translateX(0);} 100%{ transform:translateX(-100%);} }
+
+    /* Buttons use variables for day/dark */
+    .btn{
+      padding:8px 12px;
+      border-radius:10px;
+      background:var(--btn-bg);
+      color:var(--btn-text);
+      cursor:pointer;
+      border:1px solid var(--btn-border);
+      font-weight:600;
+      box-shadow:none;
+    }
+    .btn.link{ background:transparent; color:var(--accent); border:1px solid rgba(0,0,0,0); padding:6px 10px; }
+    .btn:active{ transform:translateY(1px); }
+
+    .pill{ display:inline-block; padding:6px 10px; border-radius:999px; background:var(--pill-bg); color:var(--pill-text); font-size:0.92rem; }
 
     /* mobile menu (sidebar) */
     #mobileMenu{ position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:flex-end; }
     #mobileMenu .backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
     #mobileMenu .panel{
-      position:relative;
-      width:84%;
-      max-width:320px;
-      height:100%;
-      background:var(--sidebar-bg);
-      color:var(--sidebar-text);
-      padding:16px;
-      overflow:auto;
-      box-shadow:-8px 0 20px rgba(2,6,23,0.12);
-      transition:background .18s, color .18s;
+      position:relative; width:84%; max-width:320px; height:100%;
+      background:var(--card); color:var(--text); padding:16px; overflow:auto; box-shadow:-8px 0 20px rgba(2,6,23,0.12);
     }
-    #mobileMenu .panel .btn{ background:var(--sidebar-btn-bg); color:var(--sidebar-text); border:1px solid rgba(255,255,255,0.04); }
 
-    .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); }
-    .tiny{ font-size:0.88rem; }
-
-    /* elders carousel container */
+    /* Elders carousel */
     .carousel-wrap{ position:relative; overflow:hidden; border-radius:8px; }
     .carousel-inner{ display:flex; gap:12px; transition:transform .36s ease; }
-    .carousel-card{ min-width:100%; box-sizing:border-box; padding:12px; display:flex; gap:12px; align-items:center; background:var(--card); }
+    .carousel-card{ min-width:100%; box-sizing:border-box; padding:12px; display:flex; gap:12px; align-items:center; background:var(--card); border-radius:8px; }
     .avatar-lg{ width:84px; height:84px; border-radius:9999px; object-fit:cover; background:#f3f4f6; }
 
     @media(min-width:768px){ .carousel-card{ min-width:50%; } }
 
     /* footer */
-    footer{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:40;
-      background:var(--footer-bg);
-      color:var(--text);
-      padding:12px 14px;
-      box-shadow:0 -2px 6px rgba(2,6,23,0.06);
-      text-align:center;
-      transition:background .18s, color .18s;
-      font-size:0.92rem;
-    }
+    footer{ position:fixed; left:0; right:0; bottom:0; z-index:40; background:var(--footer-bg); color:var(--text); padding:12px 14px; box-shadow:0 -2px 6px rgba(2,6,23,0.06); text-align:center; transition:background .18s, color .18s; font-size:0.92rem; }
 
-    /* helper small */
-    .mutebtn{ background:transparent; border:0; cursor:pointer; color:var(--muted); padding:6px; border-radius:6px; }
+    /* scheme left bar colors */
+    .left-bar{ width:6px; border-radius:6px; margin-right:12px; }
+    .bar-pension{ background:var(--bar-pension); }
+    .bar-state{ background:var(--bar-state); }
+    .bar-central{ background:var(--bar-central); }
+    .bar-other{ background:var(--bar-other); }
+
+    /* small responsive tweaks */
+    @media(max-width:600px){
+      header .hdr{ padding:10px; }
+    }
   </style>
 </head>
 <body id="body">
@@ -155,15 +180,11 @@
       <div class="tiny muted telugu">భాష: తెలుగు</div>
       <button id="moonToggleSidebar" class="btn tiny" title="రాత్రి/పగలు">🌙</button>
     </div>
-
-    <div style="margin-top:18px;" class="muted tiny telugu">
-      <div>ఇక్కడ sidebar యొక్క రంగు moon లో ప్రత్యేకంగా మారుతుంది.</div>
-    </div>
   </div>
 </div>
 
 <main>
-  <!-- Flash -->
+  <!-- 1) Flash News -->
   <section class="card mb-4" id="section-flash">
     <div style="display:flex;align-items:center;gap:12px;">
       <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
@@ -171,14 +192,7 @@
     </div>
   </section>
 
-
-
-  <!-- Basic info -->
-  <section class="card mb-4" id="section-basic">
-    <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
-    <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-  </section>
-  <!-- Elders carousel -->
+  <!-- 2) Elders carousel -->
   <section class="card mb-4" id="section-elders">
     <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
 
@@ -191,7 +205,14 @@
       <button id="nextE" class="btn telugu">తర్వాత</button>
     </div>
   </section>
-  <!-- Schemes placeholder -->
+
+  <!-- 3) Basic info -->
+  <section class="card mb-4" id="section-basic">
+    <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
+    <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
+  </section>
+
+  <!-- 4) Schemes placeholder -->
   <section class="card mb-4" id="section-schemes">
     <h4 class="font-semibold telugu">పథకాలు</h4>
     <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం పథకాలు పేజీ చూడండి.</div>
@@ -212,17 +233,14 @@ const moonToggleSidebar = document.getElementById('moonToggleSidebar');
 function applyMoon(v){
   document.documentElement.classList.toggle('moon', v);
   localStorage.setItem('muthya_moon', v ? '1' : '0');
-
-  // additional adjustments (if any)
-  // change footer background contrasting in moon mode is done via CSS variables
-  // ensure buttons inside sidebar have visible color (handled by CSS)
-  moonToggleSidebar.textContent = v ? '🌞' : '🌙';
+  // ensure toggles reflect state
+  if(document.getElementById('moonToggleSidebar')) document.getElementById('moonToggleSidebar').textContent = v ? '🌞' : '🌙';
 }
 const stored = localStorage.getItem('muthya_moon') === '1';
 applyMoon(stored);
-moonToggleSidebar.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
+if(document.getElementById('moonToggleSidebar')) document.getElementById('moonToggleSidebar').addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
 
-/* CSV loader */
+/* CSV loader using PapaParse */
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
     Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
@@ -231,7 +249,7 @@ function loadCSV(path){
   });
 }
 
-/* Flash */
+/* FLASH */
 async function renderFlash(){
   const el = document.getElementById('flashTicker');
   try{
@@ -246,9 +264,7 @@ async function renderFlash(){
     const mover = document.createElement('div'); mover.className = 'ticker__move telugu tiny';
     mover.textContent = parts.join('   ⚫   ');
     el.innerHTML=''; el.appendChild(mover);
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">తాజా వార్తలు లేవు</div>';
-  }
+  }catch(e){ el.innerHTML = '<div class="muted telugu tiny">తాజా వార్తలు లేవు</div>'; }
 }
 
 /* Basic info */
@@ -268,13 +284,11 @@ async function renderBasicInfo(){
       <div><strong>సంఖ్యలు:</strong> జనాభా ${r.pop_total||'—'} (పురుషులు ${r.pop_male||'—'}, మహిళలు ${r.pop_female||'—'})</div>
       <div><strong>ఇళ్ళ సంఖ్య:</strong> ${r.total_houses||'—'}</div>
     `;
-  }catch(e){
-    el.innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>';
-  }
+  }catch(e){ el.innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>'; }
 }
 
-/* Elders carousel (touch swipe + prev/next + autoplay) */
-let eidx=0, elders=[];
+/* Elders carousel */
+let eidx = 0, elders = [];
 async function renderElders(){
   try{ elders = await loadCSV('Data/village_peddalu.csv'); } catch(e){ elders = []; }
   const inner = document.getElementById('eldersInner');
@@ -303,6 +317,7 @@ async function renderElders(){
   document.getElementById('prevE').onclick = ()=> { eidx = (eidx - 1 + elders.length) % elders.length; updatePos(); resetAuto(); };
   document.getElementById('nextE').onclick = ()=> { eidx = (eidx + 1) % elders.length; updatePos(); resetAuto(); };
 
+  // touch support
   let sx=0, cx=0, touching=false;
   inner.addEventListener('touchstart', e => { sx = e.touches[0].clientX; touching=true; });
   inner.addEventListener('touchmove', e => { if(!touching) return; cx = e.touches[0].clientX; });
@@ -312,6 +327,7 @@ async function renderElders(){
     touching=false; sx=cx=0; resetAuto();
   });
 
+  // autoplay
   let t = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 4500);
   function resetAuto(){ clearInterval(t); t = setInterval(()=> { eidx = (eidx + 1) % elders.length; updatePos(); }, 4500); }
   updatePos();
