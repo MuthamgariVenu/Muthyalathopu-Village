@@ -9,26 +9,59 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    :root{ --bg:#f8fafc; --card:#fff; --muted:#6b7280; --accent:#f97316; --text:#0f172a; }
-    .moon{ --bg:#07102a; --card:rgba(255,255,255,0.04); --muted:#cbd5e1; --accent:#fb923c; --text:#e6f0ff; }
+    :root{
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #f97316;
+      --text: #0f172a;
+      --header-bg: #ffffff;
+      --footer-bg: #f8fafc;
 
-    html,body{height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
-    body{ background:var(--bg); color:var(--text); transition:.18s; }
+      /* Buttons (day) */
+      --btn-bg: #f3f4f6;
+      --btn-text: #0f172a;
+      --btn-border: rgba(2,6,23,0.06);
 
-    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--card); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
+      /* special pill */
+      --pill-bg: #eef2ff;
+      --pill-text: #0f172a;
+    }
+
+    /* MOON / DARK theme variables */
+    .moon{
+      --bg: #07102a;
+      --card: rgba(255,255,255,0.03);
+      --muted: #cbd5e1;
+      --accent: #fb923c;
+      --text: #e6f0ff;
+      --header-bg: rgba(255,255,255,0.03);
+      --footer-bg: #04102a;
+
+      /* Buttons (dark) - visible contrast */
+      --btn-bg: rgba(255,255,255,0.06);     /* subtle button bg */
+      --btn-text: #e6f0ff;                  /* light text */
+      --btn-border: rgba(255,255,255,0.06); /* subtle border */
+      --pill-bg: rgba(255,255,255,0.03);
+      --pill-text: #e6f0ff;
+    }
+
+    html,body{height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text); transition:background .18s, color .18s;}
+    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--header-bg); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
     .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; }
     .logo{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
+
     .title-main{ font-weight:700; font-size:1rem; }
     .title-sub{ font-size:0.78rem; color:var(--muted); }
 
     main{ max-width:1100px; margin:0 auto; padding:84px 14px 36px; }
 
-    .card{ background:var(--card); border-radius:10px; padding:12px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
+    .card{ background:var(--card); border-radius:10px; padding:12px; box-shadow:0 1px 4px rgba(2,6,23,0.04); color:var(--text); }
     .muted{ color:var(--muted); }
     .accent{ color:var(--accent); }
     a.link{ color:var(--accent); text-decoration:none; }
 
-    .pill{ display:inline-block; padding:6px 10px; border-radius:999px; background:#f3f4f6; font-size:0.92rem; }
+    .pill{ display:inline-block; padding:6px 10px; border-radius:999px; background:var(--pill-bg); color:var(--pill-text); font-size:0.92rem; }
 
     /* scheme list */
     .grid-schemes{ display:grid; grid-template-columns:1fr; gap:12px; }
@@ -36,23 +69,52 @@
 
     .scheme-amt{ font-weight:700; font-size:1.05rem; color:var(--accent); }
 
+    /* controls/buttons: use CSS vars so dark-mode adapts */
+    .btn{
+      padding:8px 12px;
+      border-radius:8px;
+      background:var(--btn-bg);
+      color:var(--btn-text);
+      cursor:pointer;
+      border:1px solid var(--btn-border);
+      font-weight:600;
+      box-shadow: none;
+    }
+    .btn:active{ transform:translateY(1px); }
+
+    .btn.link{ background:transparent; color:var(--accent); border:1px solid rgba(0,0,0,0.0); padding:6px 10px; }
+    .btn.danger{ background:#fff1f0; color:#b91c1c; border-color:#fecaca; }
+
     /* beneficiaries modal */
     .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:80; }
     .modal .backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-    .modal .panel{ position:relative; width:96%; max-width:960px; max-height:88%; overflow:auto; background:var(--card); border-radius:10px; padding:14px; z-index:81; box-shadow:0 8px 30px rgba(2,6,23,0.12); }
+    .modal .panel{ position:relative; width:96%; max-width:960px; max-height:88%; overflow:auto; background:var(--card); border-radius:10px; padding:14px; z-index:81; box-shadow:0 8px 30px rgba(2,6,23,0.12); color:var(--text); }
 
     table{ width:100%; border-collapse:collapse; }
-    th,td{ padding:8px 10px; text-align:left; border-bottom:1px solid #f1f5f9; }
-    th{ font-weight:600; }
+    th,td{ padding:8px 10px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.04); }
+    th{ font-weight:600; color:var(--text); }
 
+    /* small misc */
     .controls{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
-    .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); }
-    .danger{ background:#fff1f0; color:#b91c1c; border-color:#fecaca; }
+    .tiny{ font-size:0.9rem; }
+    .muted tiny{ color:var(--muted); }
+
+    /* left color bar per scheme */
+    .left-bar{ width:6px; border-radius:6px; margin-right:12px; }
+    .bar-pension{ background:#f97316; }   /* orange */
+    .bar-state{ background:#10b981; }     /* green */
+    .bar-central{ background:#3b82f6; }   /* blue */
+    .bar-other{ background:#94a3b8; }     /* gray */
+
+    /* responsive adjustments */
+    @media(max-width:600px){
+      header .hdr{ padding:10px; }
+      .controls input, .controls select{ width:100%; }
+    }
   </style>
 </head>
 <body id="body">
 
-  <!-- header -->
   <header>
     <div class="hdr">
       <div style="display:flex;gap:12px;align-items:center;">
@@ -62,8 +124,9 @@
           <div class="title-sub telugu">సర్కార్ పథకాల సరాంశం & బెనెఫిషియరీ లిస్టులు</div>
         </div>
       </div>
+
       <div style="display:flex;gap:8px;align-items:center;">
-        <a href="index.html" class="btn telugu">← డ్యాష్‌బోర్డ్</a>
+        <a href="index.html" class="btn telugu">← డాష్‌బోర్డ్</a>
         <button id="moonToggle" class="btn">🌙</button>
       </div>
     </div>
@@ -82,15 +145,15 @@
           <option value="welfare">సామాజిక</option>
         </select>
 
-        <input id="searchInput" class="btn" style="min-width:160px;" placeholder="పథకం పేరు లేదా గుంపు వెతకండి" />
+        <input id="searchInput" class="btn" style="min-width:220px;" placeholder="పథకం పేరు లేదా గుంపు వెతకండి" />
 
         <div style="margin-left:auto; display:flex; gap:8px;">
-          <a id="downloadAll" class="btn link telugu" href="Data/schemes.csv" download>ఇంకా CSV డౌన్లోడ్ చేయి</a>
+          <a id="downloadAll" class="btn link telugu" href="Data/schemes.csv" download>ఇంకా CSV డౌన్లోడ్</a>
           <button id="refreshBtn" class="btn telugu">రిఫ్రెష్</button>
         </div>
       </div>
 
-      <div class="muted telugu tiny">ఈ పేజీ CSV ఆధారంగా పనిచేస్తుంది. మీరు Data/schemes.csv & Data/scheme_beneficiaries.csv ను అప్డేట్ చెయ్యవచ్చు.</div>
+      <div class="muted telugu tiny">ఈ పేజీ CSV ఆధారంగా పనిచేస్తుంది. మీరు Data/schemes.csv & Data/scheme_beneficiaries.csv ను అప్డేట్ చేయవచ్చు.</div>
     </div>
 
     <div id="schemesGrid" class="grid-schemes"></div>
@@ -126,18 +189,22 @@
   </div>
 
 <script>
-  // theme
+  // theme toggle
   const moonToggle = document.getElementById('moonToggle');
-  function applyMoon(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1' : '0'); moonToggle.textContent = v ? '🌞' : '🌙'; }
-  applyMoon(localStorage.getItem('muthya_moon') === '1');
+  function applyMoon(v){
+    document.documentElement.classList.toggle('moon', v);
+    localStorage.setItem('muthya_moon', v ? '1' : '0');
+    moonToggle.textContent = v ? '🌞' : '🌙';
+  }
+  const stored = localStorage.getItem('muthya_moon') === '1';
+  applyMoon(stored);
   moonToggle.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
 
   // CSV loader util
   function loadCSV(path){
     return new Promise((resolve,reject)=>{
       Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
-        complete: (res)=> resolve(res.data),
-        error: (err)=> reject(err)
+        complete: (res)=> resolve(res.data), error: (err)=> reject(err)
       });
     });
   }
@@ -153,62 +220,57 @@
   const benTableBody = document.querySelector('#benTable tbody');
   const modalDownload = document.getElementById('modalDownload');
 
-  let schemes = []; // loaded schemes
-  let beneficiaries = []; // loaded beneficiaries
+  let schemes = [];
+  let beneficiaries = [];
 
-  // sample fallback list if CSV missing — will show only if CSV not present
   const fallbackSchemes = [
-    // use keys: id, code, name_tel, type, amount, notes, apply_until
-    { id:'OLD_AGE_PENSION', code:'OLD_AGE_PENSION', name_tel:'వృద్ధాప్య పోషణ పింఛను', type:'pension', amount:'4000', notes:'గ్రామ లెక్క ప్రకారం.' , apply_until:'2025-12-31' },
-    { id:'VITHANTHU', code:'VITHANTHU', name_tel:'వితంతువు పథకం', type:'pension', amount:'4000', notes:'క్యాటగిరి: సహాయాదాయం', apply_until:'2025-12-31' },
-    { id:'VIKALANGULA', code:'VIKALANGULA', name_tel:'వికలాంగుల పథకం', type:'pension', amount:'6000', notes:'విభాగాలు: ఘర్షణ', apply_until:'2025-12-31' },
-    { id:'MATSYAKARA_BHAROSA', code:'MATSYAKARA_BHAROSA', name_tel:'మత్స్యకార భరోసా', type:'state', amount:'20000', notes:'రాజ్య పథకం', apply_until:'' },
-    { id:'RAITU_BAROSA', code:'RAITU_BAROSA', name_tel:'రైతు బరోసా', type:'state', amount:'14000', notes:'రైతులకు', apply_until:'' },
-    { id:'CENTRAL_SUPPORT', code:'CENTRAL_SUPPORT', name_tel:'కేంద్ర ఆర్థిక సపోర్ట్', type:'central', amount:'6000', notes:'కేంద్ర అర్ధిక సహాయం', apply_until:'' },
-    { id:'HOME_LAND', code:'HOME_LAND', name_tel:'ఇల్లు కోసం భూమి (రాష్ట్ర+కేంద్ర)', type:'state', amount:'0', notes:'భూసహాయం (రాష్ట్ర + కేంద్ర)', apply_until:'' },
-    { id:'TALLIKI_VANDANAM', code:'TALLIKI_VANDANAM', name_tel:'తల్లికి వందనం (ప్రతి బిడ్డకి)', type:'state', amount:'20000', notes:'ప్రతి బిడ్డకు నిర్దిష్ట జీవనధనం', apply_until:'' }
+    { id:'OLD_AGE_PENSION', code:'OLD_AGE_PENSION', name_tel:'వృద్ధాప్య పింఛను', type:'pension', amount:'4000', notes:'పింఛను - పేదలకు నెలవారీ పింఛను' , apply_until:'2025-12-31', csv_file:'Data/ben_oldage.csv' },
+    { id:'VITHANTHU', code:'VITHANTHU', name_tel:'వితంతువు పథకం', type:'pension', amount:'4000', notes:'వితంతువులకు ఉపకారం', apply_until:'2025-12-31', csv_file:'Data/ben_vithanthu.csv' },
+    { id:'VIKALANGULA', code:'VIKALANGULA', name_tel:'వికలాంగుల పథకం', type:'pension', amount:'6000', notes:'వికలాంగులకు సహాయం', apply_until:'2025-12-31', csv_file:'Data/ben_vikala.csv' },
+    { id:'MATSYAKARA_BHAROSA', code:'MATSYAKARA_BHAROSA', name_tel:'మత్స్యకార భరోసా', type:'state', amount:'20000', notes:'రాష్ట్ర పరిరక్షణ మరియు సహాయం', csv_file:'Data/ben_matsy.csv' },
+    { id:'RAITU_BAROSA', code:'RAITU_BAROSA', name_tel:'రైతు బరోసా', type:'state', amount:'14000', notes:'రైతులకు ఆర్థిక సహాయం', csv_file:'Data/ben_raitu.csv' },
+    { id:'CENTRAL_SUPPORT', code:'CENTRAL_SUPPORT', name_tel:'కేంద్ర సహాయం', type:'central', amount:'6000', notes:'కేంద్ర సపోర్ట్', csv_file:'Data/ben_central.csv' },
+    { id:'HOME_LAND', code:'HOME_LAND', name_tel:'ఇల్లు కోసం భూమి', type:'state', amount:'0', notes:'రాష్ట్ర+కేంద్ర భూసహాయం', csv_file:'Data/ben_house.csv' },
+    { id:'TALLIKI_VANDANAM', code:'TALLIKI_VANDANAM', name_tel:'తల్లికి వందనం', type:'state', amount:'20000', notes:'ప్రతి సంతానం కొరకు అవార్డు', csv_file:'Data/ben_children.csv' }
   ];
 
-  // render one scheme card
   function renderSchemeCard(s){
-    // s fields: id/code,name_tel,type,amount,notes,apply_until,csv_file (optional)
     const container = document.createElement('div');
     container.className = 'card';
-
     const typeLabel = (s.type || '').toLowerCase();
     const typeText = ( (typeLabel==='pension') ? 'పింఛను' : (typeLabel==='state'?'రాష్ట్ర':'కేంద్ర/ఇతర') );
+    let leftClass = 'bar-other';
+    if(typeLabel==='pension') leftClass='bar-pension';
+    else if(typeLabel==='state') leftClass='bar-state';
+    else if(typeLabel==='central') leftClass='bar-central';
 
-    // choose color by type
-    let borderLeft = '';
-    if(typeLabel==='pension') borderLeft = 'border-left:4px solid #f97316; padding-left:10px;';
-    else if(typeLabel==='state') borderLeft = 'border-left:4px solid #10b981; padding-left:10px;';
-    else if(typeLabel==='central') borderLeft = 'border-left:4px solid #3b82f6; padding-left:10px;';
-    else borderLeft = 'border-left:4px solid #94a3b8; padding-left:10px;';
-
+    const csvFile = s.csv_file || s.csv || 'Data/scheme_beneficiaries.csv';
     container.innerHTML = `
-      <div style="${borderLeft}">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div style="min-width:0;">
-            <div style="font-size:1.05rem;font-weight:700;" class="telugu">${s.name_tel || s.name || s.code || 'పథకం'}</div>
-            <div class="muted telugu tiny">${typeText} • ${s.notes || ''}</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div class="left-bar ${leftClass}"></div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div style="min-width:0;">
+              <div style="font-size:1.05rem;font-weight:700;" class="telugu">${s.name_tel || s.name || s.code || 'పథకం'}</div>
+              <div class="muted telugu tiny">${typeText} • ${s.notes || ''}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="scheme-amt">₹ ${s.amount || '0'}</div>
+              <div class="muted tiny telugu">${s.apply_until ? 'అప్లై గడువు: '+ s.apply_until : ''}</div>
+            </div>
           </div>
-          <div style="text-align:right;">
-            <div class="scheme-amt">₹ ${s.amount || '0'}</div>
-            <div class="muted tiny telugu">${s.apply_until ? 'అప్లై గడువు: '+ s.apply_until : ''}</div>
-          </div>
-        </div>
 
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-          <button class="btn viewBeneficiaries telugu" data-code="${s.code}" data-file="${s.csv_file || ''}">అర్హుల జాబితా</button>
-          <a class="btn telugu link" href="${s.csv_file || ('Data/scheme_beneficiaries.csv')}">CSV డౌన్లోడ్</a>
-          <button class="btn telugu" onclick="showApplyInfo('${s.code}')">అప్లై వివరాలు</button>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            <button class="btn viewBeneficiaries telugu" data-code="${s.code}" data-file="${csvFile}">అర్హుల జాబితా</button>
+            <a class="btn link telugu" href="${csvFile}" download>CSV డౌన్లోడ్</a>
+            <button class="btn telugu" onclick="showApplyInfo('${s.code}')">అప్లై వివరాలు</button>
+          </div>
         </div>
       </div>
     `;
     return container;
   }
 
-  // show apply info (simple alert / or better modal later)
   function showApplyInfo(code){
     const s = schemes.find(x=> x.code === code) || fallbackSchemes.find(x=> x.code === code);
     if(!s) { alert('పథకం సమాచారం లేదు'); return; }
@@ -220,7 +282,6 @@
     alert(lines.join('\n'));
   }
 
-  // open modal with beneficiaries for scheme code (filter by scheme_code)
   function openModalFor(code, csv_file){
     modal.style.display = 'flex';
     modal.setAttribute('aria-hidden','false');
@@ -228,7 +289,6 @@
     modalSubtitle.textContent = `పథకానికి సంబంధించిన అర్హులు — ${code}`;
     modalDownload.href = csv_file || 'Data/scheme_beneficiaries.csv';
 
-    // populate table (filter beneficiaries array by scheme_code)
     const rows = beneficiaries.filter(b => (b.scheme_code || b.scheme || '').toString().trim() === code.toString().trim());
     benTableBody.innerHTML = '';
     if(!rows.length){
@@ -254,24 +314,19 @@
   }
   window.closeModal = closeModal;
 
-  // load everything & render
   async function loadAll(){
     grid.innerHTML = '<div class="card telugu muted tiny">డేటా లోడ్ అవుతుంది...</div>';
     try{
-      // try load schemes.csv
       schemes = await loadCSV('Data/schemes.csv').catch(()=> []);
       beneficiaries = await loadCSV('Data/scheme_beneficiaries.csv').catch(()=> []);
     }catch(e){
       schemes = [];
       beneficiaries = [];
     }
-
     if(!schemes || !schemes.length) schemes = fallbackSchemes;
-
     renderGrid();
   }
 
-  // render grid applying filters
   function renderGrid(){
     grid.innerHTML = '';
     const typeF = (filterType.value || '').toLowerCase();
@@ -305,7 +360,6 @@
     });
   }
 
-  // events
   filterType.addEventListener('change', renderGrid);
   searchInput.addEventListener('input', renderGrid);
   refreshBtn.addEventListener('click', loadAll);
