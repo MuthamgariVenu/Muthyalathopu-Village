@@ -4,10 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ముత్యాలతోపు — మా ఊరు</title>
-  <meta name="description" content="ముత్యాలతోపు గ్రామం యొక్క పరిచయం, వివరాలు, పథకాలు మరియు సంప్రదాయాలు." />
+  <meta name="description" content="ముత్యాతోపు గ్రామం యొక్క పరిచయం, వివరాలు, పథకాలు మరియు సంప్రదాయాలు." />
   <style>
     :root{
-      /* Light theme */
       --page-bg-1: #fffbf8;
       --page-bg-2: #ffffff;
       --card-bg: #ffffff;
@@ -19,11 +18,9 @@
       --chip-text: #052226;
       --shadow: 0 1px 6px rgba(16,24,40,0.06);
       --muted-light: rgba(11,19,32,0.45);
-      --scheme-amount: #f97316; /* orange */
+      --scheme-amount: #f97316;
     }
-
-    /* Dark (moonlight) theme variables */
-    body.dark {
+    body.dark{
       --page-bg-1: #071018;
       --page-bg-2: #08131a;
       --card-bg: #0d1720;
@@ -50,44 +47,21 @@
       transition: background .22s ease, color .22s ease;
     }
 
-    .container{
-      max-width:1000px;
-      margin:0 auto;
-      padding:16px;
-    }
+    .container{max-width:1000px;margin:0 auto;padding:16px}
 
-    /* Header */
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:8px 0;
-    }
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}
     .left{display:flex;align-items:center;gap:12px}
-    .back-btn{
-      background:transparent;
-      border:1px solid rgba(0,0,0,0.06);
-      padding:8px 10px;border-radius:8px;
-      color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700;
-      background:transparent;
-    }
-    body.dark .back-btn{border-color:rgba(255,255,255,0.06); color:var(--accent)}
+    .back-btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px 10px;border-radius:8px;color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700}
+    body.dark .back-btn{border-color:rgba(255,255,255,0.06)}
     .logo{font-weight:800;font-size:18px}
 
     .icons{display:flex;align-items:center;gap:8px}
-    .icon-btn{
-      background:var(--card-bg);
-      border-radius:10px;padding:8px;border:none;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;
-      cursor:pointer;box-shadow:var(--shadow);color:var(--text);font-size:18px;
-    }
+    .icon-btn{background:var(--card-bg);border-radius:10px;padding:8px;border:none;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);color:var(--text);font-size:18px}
     .icon-btn:focus{outline:3px solid rgba(0,0,0,0.06);outline-offset:2px}
     body.dark .icon-btn:focus{outline:3px solid rgba(96,212,204,0.15)}
-
     .icon-btn.moon.active{background:linear-gradient(90deg,#1f2937,#4b5563);color:white}
     body.dark .icon-btn.moon.active{background:linear-gradient(90deg,#052226,#134041);}
 
-    /* HERO */
     .hero{display:flex;align-items:flex-end;border-radius:14px;overflow:hidden;position:relative;height:320px;margin-top:12px;box-shadow:var(--shadow)}
     .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.45)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;transition:filter .25s, transform .25s}
     body.dark .hero .bg{filter:grayscale(.45) brightness(.55) contrast(.95);transform:scale(1.02)}
@@ -95,17 +69,13 @@
     .hero h1{margin:0;font-size:26px;line-height:1;font-weight:800}
     .tag{margin-top:6px;color:rgba(255,255,255,0.95);font-size:14px}
 
-    /* chips/buttons in hero */
     .chips{display:flex;gap:8px;margin-top:12px;overflow:auto;padding-bottom:8px}
-    .chip{
-      background:var(--chip-bg);color:var(--chip-text);padding:8px 12px;border-radius:999px;font-size:13px;backdrop-filter: blur(4px);
-      box-shadow:0 4px 18px rgba(2,6,23,0.06);
-    }
+    .chip{background:var(--chip-bg);color:var(--chip-text);padding:8px 12px;border-radius:999px;font-size:13px;backdrop-filter: blur(4px);box-shadow:0 4px 18px rgba(2,6,23,0.06)}
+
     .cta-row{display:flex;gap:8px;margin-top:12px}
     .btn{background:var(--accent);color:var(--accent-contrast);padding:10px 14px;border-radius:10px;border:none;font-weight:700;flex:1;cursor:pointer;box-shadow:var(--shadow)}
     .btn.secondary{background:transparent;color:var(--accent-contrast);border:1px solid rgba(255,255,255,0.18)}
 
-    /* Main area */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
     .card{background:var(--card-bg);padding:12px;border-radius:10px;box-shadow:var(--shadow);color:var(--text)}
     .card h3{margin:0;font-size:14px}
@@ -139,9 +109,10 @@
     .testi .box{min-width:220px;background:var(--card-bg);padding:10px;border-radius:8px;box-shadow:var(--shadow)}
     .testi .avatar{width:36px;height:36px;border-radius:50%;background:#eee;display:inline-block;margin-right:8px}
 
-    .map{height:260px;background:var(--card-bg);border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden;box-shadow:var(--shadow)}
-    .map img{width:100%;height:100%;object-fit:cover;display:block;filter:none;transition:filter .22s ease}
-    body.dark .map img{filter:none} /* ensure map remains visible in dark mode */
+    /* Map: use iframe, ensure visible in dark mode */
+    .map{height:360px;background:var(--card-bg);border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden;box-shadow:var(--shadow)}
+    .map iframe{width:100%;height:100%;border:0;display:block;filter:none}
+    body.dark .map iframe{filter:none}
 
     .contact-row{display:flex;gap:8px;margin-top:10px}
     .phone{background:var(--accent);color:var(--accent-contrast);padding:10px;border-radius:10px;flex:1;text-align:center;cursor:pointer}
@@ -149,13 +120,7 @@
 
     footer{margin:24px 0 60px;text-align:center;color:var(--muted);font-size:13px}
 
-    /* Responsive */
     @media(min-width:700px){ .hero{height:360px} .grid{grid-template-columns:repeat(4,1fr)} .gallery img{height:120px} .services{grid-template-columns:repeat(4,1fr)} }
-
-    /* Small tweaks to improve readability in dark mode */
-    body.dark .lead { color: rgba(230,240,242,0.75); }
-    body.dark .card h3, body.dark .card p { color: var(--text); }
-    body.dark .chip { color: var(--chip-text); border: 1px solid rgba(255,255,255,0.04); }
   </style>
 </head>
 <body>
@@ -163,7 +128,7 @@
     <header>
       <div class="left">
         <button class="back-btn" onclick="location.href='index.html'">◀ Dashboard</button>
-        <div class="logo">ముత్యాతోపు</div>
+        <div class="logo">ముత్యాలతోపు</div>
       </div>
 
       <div class="icons" role="toolbar" aria-label="Top actions">
@@ -177,7 +142,7 @@
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <div class="bg" aria-hidden="true"></div>
       <div class="overlay">
-        <h1 id="hero-title">ముత్యాలతోపు — మా ఊరు, మా గర్వం</h1>
+        <h1 id="hero-title">ముత్యాతోపు — మా ఊరు, మా గర్వం</h1>
         <div class="tag">సాంప్రదాయం, శ్రమ, అభివృద్ధి — చిన్న రూపంలో పెద్ద హృదయం.</div>
 
         <div class="chips" aria-hidden="false">
@@ -188,7 +153,7 @@
 
         <div class="cta-row" style="margin-top:14px;">
           <button class="btn" id="view-data">గ్రామం వివరాలు చూడండి</button>
-          <button class="btn secondary" id="download-pdf">ఒక పేజీ డౌన్లోడ్</button>
+          <button class="btn secondary" id="download-pdf">ఒక పేజీ డౌన్లోഡ്</button>
         </div>
       </div>
     </section>
@@ -238,7 +203,7 @@
       <h2 id="services-title">మౌలిక సౌకర్యాలు</h2>
       <div class="service"><div class="icon">🏫</div><div><strong>ప్రాథమిక పాఠశాల</strong><div class="meta">పిల్లల సంఖ్య: 120</div></div></div>
       <div class="service"><div class="icon">🩺</div><div><strong>ఆరోగ్య కేంద్రం</strong><div class="meta">పూర్తి సేవలు అందుబాటులో</div></div></div>
-      <div class="service"><div class="icon">💧</div><div><strong>పానీయజల వ్యవస్థ</strong><div class="meta">బోర్‌వెల్ మరియు ట్యాంక్</div></div></div>
+      <div class="service"><div class="icon">💧</div><div><strong>పానీయజల వ్యవస్థ</strong><div class="meta">బోర్&zwj;వెల్ మరియు ట్యాంక్</div></div></div>
       <div class="service"><div class="icon">🛣️</div><div><strong>రోడ్లు</strong><div class="meta">ప్రధాన మార్గాలు బాగా నిర్వహణలో</div></div></div>
     </section>
 
@@ -254,18 +219,26 @@
     <section class="section" aria-labelledby="testi-title">
       <h2 id="testi-title">గ్రామం మాటలు</h2>
       <div class="testi">
-        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>రమేష్</strong><div class="meta">రైతు</div></div></div><p style="margin-top:8px;color:var(--muted)">“మన గ్రామానికి పంచాయతీ చేసిన చిన్న మార్పే మన జీవితాలు మార్చేశారు.”</p></div>
+        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>రమేష్</strong><div class="meta">రైతु</div></div></div><p style="margin-top:8px;color:var(--muted)">“మన గ్రామానికి పంచాయతీ చేసిన చిన్న మార్పే మన జీవితాలు మార్చేశారు.”</p></div>
         <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>లక్ష్మి</strong><div class="meta">అమ్మ</div></div></div><p style="margin-top:8px;color:var(--muted)">“పాఠశాలలో ఎలక్ట్రాన్ టేబుల్ వచ్చి పిల్లలు ఆనందంగా ఉన్నాయి.”</p></div>
       </div>
     </section>
 
     <!-- Map & Contact -->
     <section class="section">
-      <h2>సంప్రదించండి</h2>
-      <div class="map" id="map-container">
-        <!-- Place your map image in the same folder with name 'mutyalathopupalem_map.png' -->
-        <img src="./mutyalathopupalem_map.png" alt="Mutyalathopupalem map (place map image 'mutyalathopupalem_map.png' in same folder)">
+      <h2>మ్యాప్ — Mutyalathopupalem</h2>
+
+      <!-- Embedded Google Map: centered on Mutyalathopupalem coordinates -->
+      <!-- Coordinates used: latitude=14.500123, longitude=79.900456 -->
+      <div class="map" id="map-container" aria-hidden="false">
+        <iframe
+          src="https://www.google.com/maps?q=14.500123,79.900456&z=16&output=embed"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mutyalathopupalem Map"></iframe>
       </div>
+
       <div class="contact-row">
         <a class="phone" href="tel:+919876543210">Admin కి కాల్ చేయండి</a>
         <a class="pdf" href="#" id="download-link">ఒక పేజీ డౌన్లోడ్</a>
@@ -306,12 +279,9 @@
         if(isDark){ moonBtn.classList.add('active'); moonBtn.setAttribute('aria-pressed','true'); localStorage.setItem('muthyal_dark','1'); }
         else{ moonBtn.classList.remove('active'); moonBtn.setAttribute('aria-pressed','false'); localStorage.removeItem('muthyal_dark'); }
       }
+
       moonBtn.addEventListener('click', toggleDark);
       moonBtn.addEventListener('keydown', function(e){ if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggleDark(); } });
-
-      // ensure map image shows properly (if missing, show alt text)
-      var mapImg = document.querySelector('.map img');
-      mapImg.addEventListener('error', function(){ this.style.objectFit='contain'; this.style.opacity=0.85; });
 
       // reveal timeline
       var items = document.querySelectorAll('.timeline-item');
@@ -322,9 +292,10 @@
       // gallery click to open in new tab
       document.querySelectorAll('.gallery img').forEach(function(img){ img.style.cursor='pointer'; img.addEventListener('click', function(){ window.open(img.src, '_blank'); }); });
 
-      // CTAs placeholders
+      // CTAs
       document.getElementById('view-data').addEventListener('click', function(){ window.location.href = './index.html#data'; });
       document.getElementById('download-link').addEventListener('click', function(e){ e.preventDefault(); alert('PDF డౌన్లోడ్ లింక్ ఇక్కడ ఉంచండి'); });
+
     });
   </script>
 </body>
