@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type":"Feature",
+      "properties":{"name":"Mutyalathopupalem"},
+      "geometry":{
+        "type":"Polygon",
+        "coordinates":[
+          [
+            [80.1028,14.4332],
+            [80.1090,14.4346],
+            [80.1112,14.4302],
+            [80.1060,14.4288],
+            [80.1020,14.4316],
+            [80.1028,14.4332]
+          ]
+        ]
+      }
+    }
+  ]
+}
