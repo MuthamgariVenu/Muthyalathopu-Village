@@ -1,0 +1,3 @@
+id,name_tel,name,house_id,age,gender,phone,aadhar_status,ration_status,pan_status,voter_status,head_of_house,order
+RES-001,రామయ్య,Ramayya,H-001,68,Male,+919812345678,yes,yes,no,yes,yes,1
+RES-002,సీతమ్మ,Seethamma,H-001,62,Female,+919887654321,yes,no,no,yes,no,2
