@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ముత్యాలతోపు — మా ఊరు</title>
-  <meta name="description" content="ముత్యాలతోపు గ్రామం యొక్క పరిచయం, వివరాలు, పథకాలు మరియు సంప్రదాయాలు.">
+  <meta name="description" content="ముత్యాతోపు గ్రామం యొక్క పరిచయం, వివరాలు, పథకాలు మరియు సంప్రదాయాలు.">
   <style>
     :root{
       --accent:#0ea5a4; /* teal */
@@ -24,15 +24,19 @@
     .logo{font-weight:700;font-size:18px}
     .icons{display:flex;gap:12px}
     .icon-btn{background:transparent;border:none;font-size:18px}
+    /* moon button in header */
+    .moon-btn{width:40px;height:40px;border-radius:10px;background:linear-gradient(180deg,#fff,#fff);display:inline-flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 1px 4px rgba(16,24,40,0.06);cursor:pointer;margin-right:6px}
+    .moon-btn.active{background:linear-gradient(90deg,#1f2937,#4b5563);color:white}
     .back-btn{background:transparent;border:none;font-size:16px;color:var(--accent);display:flex;align-items:center;gap:8px}
 
     /* Hero */
     .hero{position:relative;border-radius:14px;overflow:hidden;background:#111;height:320px;display:flex;align-items:flex-end}
-    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;transition:filter .4s ease}
-    .hero.moon .bg{filter:grayscale(.35) brightness(.6) sepia(.15)}
+    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;transition:filter .4s ease, transform .4s ease}
+    /* Moonlight style: slightly desaturated + darker */
+    .hero.moon .bg{filter:grayscale(.45) brightness(.55) contrast(.95);transform:scale(1.02)}
     .hero .overlay{position:relative;padding:20px;color:white;width:100%}
     .hero h1{margin:0;font-size:26px;line-height:1}
-    .tag{margin-top:6px;color:rgba(255,255,255,0.9);font-size:14px}
+    .tag{margin-top:6px;color:rgba(255,255,255,0.95);font-size:14px}
     .chips{display:flex;gap:8px;margin-top:12px;overflow:auto;padding-bottom:8px}
     .chip{background:rgba(255,255,255,0.12);padding:8px 12px;border-radius:999px;font-size:13px;backdrop-filter: blur(4px)}
     .cta-row{display:flex;gap:8px;margin-top:12px}
@@ -41,10 +45,10 @@
 
     /* Moonlight toggle */
     .toggle-row{display:flex;gap:8px;align-items:center;margin-top:10px}
-    .toggle{width:44px;height:24px;background:#fff;border-radius:999px;padding:3px;display:inline-flex;align-items:center;cursor:pointer}
-    .toggle .knob{width:18px;height:18px;background:#111;border-radius:50%;transition:transform .2s}
-    .toggle.on{background:rgba(255,255,255,0.18)}
-    .toggle.on .knob{transform:translateX(20px)}
+    .toggle{width:48px;height:26px;background:#fff;border-radius:999px;padding:3px;display:inline-flex;align-items:center;cursor:pointer;border:1px solid rgba(0,0,0,0.08)}
+    .toggle .knob{width:20px;height:20px;background:#111;border-radius:50%;transition:transform .22s cubic-bezier(.2,.9,.2,1), background .22s}
+    .toggle.on{background:linear-gradient(90deg,#1f2937,#4b5563)}
+    .toggle.on .knob{transform:translateX(22px);background:#fff}
 
     /* Quick facts */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
@@ -86,7 +90,7 @@
 
     /* Map & contact */
     .map{height:220px;background:#e6eef0;border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden}
-    .map iframe{width:100%;height:100%;border:0}
+    .map img{width:100%;height:100%;object-fit:cover;display:block}
     .contact-row{display:flex;gap:8px;margin-top:10px}
     .phone{background:var(--accent);color:white;padding:10px;border-radius:10px;flex:1;text-align:center}
     .pdf{background:#ffd6a5;color:#663c00;padding:10px;border-radius:10px;flex:1;text-align:center}
@@ -107,9 +111,10 @@
     <header>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="back-btn" onclick="location.href='index.html'">◀ Back</button>
-        <div class="logo">ముత్యాతోపు</div>
+        <div class="logo">ముత్యాలతోపు</div>
       </div>
       <div class="icons">
+        <button id="headerMoon" class="icon-btn moon-btn" aria-label="Toggle moonlight">🌙</button>
         <button class="icon-btn" aria-label="Share">🔗</button>
         <button class="icon-btn" aria-label="Menu">☰</button>
       </div>
@@ -127,9 +132,7 @@
           <div class="chip">Last Fund: <strong id="count-fund">₹5,00,000</strong></div>
         </div>
 
-        <div class="toggle-row">
-          <div style="color:white;font-size:13px">Moonlight Mode</div>
-          <div id="moonToggle" class="toggle" role="button" aria-pressed="false">
+        <div id="moonToggle" class="toggle" role="button" tabindex="0" aria-pressed="false" aria-label="Toggle moonlight mode">
             <div class="knob"></div>
           </div>
         </div>
@@ -143,7 +146,7 @@
 
     <!-- Quick facts -->
     <section class="grid section" aria-labelledby="quick-facts">
-      <div class="card"><h3>గ్రామ పేరు</h3><p>ముత్యాలతోపు</p></div>
+      <div class="card"><h3>గ్రామ పేరు</h3><p>ముత్యాతోపు</p></div>
       <div class="card"><h3>పంచాయతీ</h3><p>Koduru 1</p></div>
       <div class="card"><h3>జిల్లా</h3><p>Nellore</p></div>
       <div class="card"><h3>మండలం</h3><p>Thotapalleguduru</p></div>
@@ -221,10 +224,8 @@
     <section class="section">
       <h2>సంప్రదించండి</h2>
       <div class="map" id="map-container">
-        <!-- Embedded Google Map centered on example coordinates -->
-        <iframe
-          src="https://www.google.com/maps?q=14.500123,79.900456&z=15&output=embed"
-          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <!-- Use the provided map image (uploaded). Place the file in the same folder as this HTML or update the path accordingly. -->
+        <img src="/mnt/data/1356f60e-6420-4d6d-9a58-3e3196d4f914.png" alt="Mutyalathopupalem map">
       </div>
       <div class="contact-row">
         <a class="phone" href="tel:+919876543210">Admin కి కాల్ చేయండి</a>
@@ -232,7 +233,7 @@
       </div>
     </section>
 
-    <footer>Last updated: 2025-09-30 • Muthyalathopu Village • Panchayathi: Koduru 1</footer>
+    <footer>Last updated: 2025-09-30 • Muthyalathopu Village • Panchayathi: Koduru 1 • Mandal: Thotapalleguduru</footer>
   </div>
 
   <script>
@@ -259,14 +260,57 @@
       animateValue('count-pop', 0, 1200, 900);
       animateValue('count-hh', 0, 300, 900);
 
-      // Moonlight toggle
+      // Moonlight toggle logic (header button - accessible)
       var hero = document.getElementById('hero');
-      var moon = document.getElementById('moonToggle');
-      moon.addEventListener('click', function(){
-        var on = moon.classList.toggle('on');
-        moon.setAttribute('aria-pressed', on);
-        if(on) hero.classList.add('moon'); else hero.classList.remove('moon');
+      var headerMoon = document.getElementById('headerMoon');
+      function setMoon(on){
+        if(on){
+          headerMoon.classList.add('active');
+          headerMoon.setAttribute('aria-pressed','true');
+          hero.classList.add('moon');
+        } else {
+          headerMoon.classList.remove('active');
+          headerMoon.setAttribute('aria-pressed','false');
+          hero.classList.remove('moon');
+        }
+      }
+      // toggle on click
+      headerMoon.addEventListener('click', function(){ setMoon(!headerMoon.classList.contains('active')); });
+      // toggle on keyboard (Space/Enter)
+      headerMoon.addEventListener('keydown', function(e){ if(e.key === ' '|| e.key === 'Enter'){ e.preventDefault(); setMoon(!headerMoon.classList.contains('active')); } });
+
+      // previously existing moon toggle removed
+
+      // scroll reveal for timeline
+      var items = document.querySelectorAll('.timeline-item');
+      function reveal(){
+        var top = window.innerHeight * 0.85;
+        items.forEach(function(it){
+          var r = it.getBoundingClientRect();
+          if(r.top < top) it.style.opacity=1, it.style.transform='none';
+        });
+      }
+      items.forEach(function(it){ it.style.opacity=0; it.style.transform='translateY(12px)'; it.style.transition='all .6s ease'; });
+      window.addEventListener('scroll', reveal); reveal();
+
+      // gallery click to open in new tab (simple lightbox-free)
+      document.querySelectorAll('.gallery img').forEach(function(img){
+        img.style.cursor='pointer';
+        img.addEventListener('click', function(){ window.open(img.src, '_blank'); });
       });
+
+      // CTA handlers (placeholders)
+      document.getElementById('view-data').addEventListener('click', function(){
+        // go to data page (dashboard/index)
+        window.location.href = './index.html#data' ;
+      });
+      document.getElementById('download-pdf').addEventListener('click', function(e){
+        e.preventDefault();
+        alert('PDF డౌన్లోడ్ లింక్ ఇక్కడ ఉంచండి');
+      });
+    });
+      // toggle on keyboard (Space/Enter)
+      moon.addEventListener('keydown', function(e){ if(e.key === ' '|| e.key === 'Enter'){ e.preventDefault(); setMoon(!moon.classList.contains('on')); } });
 
       // scroll reveal for timeline
       var items = document.querySelectorAll('.timeline-item');
