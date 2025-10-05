@@ -1,435 +1,274 @@
 <!doctype html>
-<html lang="te">
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Admin — ముత్యాలలోపు</title>
-
-<!-- PapaParse for CSV -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-<style>
-  /* Theme variables: default = moon/dark. .day toggles light */
-  :root{
-    --bg: #07102a;
-    --card: rgba(255,255,255,0.03);
-    --text: #e6f0ff;
-    --muted: #b9c7dd;
-    --accent: #fb923c;
-
-    --btn-bg: rgba(255,255,255,0.06);
-    --btn-text: #e6f0ff;
-    --btn-border: rgba(255,255,255,0.06);
-
-    --badge-ok-bg: #dcfce7;
-    --badge-ok-text: #065f46;
-    --badge-no-bg: #fff1f0;
-    --badge-no-text: #7f1d1d;
-
-    --panel-shadow: 0 12px 40px rgba(0,0,0,0.6);
-  }
-
-  html.day{
-    --bg:#f8fafc;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#6b7280;
-    --accent:#f97316;
-
-    --btn-bg:#f3f4f6;
-    --btn-text:#0f172a;
-    --btn-border:rgba(2,6,23,0.06);
-
-    --badge-ok-bg:#dcfce7;
-    --badge-ok-text:#065f46;
-    --badge-no-bg:#fff1f0;
-    --badge-no-text:#7f1d1d;
-
-    --panel-shadow: 0 12px 40px rgba(2,6,23,0.08);
-  }
-
-  html,body{height:100%; margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); transition:background .18s,color .18s;}
-  .container{max-width:1100px;margin:18px auto;padding:12px;}
-  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  h1{margin:0;font-size:1.2rem}
-  .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.2); margin-bottom:12px}
-  .muted{color:var(--muted)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap}
-  .btn{padding:8px 12px;border-radius:8px;background:var(--btn-bg);color:var(--btn-text);border:1px solid var(--btn-border);cursor:pointer;font-weight:600}
-  .link-btn{padding:8px 12px;border-radius:8px;background:transparent;color:var(--btn-text);border:1px solid transparent;cursor:pointer;font-weight:600}
-  .input{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text)}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
-  th{background:transparent;color:var(--muted)}
-  .link{color:var(--accent);cursor:pointer;text-decoration:underline}
-
-  /* modal */
-  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1200}
-  .modal .backdrop{position:absolute; inset:0; background:rgba(0,0,0,0.6); backdrop-filter: blur(3px);}
-  .modal .panel{
-    position:relative;
-    width:94%;
-    max-width:960px;
-    box-sizing:border-box;
-    max-height:85vh;
-    overflow:auto;
-    background:var(--card);
-    color:var(--text);
-    border-radius:12px;
-    padding:18px;
-    z-index:1201;
-    box-shadow: var(--panel-shadow);
-  }
-  .modal h3{margin:0 0 6px 0}
-  .modal hr{border:none;border-top:1px solid rgba(255,255,255,0.04);margin:10px 0}
-  .badge{display:inline-block;padding:6px 10px;border-radius:8px;margin-right:8px;margin-top:6px;font-weight:700}
-  .badge.ok{ background:var(--badge-ok-bg); color:var(--badge-ok-text); }
-  .badge.no{ background:var(--badge-no-bg); color:var(--badge-no-text); }
-
-  @media(max-width:640px){ .container{padding:10px} .modal .panel{padding:12px; max-width:96%} }
-
-  .tiny{font-size:0.92rem}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Village Admin Dashboard (Sample)</title>
+  <style>
+    :root{--bg:#f7fafc;--card:#fff;--accent:#0f6;--muted:#6b7280}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{background:var(--bg);color:#111}
+    .app{display:flex;flex-direction:column;min-height:100vh}
+    header{background:#0b4; padding:14px 18px;color:#032;display:flex;align-items:center;gap:12px}
+    header h1{font-size:18px;margin:0}
+    main{flex:1;display:flex;gap:12px;padding:12px}
+    .panel{background:var(--card);border-radius:10px;box-shadow:0 1px 4px rgba(2,6,23,0.06);padding:12px}
+    .left{width:320px;min-width:220px}
+    .center{flex:1}
+    .right{width:360px;min-width:240px}
+    .vlist{max-height:72vh;overflow:auto}
+    .vitem{padding:10px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border:1px solid #eee}
+    .vitem button{background:transparent;border:0;padding:6px 8px;border-radius:6px;cursor:pointer}
+    .counts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .chip{background:#eef; padding:6px 8px;border-radius:8px;font-size:13px}
+    h2{font-size:16px;margin:8px 0}
+    table{width:100%;border-collapse:collapse}
+    table th, table td{padding:6px;border-bottom:1px solid #f1f1f1;text-align:left;font-size:13px}
+    .btn{background:#0b8457;color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .small{font-size:13px}
+    .family-tree{padding-left:8px;border-left:2px dashed #eee;margin-top:8px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    @media(max-width:900px){main{flex-direction:column}.left,.right{width:100%}}
+  </style>
 </head>
-<body id="page">
+<body>
+  <div class="app">
+    <header>
+      <h1>Village Admin — Sample Dashboard</h1>
+      <div class="muted">(sample data generator + CSV export)</div>
+    </header>
 
-<div class="container">
-  <header>
-    <div>
-      <h1 class="telugu">నిర్వాహకుల పేజీ — Admin</h1>
-      <div class="muted tiny telugu">కేవలం అడ్మిన్ వీక్షణ కోసం</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <!-- HOME / BACK button (always visible) -->
-      <a href="index.html" class="btn" title="Home">🏠 హోమ్</a>
-
-      <!-- Theme toggle -->
-      <button id="themeToggle" class="btn" title="Toggle Day / Moon">🌙</button>
-    </div>
-  </header>
-
-  <!-- Login Card -->
-  <div id="loginCard" class="card">
-    <h3 class="telugu">అడ్మిన్ లాగిన్</h3>
-    <div class="muted telugu">దయచేసి యూజర్‌నేమ్ & పాస్వర్డ్ ఇవ్వండి</div>
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-      <input id="username" class="input" placeholder="username" />
-      <input id="password" class="input" type="password" placeholder="password" />
-      <button id="loginBtn" class="btn telugu">లోగిన్</button>
-      <button id="demoBtn" class="btn telugu">డెమో (సిమ్)</button>
-    </div>
-    <div class="muted" style="margin-top:8px">గమనిక: ఇది client-side login. production కోసం బ్యాకెండ్ అవసరం.</div>
-  </div>
-
-  <!-- Admin Dashboard -->
-  <div id="adminArea" style="display:none;">
-    <div class="card">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <div>
-          <div class="muted telugu">మొత్తం జనాభా</div>
-          <div id="totalPop" style="font-weight:700;font-size:1.3rem">—</div>
-        </div>
-        <div>
-          <div class="muted telugu">ఇళ్ళ సంఖ్య</div>
-          <div id="totalHouses" style="font-weight:700;font-size:1.3rem">—</div>
-        </div>
-        <div style="margin-left:auto;">
-          <div class="controls">
-            <button id="downloadResidents" class="btn telugu">Residents CSV</button>
-            <button id="downloadHouseholds" class="btn telugu">Households CSV</button>
-            <button id="logoutBtn" class="btn telugu">లాగౌట్</button>
+    <main>
+      <aside class="panel left">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Villages</strong>
+            <div class="muted small">Click a village to view heads and families</div>
+          </div>
+          <div>
+            <button class="btn" id="regen">Generate 100 villages</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <div>
-          <label class="muted telugu">స్క్రీన్ ఆర్డర్ ఆధారంగా చూపించు:</label>
-          <select id="orderSelect" class="input">
-            <option value="order">CSV లో ఇచ్చిన order (order column)</option>
-            <option value="name">పేరు (అక్షరానుక్రమం)</option>
-            <option value="age">వయసు (descending)</option>
-            <option value="house">House ID</option>
-          </select>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div class="chip" id="totalVillages">Villages: 0</div>
+          <div class="chip" id="totalPeople">Total People: 0</div>
+          <button id="downloadCsv" class="btn">Download CSV</button>
         </div>
-        <div style="margin-left:auto;">
-          <input id="searchBox" class="input" placeholder="పేరు / ఫోన్ వెతకండి" />
-        </div>
-      </div>
 
-      <div style="margin-top:12px;">
-        <table id="resTable">
-          <thead><tr><th class="telugu">ID</th><th class="telugu">పేరు</th><th class="telugu">House</th><th class="telugu">Age</th><th class="telugu">Phone</th><th class="telugu">Actions</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+        <div class="vlist" id="villageList" style="margin-top:12px"></div>
+      </aside>
+
+      <section class="panel center">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <h2 id="selVillageTitle">Select a village</h2>
+            <div id="selVillageSub" class="muted small">Click any village from left</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn" id="showFunds">Village Funds</button>
+            <button class="btn" id="showSchemes">Schemes</button>
+          </div>
+        </div>
+
+        <div id="headsArea" style="margin-top:12px"></div>
+
+        <div id="familyArea" style="margin-top:12px"></div>
+      </section>
+
+      <aside class="panel right">
+        <h2>Details</h2>
+        <div id="detailArea" class="muted small">Select a village to see details (funds, pending schemes, reasons)</div>
+
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0">Funds summary</h3>
+          <div id="fundSummary"></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0">Pending schemes</h3>
+          <div id="pendingSchemes"></div>
+        </div>
+
+      </aside>
+    </main>
   </div>
 
-</div>
-
-<!-- Modal -->
-<div id="modal" class="modal" aria-hidden="true">
-  <div class="backdrop" onclick="safeCloseModal()"></div>
-  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-      <div>
-        <h3 id="modalTitle" class="telugu"></h3>
-        <div id="modalSubtitle" class="muted"></div>
-      </div>
-      <div>
-        <button id="closeModalBtn" class="btn telugu">మూసివేయి</button>
-      </div>
-    </div>
-
-    <hr />
-
-    <div style="display:flex;gap:18px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:240px">
-        <div class="muted telugu">వివరాలు</div>
-        <div id="modalDetails" style="margin-top:8px"></div>
-        <div style="margin-top:12px;">
-          <div class="muted telugu">డాక్యుమెంట్లు</div>
-          <div id="docStatus" style="margin-top:6px"></div>
-        </div>
-      </div>
-
-      <div style="flex:1;min-width:240px">
-        <div class="muted telugu">పథకాలు</div>
-        <div id="modalSchemes" style="margin-top:8px"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-/* HOME URL - change if your home file name is different */
-const HOME_URL = 'index.html';
-
-/* demo credentials */
-const CREDENTIALS = { user:'admin', pass:'admin123' };
-
-/* DOM refs */
-const themeToggle = document.getElementById('themeToggle');
-const loginCard = document.getElementById('loginCard');
-const adminArea = document.getElementById('adminArea');
-const loginBtn = document.getElementById('loginBtn');
-const demoBtn = document.getElementById('demoBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-
-const totalPop = document.getElementById('totalPop');
-const totalHouses = document.getElementById('totalHouses');
-const resTableBody = document.querySelector('#resTable tbody');
-const searchBox = document.getElementById('searchBox');
-const orderSelect = document.getElementById('orderSelect');
-
-const modal = document.getElementById('modal');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const modalTitle = document.getElementById('modalTitle');
-const modalSubtitle = document.getElementById('modalSubtitle');
-const modalDetails = document.getElementById('modalDetails');
-const docStatus = document.getElementById('docStatus');
-const modalSchemes = document.getElementById('modalSchemes');
-
-const downloadResidents = document.getElementById('downloadResidents');
-const downloadHouseholds = document.getElementById('downloadHouseholds');
-
-let residents = [], households = [], beneficiaries = [];
-
-/* THEME */
-function applySavedTheme(){
-  const v = localStorage.getItem('muthya_theme') || 'moon';
-  if(v === 'day') document.documentElement.classList.add('day');
-  else document.documentElement.classList.remove('day');
-  updateThemeButton();
-}
-function toggleTheme(){
-  const isDay = document.documentElement.classList.toggle('day');
-  localStorage.setItem('muthya_theme', isDay ? 'day' : 'moon');
-  updateThemeButton();
-}
-function updateThemeButton(){
-  const isDay = document.documentElement.classList.contains('day');
-  themeToggle.textContent = isDay ? '🌞' : '🌙';
-}
-applySavedTheme();
-themeToggle.addEventListener('click', toggleTheme);
-
-/* CSV loader util (PapaParse) */
-function loadCSV(path){
-  return new Promise((res, rej)=>{
-    Papa.parse(path, { download:true, header:true, skipEmptyLines:true, complete:(r)=>res(r.data), error:(e)=>rej(e) });
-  });
-}
-
-/* login/logout */
-function setLoggedIn(state){
-  if(state){ loginCard.style.display='none'; adminArea.style.display='block'; }
-  else { loginCard.style.display='block'; adminArea.style.display='none'; }
-}
-loginBtn.addEventListener('click', ()=>{
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value.trim();
-  if(u===CREDENTIALS.user && p===CREDENTIALS.pass){
-    localStorage.setItem('muthya_admin','1');
-    setLoggedIn(true);
-    initAdminData();
-  } else alert('Invalid credentials (demo: admin / admin123)');
-});
-demoBtn.addEventListener('click', ()=> { localStorage.setItem('muthya_admin','1'); setLoggedIn(true); initAdminData(); });
-
-/* LOGOUT: clear session and redirect to HOME */
-logoutBtn.addEventListener('click', ()=>{
-  localStorage.removeItem('muthya_admin');
-  setLoggedIn(false);
-  // redirect user back to home (acts as back button)
-  window.location.href = HOME_URL;
-});
-
-/* modal open/close */
-function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
-function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
-function safeCloseModal(){ closeModal(); }
-closeModalBtn.addEventListener('click', closeModal);
-
-/* escape */
-function esc(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-/* Render residents */
-function renderResidents(){
-  const q = (searchBox.value||'').toLowerCase().trim();
-  let list = [...residents];
-  const order = orderSelect.value;
-  if(order === 'order'){
-    if(list.every(r => r.order !== undefined && r.order !== '')) {
-      list.sort((a,b)=> Number(a.order||0) - Number(b.order||0));
+  <script>
+    // Sample data generator and UI logic
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+    function sampleNames(n){
+      const names = ["Ramu","Sita","Lakshmi","Venkatesh","Manoj","Radha","Suresh","Kumari","Ravi","Anita","Krishna","Mohan","Shyam","Lakshman","Geeta","Hari","Raja","Seetha","Bala","Reddy","Koteswar","Padma","Uma","Subba","Narayana","Divya","Chandra","Pradeep","Sowmya","Vinod","Latha"]
+      let out=[]; for(let i=0;i<n;i++) out.push(names[randInt(0,names.length-1)]+" "+(randInt(1,99)))
+      return out
     }
-  } else if(order === 'name'){
-    list.sort((a,b)=> (a.name_tel||a.name||'').localeCompare(b.name_tel||b.name||''));
-  } else if(order === 'age'){
-    list.sort((a,b)=> Number(b.age||0) - Number(a.age||0));
-  } else if(order === 'house'){
-    list.sort((a,b)=> (a.house_id||'').localeCompare(b.house_id||''));
-  }
-  if(q) list = list.filter(r => (r.name_tel||r.name||'').toLowerCase().includes(q) || (r.phone||'').toLowerCase().includes(q) || (r.house_id||'').toLowerCase().includes(q));
-  resTableBody.innerHTML = '';
-  list.forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${esc(r.id||'')}</td>
-      <td><span class="link">${esc(r.name_tel||r.name||'—')}</span></td>
-      <td>${esc(r.house_id||'—')}</td>
-      <td>${esc(r.age||'—')}</td>
-      <td>${esc(r.phone||'—')}</td>
-      <td><button class="btn" data-id="${esc(r.id||'')}" onclick="viewResident('${esc(r.id||'')}')">View</button></td>`;
-    tr.querySelector('.link').addEventListener('click', ()=> viewResident(r.id));
-    resTableBody.appendChild(tr);
-  });
-}
 
-/* view resident */
-window.viewResident = function(id){
-  const r = residents.find(x=> (x.id||'')===(id||''));
-  if(!r){ alert('Record not found'); return; }
-  modalTitle.textContent = r.name_tel || r.name || '';
-  modalSubtitle.textContent = `ID: ${r.id || ''}  •  House: ${r.house_id || ''}`;
-  modalDetails.innerHTML = `
-    <div><strong class="telugu">పేరు:</strong> ${esc(r.name_tel||r.name||'')}</div>
-    <div><strong class="telugu">వయసు:</strong> ${esc(r.age||'—')}</div>
-    <div><strong class="telugu">లింగం:</strong> ${esc(r.gender||'—')}</div>
-    <div><strong class="telugu">ఫోన్:</strong> <a class="link" href="tel:${r.phone||''}">${esc(r.phone||'—')}</a></div>
-    <div><strong class="telugu">హౌస్ హెడ్:</strong> ${ (r.head_of_house && (r.head_of_house.toLowerCase()==='yes' || r.head_of_house.toLowerCase()==='true')) ? 'Yes' : 'No' }</div>
-  `;
-  // docs
-  const docs = [
-    {k:'aadhar_status', label:'Aadhar'},
-    {k:'ration_status', label:'Ration Card'},
-    {k:'pan_status', label:'PAN'},
-    {k:'voter_status', label:'Voter ID'}
-  ];
-  docStatus.innerHTML = '';
-  docs.forEach(d=>{
-    const v = (r[d.k]||'').toString().toLowerCase();
-    const ok = (v==='yes' || v==='present' || v==='available' || v==='1');
-    const span = document.createElement('span');
-    span.className = 'badge ' + (ok ? 'ok' : 'no');
-    span.textContent = `${d.label}: ${ ok ? 'Yes' : 'No' }`;
-    docStatus.appendChild(span);
-  });
-  // schemes
-  const resSchemes = beneficiaries.filter(b => (b.resident_id || b.resident || '') == (r.id || r.name || ''));
-  if(!resSchemes.length){
-    modalSchemes.innerHTML = '<div class="muted telugu">ఈ వ్యక్తికి పథకాలు కనబడలేదు.</div>';
-  } else {
-    modalSchemes.innerHTML = resSchemes.map(b=>{
-      return `<div style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px;">
-        <div><strong>${esc(b.scheme_code||b.scheme||'')}</strong> — ₹ ${esc(b.amount||'0')}</div>
-        <div class="muted tiny">${esc(b.status||'')}  •  ${esc(b.date||'')}</div>
-      </div>`;
-    }).join('');
-  }
-  openModal();
-}
+    function generateVillage(index){
+      const vName = `Village-${index+1}`
+      const numFamilies = randInt(20,80)
+      const families = []
+      let totalPeople=0
+      for(let f=0; f<numFamilies; f++){
+        const head = sampleNames(1)[0]
+        const famSize = randInt(2,7)
+        totalPeople += famSize
+        const members = [ {name: head, relation:'Head', age: randInt(30,70)} ]
+        for(let m=1;m<famSize;m++) members.push({name: sampleNames(1)[0], relation: ['Spouse','Child','Parent'][randInt(0,2)], age:randInt(1,80)})
 
-/* totals & downloads */
-function computeTotals(){
-  totalPop.textContent = residents.length;
-  const housesCount = (households && households.length) ? households.length : new Set(residents.map(r=> r.house_id)).size;
-  totalHouses.textContent = housesCount;
-}
-function downloadCSV(arr, filename){
-  if(!arr || !arr.length){ alert('No data'); return; }
-  const keys = Object.keys(arr[0]);
-  const csv = [keys.join(',')].concat(arr.map(r => keys.map(k => `"${(r[k]||'').toString().replace(/"/g,'""')}"`).join(','))).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-}
-downloadResidents.addEventListener('click', ()=> downloadCSV(residents, 'residents_export.csv'));
-downloadHouseholds.addEventListener('click', ()=> downloadCSV(households, 'households_export.csv'));
-searchBox.addEventListener('input', renderResidents);
-orderSelect.addEventListener('change', renderResidents);
+        // Schemes per family (some applied, some pending)
+        const schemesList = []
+        const schemesMaster = ["PMAY","MGNREGA","Pension","Scholarship","Crop Insurance","Awas+","Water+","Sanitation"]
+        const appliedCount = randInt(0,3)
+        for(let s=0;s<appliedCount;s++){
+          const sch = schemesMaster[randInt(0,schemesMaster.length-1)]
+          const status = Math.random()<0.6? 'Approved' : 'Pending'
+          schemesList.push({name:sch,status:status,reason: status==='Pending' ? ['Docs missing','Incomplete form','Not eligible'][randInt(0,2)] : ''})
+        }
 
-/* init admin data */
-async function initAdminData(){
-  try{
-    residents = await loadCSV('Data/residents.csv').catch(()=> []);
-    households = await loadCSV('Data/households.csv').catch(()=> []);
-    beneficiaries = await loadCSV('Data/scheme_beneficiaries.csv').catch(()=> []);
-  }catch(e){ console.warn('CSV load fail', e); }
-  if(!residents || residents.length===0){
-    residents = [
-      { id:'RES-001', name_tel:'రామయ్య', name:'Ramayya', house_id:'H-001', age:'68', gender:'Male', phone:'+919812345678', aadhar_status:'yes', ration_status:'yes', pan_status:'no', voter_status:'yes', head_of_house:'yes', order:'1' },
-      { id:'RES-002', name_tel:'సీతమ్మ', name:'Seethamma', house_id:'H-001', age:'62', gender:'Female', phone:'+919887654321', aadhar_status:'yes', ration_status:'no', pan_status:'no', voter_status:'yes', head_of_house:'no', order:'2' },
-      { id:'RES-003', name_tel:'రఘు', name:'Raghu', house_id:'H-002', age:'45', gender:'Male', phone:'+919998877665', aadhar_status:'yes', ration_status:'yes', pan_status:'yes', voter_status:'yes', head_of_house:'yes', order:'3' }
-    ];
-  }
-  if(!households || households.length===0){
-    households = [
-      { house_id:'H-001', house_head_name:'రామయ్య', house_no:'1', members_count:'4' },
-      { house_id:'H-002', house_head_name:'రఘు', house_no:'2', members_count:'5' }
-    ];
-  }
-  if(!beneficiaries || beneficiaries.length===0){
-    beneficiaries = [
-      { id:'B-001', scheme_code:'OLD_AGE_PENSION', resident_id:'RES-001', name:'రామయ్య', status:'paid', amount:'4000', date:'2025-09-01' },
-      { id:'B-002', scheme_code:'OLD_AGE_PENSION', resident_id:'RES-002', name:'సీతమ్మ', status:'pending', amount:'4000', date:'2025-09-01' }
-    ];
-  }
+        families.push({head, members, schemes:schemesList})
+      }
+      // Village level funds
+      const fundsReceived = randInt(100000,2000000)
+      const fundsAllocated = fundsReceived + randInt(0,500000)
+      const fundsPending = Math.max(0, fundsAllocated - fundsReceived)
+      // Aggregate schemes
+      const schemeSummary = {}
+      families.forEach(f=>f.schemes.forEach(s=>{ if(!schemeSummary[s.name]) schemeSummary[s.name]={approved:0,pending:0}; if(s.status==='Approved')schemeSummary[s.name].approved++; else schemeSummary[s.name].pending++; }))
 
-  computeTotals();
-  renderResidents();
-}
+      return {id:index+1, name:vName, headCount:families.length, families, totalPeople, funds:{allocated:fundsAllocated, received:fundsReceived, pending:fundsPending}, schemes:schemeSummary}
+    }
 
-/* restore login on load */
-if(localStorage.getItem('muthya_admin')==='1'){
-  setLoggedIn(true); initAdminData();
-} else setLoggedIn(false);
+    let villages = []
+    function generateMany(n=100){
+      villages=[]
+      for(let i=0;i<n;i++) villages.push(generateVillage(i))
+      renderVillageList()
+      updateSummary()
+    }
 
-/* safeClose for backdrop */
-window.safeCloseModal = safeCloseModal;
-</script>
+    function renderVillageList(){
+      const el = document.getElementById('villageList'); el.innerHTML=''
+      villages.forEach(v=>{
+        const div = document.createElement('div'); div.className='vitem'
+        div.innerHTML = `<div style="flex:1"><strong>${v.name}</strong><div class='muted small'>Families: ${v.headCount} • People: ${v.totalPeople}</div></div><div style='text-align:right'><button data-id='${v.id}' class='viewBtn'>View</button></div>`
+        el.appendChild(div)
+      })
+      document.querySelectorAll('.viewBtn').forEach(b=>b.addEventListener('click',ev=>{
+        const id = Number(ev.target.dataset.id)
+        selectVillage(id)
+      }))
+      document.getElementById('totalVillages').textContent = `Villages: ${villages.length}`
+    }
+
+    function updateSummary(){
+      let people=0
+      villages.forEach(v=>people+=v.totalPeople)
+      document.getElementById('totalPeople').textContent = `Total People: ${people}`
+    }
+
+    let selectedVillage = null
+    function selectVillage(id){
+      const v = villages.find(x=>x.id===id)
+      selectedVillage = v
+      document.getElementById('selVillageTitle').textContent = v.name
+      document.getElementById('selVillageSub').textContent = `Families: ${v.headCount} • People: ${v.totalPeople}`
+
+      // Heads list
+      const hArea = document.getElementById('headsArea'); hArea.innerHTML=''
+      hArea.innerHTML = `<h3>Heads of Families</h3>`
+      v.families.forEach((f,idx)=>{
+        const btn = document.createElement('button'); btn.className='small'; btn.style.margin='6px 6px 6px 0'; btn.textContent = f.head
+        btn.addEventListener('click',()=> showFamily(v,idx))
+        hArea.appendChild(btn)
+      })
+
+      // Clear family area
+      document.getElementById('familyArea').innerHTML = `<div class='muted small'>Select a head to view family tree and schemes</div>`
+
+      // Details right panel
+      renderDetails(v)
+    }
+
+    function showFamily(village, famIndex){
+      const fam = village.families[famIndex]
+      const area = document.getElementById('familyArea'); area.innerHTML=''
+      area.innerHTML = `<h3>Family: ${fam.head}</h3><div class='muted small'>Members (${fam.members.length})</div>`
+      const container = document.createElement('div'); container.className='family-tree'
+      fam.members.forEach(m=>{
+        const d = document.createElement('div'); d.style.margin='6px 0'; d.innerHTML = `<strong>${m.name}</strong> <span class='muted small'>(${m.relation}, age ${m.age})</span>`
+        container.appendChild(d)
+      })
+      area.appendChild(container)
+
+      // Schemes for this family
+      const sch = document.createElement('div'); sch.style.marginTop='10px'
+      sch.innerHTML = `<h4>Applied Schemes</h4>`
+      if(fam.schemes.length===0) sch.innerHTML += `<div class='muted small'>No schemes applied</div>`
+      else{
+        const t = document.createElement('table')
+        t.innerHTML = `<thead><tr><th>Scheme</th><th>Status</th><th>Reason</th></tr></thead>`
+        const tbody = document.createElement('tbody')
+        fam.schemes.forEach(s=>{
+          const tr = document.createElement('tr')
+          tr.innerHTML = `<td>${s.name}</td><td>${s.status}</td><td>${s.reason||'-'}</td>`
+          tbody.appendChild(tr)
+        })
+        t.appendChild(tbody)
+        sch.appendChild(t)
+      }
+      area.appendChild(sch)
+    }
+
+    function renderDetails(v){
+      const area = document.getElementById('detailArea'); area.innerHTML = ''
+      const fund = document.getElementById('fundSummary')
+      fund.innerHTML = `<div><strong>Allocated:</strong> ₹${v.funds.allocated.toLocaleString()}<br><strong>Received:</strong> ₹${v.funds.received.toLocaleString()}<br><strong>Pending:</strong> ₹${v.funds.pending.toLocaleString()}</div>`
+
+      const pending = document.getElementById('pendingSchemes')
+      pending.innerHTML = ''
+      const pendingList = []
+      for(const k in v.schemes) if(v.schemes[k].pending>0) pendingList.push({name:k,count:v.schemes[k].pending})
+      if(pendingList.length===0) pending.innerHTML = `<div class='muted small'>No pending schemes</div>`
+      else{
+        const ul = document.createElement('ul')
+        pendingList.forEach(p=>{ const li=document.createElement('li'); li.textContent = `${p.name} — pending: ${p.count}`; ul.appendChild(li) })
+        pending.appendChild(ul)
+      }
+    }
+
+    // Show funds and schemes buttons
+    document.getElementById('showFunds').addEventListener('click',()=>{
+      if(!selectedVillage) return alert('Select a village first')
+      alert(`${selectedVillage.name}\nAllocated: ₹${selectedVillage.funds.allocated.toLocaleString()}\nReceived: ₹${selectedVillage.funds.received.toLocaleString()}\nPending: ₹${selectedVillage.funds.pending.toLocaleString()}`)
+    })
+    document.getElementById('showSchemes').addEventListener('click',()=>{
+      if(!selectedVillage) return alert('Select a village first')
+      let txt = `${selectedVillage.name} - Scheme summary:\n`;
+      for(const k in selectedVillage.schemes) txt += `${k}: Approved ${selectedVillage.schemes[k].approved || 0}, Pending ${selectedVillage.schemes[k].pending || 0}\n`
+      alert(txt)
+    })
+
+    // CSV download
+    function makeCSV(){
+      // Flatten village data to CSV rows: village_id,village_name,headCount,totalPeople,allocated,received,pending,heads_count,all_schemes_summary
+      const rows = [['village_id','village_name','headCount','totalPeople','allocated','received','pending','schemes_summary_json']]
+      villages.forEach(v=>{
+        rows.push([v.id, v.name, v.headCount, v.totalPeople, v.funds.allocated, v.funds.received, v.funds.pending, JSON.stringify(v.schemes)])
+      })
+      return rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n')
+    }
+    document.getElementById('downloadCsv').addEventListener('click',()=>{
+      const csv = makeCSV();
+      const blob = new Blob([csv],{type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = 'villages_data.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url)
+    })
+
+    document.getElementById('regen').addEventListener('click',()=>{ if(confirm('Generate fresh 100 villages? This will replace current sample data.')) generateMany(100) })
+
+    // On load
+    generateMany(100)
+  </script>
 </body>
 </html>
