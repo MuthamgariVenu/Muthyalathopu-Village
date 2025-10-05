@@ -39,7 +39,7 @@
       <button id="menuToggle" class="sm:hidden p-2 rounded card">☰</button>
       <img src="images/logo.png" alt="logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
       <div>
-        <h1 id="mainTitle" class="text-xl font-bold telugu">ముత్యాలతోపు గ్రామ దర్శిని</h1>
+        <h1 id="mainTitle" class="text-xl font-bold telugu">ముత్యాతోపు గ్రామ దర్శిని</h1>
         <div class="text-sm muted telugu">మన ఊరి సమాచారం — తెలుగు</div>
       </div>
     </div>
@@ -52,7 +52,7 @@
       </nav>
 
       <!-- theme toggle -->
-      <button id="themeToggle" class="ml-2 p-2 rounded card" title="రాత్రి/పగలు">{ }</button>
+      <button id="themeToggle" class="ml-2 p-2 rounded card" title="రాత్రి/పగలు">🌙</button>
     </div>
   </div>
 </header>
@@ -94,24 +94,20 @@
   <section id="about" class="space-y-4">
     <h2 class="text-2xl font-semibold telugu">గ్రామం గురించి</h2>
 
-    <!-- 1. Basic Info -->
-    <div id="basicInfo" class="card">
-      <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
-      <div id="basicInfoContent" class="text-sm muted telugu mt-2">
-        <!-- populated from village_info.csv or fallback -->
-        లోడ్ అవుతుంది...
-      </div>
-    </div>
-
-    <!-- 2. Interactive Map (Leaflet) + households -->
+    <!-- MOVED: Map is now first inside About -->
     <div class="card">
       <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (ఇంటరాక్టివ్)</h3>
       <div id="villageMap" style="width:100%;height:360px;border-radius:8px;margin-top:8px;"></div>
-      <div class="text-sm muted telugu mt-2">మార్కర్లు ఇంటికి సంబంధించిన వాటిని చూపిస్తాయి. క్లిక్ చేసి గమనాలు (Google directions) తెరుచుకోవచ్చు.</div>
+      <div class="text-sm muted telugu mt-2">మార్కర్లు ఇంటికి సంబంధించిన వాటిని చూపిస్తాయి. క్లిక్ చేసి Google దిశలు తీసుకోవచ్చు.</div>
+    </div>
+
+    <!-- 1. Basic Info -->
+    <div id="basicInfo" class="card">
+      <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
+      <div id="basicInfoContent" class="text-sm muted telugu mt-2">లోడ్ అవుతుంది...</div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
       <!-- 3. Water & Electricity -->
       <div id="waterCard" class="card">
         <h4 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h4>
@@ -123,15 +119,12 @@
         <h4 class="font-semibold telugu">అత్యావశ్యక సహాయం & హెల్ప్‌లైన్</h4>
         <div id="helplineContent" class="text-sm muted telugu mt-2">లోడ్ అవుతుంది...</div>
       </div>
-
     </div>
 
     <!-- 7. Panchayat & Committee Members -->
     <div class="card">
       <h3 class="font-semibold telugu">పంచాయితీ & కమిటీ సభ్యులు</h3>
-      <div id="committeeList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <!-- Filled from CSV -->
-      </div>
+      <div id="committeeList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
     </div>
 
     <!-- 8. Festivals & Events calendar -->
@@ -152,10 +145,10 @@
   <!-- SCHEMES placeholder -->
   <section id="schemes" class="card">
     <h2 class="text-xl font-semibold telugu">పథకాలు</h2>
-    <div class="text-sm muted telugu mt-2">(ఇక్కడ পథకాల summary, సంఖ్యలు, beneficiary list వంటి features తర్వాత ఇస్తాం.)</div>
+    <div class="text-sm muted telugu mt-2">(ఇక్కడ పథకాల summary, beneficiary features etc. తర్వాత చేర్చాలి.)</div>
   </section>
 
-  <!-- ADMIN placeholder (sachivalayam card included) -->
+  <!-- ADMIN placeholder (peddalu + sachivalayam) -->
   <section id="admin" class="card">
     <h2 class="text-xl font-semibold telugu">నిర్వాహకులు</h2>
 
@@ -197,16 +190,6 @@
 <script>
 /* ----------------------
   Utilities & CSV loader
-   - Put CSVs in /Data/ folder
-   - Files used:
-     Data/flash_news.csv
-     Data/village_info.csv
-     Data/households.csv
-     Data/water_elec.csv
-     Data/helpline.csv
-     Data/committee.csv
-     Data/events.csv
-     Data/village_peddalu.csv
 -----------------------*/
 function loadCSV(path){
   return new Promise((resolve,reject)=>{
@@ -239,7 +222,14 @@ function toggleSidebar(v){ sidebarEl.classList.toggle('hidden', v===undefined ? 
 /* Scroll helper */
 function scrollToSection(id){
   const el = document.getElementById(id);
-  if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  if(el){
+    // scroll so map (if in that section) becomes visible at top
+    el.scrollIntoView({ behavior:'smooth', block:'start' });
+    // if map inside, after a tiny delay invalidate map size (Leaflet needs resize)
+    if(id === 'about'){
+      setTimeout(()=> { if(window._villageMap) window._villageMap.invalidateSize(); }, 600);
+    }
+  }
 }
 
 /* ----------------------
@@ -264,8 +254,6 @@ async function renderFlash(){
 
 /* ----------------------
    1. Village Basic Info
-   Data format: village_info.csv with keys:
-   village_name_tel,village_name_en,mandal,district,pop_total,pop_male,pop_female,total_houses,main_occupations
 -----------------------*/
 async function renderBasicInfo(){
   const container = document.getElementById('basicInfoContent');
@@ -282,12 +270,11 @@ async function renderBasicInfo(){
       <div><strong>ప్రధాన కార్యకలాపాలు:</strong> ${r.main_occupations || '—'}</div>
     `;
   }catch(err){
-    // fallback static info
     container.innerHTML = `
-      <div><strong>గ్రామం:</strong> ముత్యాలలోపు (Mutyalathopupalem)</div>
+      <div><strong>గ్రామం:</strong> ముత్యాలతోపు (Mutyalathopupalem)</div>
       <div><strong>మండలం:</strong> తోటపల్లిగూడూరు</div>
       <div><strong>జిల్లా:</strong> నెల్లూరు</div>
-      <div><strong>సంఖ్యలు:</strong> జనాభా సమాచారం లేకపోతే admin ద్వారా అప్డేట్ చేయండి</div>
+      <div><strong>సంఖ్యలు:</strong> జనాభా సమాచారం కోసం admin ద్వారా అప్డేట్ చేయండి</div>
       <div><strong>ఇళ్ళ సంఖ్య:</strong> —</div>
       <div><strong>ప్రధాన కార్యకలాపాలు:</strong> వ్యవసాయం, మత్స్యకారుడు</div>
     `;
@@ -295,13 +282,12 @@ async function renderBasicInfo(){
 }
 
 /* ----------------------
-   2. Interactive map (Leaflet) - load households.csv with lat,lon,name,house_id
-   households.csv sample:
-   id,house_id,name,lat,lon,address
+   2. Interactive map (Leaflet) - Now placed at top of About
 -----------------------*/
 async function initVillageMap(){
-  const defaultCenter = [14.4371,80.0224]; // approx; change if needed
+  const defaultCenter = [14.4371,80.0224]; // approx
   const map = L.map('villageMap', { zoomControl:true }).setView(defaultCenter, 16);
+  window._villageMap = map;
 
   const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom:19, attribution:'Tiles © Esri'
@@ -311,7 +297,6 @@ async function initVillageMap(){
 
   L.control.layers({"Satellite":esri,"Road":street}, null, { collapsed:true, position:'topright' }).addTo(map);
 
-  // try load households
   try{
     const data = await loadCSV('Data/households.csv');
     const markers = [];
@@ -337,13 +322,12 @@ async function initVillageMap(){
     }
   }catch(e){
     console.warn('households.csv not loaded', e);
-    // leave map at default center
+    // no markers — map stays centered
   }
 }
 
 /* ----------------------
-  3. Water & Electricity (water_elec.csv)
-   columns: type, detail (e.g., borewells:5; supply_schedule: 6-8 AM)
+  3. Water & Electricity
 -----------------------*/
 async function renderWater(){
   const el = document.getElementById('waterContent');
@@ -351,9 +335,7 @@ async function renderWater(){
     const rows = await loadCSV('Data/water_elec.csv');
     if(!rows || !rows.length) throw 'no';
     let html = '';
-    rows.forEach(r=>{
-      html += `<div><strong>${r.type || '—'}:</strong> ${r.detail || '—'}</div>`;
-    });
+    rows.forEach(r=> html += `<div><strong>${r.type||'—'}:</strong> ${r.detail||'—'}</div>`);
     el.innerHTML = html;
   }catch(e){
     el.innerHTML = `<div class="muted telugu">నీరు/విద్యుత్ వివరాలు ప్రస్తుతం అందుబాటులో లేవు. admin ద్వారా అప్డేట్ చేయండి.</div>`;
@@ -361,8 +343,7 @@ async function renderWater(){
 }
 
 /* ----------------------
-  6. Helpline (helpline.csv)
-   columns: role,name,phone
+  6. Helpline
 -----------------------*/
 async function renderHelpline(){
   const el = document.getElementById('helplineContent');
@@ -370,9 +351,7 @@ async function renderHelpline(){
     const rows = await loadCSV('Data/helpline.csv');
     if(!rows || !rows.length) throw 'no';
     let html = '<ul class="list-disc pl-5">';
-    rows.forEach(r=>{
-      html += `<li><strong>${r.role || r.name || '—'}:</strong> <a class="link" href="tel:${r.phone || ''}">${r.phone || '—'}</a></li>`;
-    });
+    rows.forEach(r=> html += `<li><strong>${r.role || r.name || '—'}:</strong> <a class="link" href="tel:${r.phone || ''}">${r.phone || '—'}</a></li>`);
     html += '</ul>';
     el.innerHTML = html;
   }catch(e){
@@ -381,8 +360,7 @@ async function renderHelpline(){
 }
 
 /* ----------------------
-  7. Committee members (committee.csv)
-   columns: id,role,name,photo_url,phone,note
+  7. Committee members
 -----------------------*/
 async function renderCommittee(){
   const box = document.getElementById('committeeList');
@@ -411,15 +389,13 @@ async function renderCommittee(){
 }
 
 /* ----------------------
-  8. Events (events.csv)
-  columns: id,title,date,start_date,end_date,description,location
+  8. Events
 -----------------------*/
 async function renderEvents(){
   const el = document.getElementById('eventsList');
   try{
     const rows = await loadCSV('Data/events.csv');
     if(!rows || !rows.length) throw 'no';
-    // sort by date if present
     rows.sort((a,b)=> (a.date||'').localeCompare(b.date||''));
     let html = '<div class="space-y-3">';
     rows.forEach(r=>{
@@ -437,7 +413,7 @@ async function renderEvents(){
 }
 
 /* ----------------------
-  Peddalu carousel (role,name,note,photo_url) - used in admin section
+  Peddalu carousel
 -----------------------*/
 let pidx=0, pslides=[], ptimer;
 async function renderPeddalu(){
@@ -445,14 +421,11 @@ async function renderPeddalu(){
   try{
     const rows = await loadCSV('Data/village_peddalu.csv');
     pslides = rows || [];
-    if(!pslides.length) throw 'no';
   }catch(e){
     pslides = [];
   }
-  if(!pslides.length){
-    wrap.innerHTML = '<div class="muted telugu p-4">పెద్దల వివరాలు లేవు</div>';
-    return;
-  }
+  if(!pslides.length){ wrap.innerHTML = '<div class="muted telugu p-4">పెద్దల వివరాలు లేవు</div>'; return; }
+
   function show(i){
     pidx = (i + pslides.length) % pslides.length;
     const it = pslides[pidx];
@@ -489,7 +462,7 @@ renderCommittee();
 renderEvents();
 renderPeddalu();
 
-/* modal handlers for images */
+/* modal handlers */
 document.getElementById('closeModal').addEventListener('click', ()=>{
   document.getElementById('imgModal').classList.add('hidden');
 });
