@@ -1,0 +1,9 @@
+id,code,name_tel,type,amount,notes,apply_until,csv_file,apply_url
+1,OLD_AGE_PENSION,వృద్ధాప్య పింఛను,pension,4000,వృద్ధులకు నెలవారీ పింఛను,2025-12-31,Data/ben_oldage.csv,
+2,VITHANTHU,వితంతువు పథకం,pension,4000,వితంతువులకు ఉపకారం,2025-12-31,Data/ben_vithanthu.csv,
+3,VIKALANGULA,వికలాంగుల పథకం,pension,6000,వికలాంగులకు సహాయం,2025-12-31,Data/ben_vikala.csv,
+4,MATSYAKARA_BHAROSA,మత్స్యకార భరోసా,state,20000,రాష్ట్ర పరిరక్షణ మరియు సహాయం,,Data/ben_matsy.csv,
+5,RAITU_BAROSA,రైతు బరోసా,state,14000,రైతులకు ఆర్థిక సహాయం,,Data/ben_raitu.csv,
+6,CENTRAL_SUPPORT,కేంద్ర సహాయం,central,6000,కేంద్ర సపోర్ట్,,Data/ben_central.csv,
+7,HOME_LAND,ఇల్లు కోసం భూమి,state,0,రాష్ట్ర+కేంద్ర భూసహాయం,,Data/ben_house.csv,
+8,TALLIKI_VANDANAM,తల్లికి వందనం,state,20000,ప్రతి సంతానం కొరకు అవార్డు,,Data/ben_children.csv
