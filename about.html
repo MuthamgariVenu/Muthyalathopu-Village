@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="te">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ముత్యాలోopu — About (Map)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ముత్యాలలోపు — గ్రామం గురించి</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -11,100 +11,160 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body{ font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#f8fafc; color:#0f172a; margin:0; padding-top:72px; }
-    header{ position:fixed; top:0; left:0; right:0; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.06); z-index:40; }
-    main{ max-width:1100px; margin:0 auto; padding:18px; }
-    #map{ width:100%; height:520px; border-radius:10px; overflow:hidden; }
-    .card{ background:white; border-radius:10px; padding:12px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
-    .muted{ color:#6b7280; }
+    :root{ --bg:#f8fafc; --card:#fff; --muted:#6b7280; --accent:#f97316; --text:#0f172a; }
+    .moon{ --bg:#07102a; --card:rgba(255,255,255,0.04); --muted:#cbd5e1; --accent:#fb923c; --text:#e6f0ff; }
+
+    body{ margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text); }
+    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--card); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
+    .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; gap:12px; }
+    .logo{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
+    main{ max-width:1100px; margin:0 auto; padding:92px 14px 28px; }
+
+    .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
+    #map{ width:100%; height:520px; border-radius:8px; overflow:hidden; }
+
+    .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; }
+    .tiny{ font-size:0.9rem; }
   </style>
 </head>
-<body>
+<body id="body">
 
 <header>
-  <div class="max-w-6xl mx-auto p-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="text-sm telugu card px-3 py-2">Back to Dashboard</a>
-      <div class="text-lg font-semibold telugu">గ్రామం గురించి — ముత్యాలోopu (About)</div>
+  <div class="hdr">
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="index.html" class="btn telugu tiny">← డాష్‌బోర్డ్</a>
+      <div>
+        <div class="font-semibold telugu">గ్రామం గురించి — ముత్యాలలోపు</div>
+        <div class="tiny muted telugu">సాటిలైట్ మ్యాప్ & గ్రామ పెద్దలు</div>
+      </div>
     </div>
-    <div class="muted text-sm telugu">Map centered on Mutyalathopupalem — Satellite default</div>
+    <div>
+      <!-- small moon toggle (desktop) -->
+      <button id="moonToggle" class="btn" title="రాత్రి/పగలు">🌙</button>
+    </div>
   </div>
 </header>
 
 <main>
-  <!-- Map first -->
+  <!-- Map card -->
   <div class="card mb-4">
-    <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (సాటెలైట్) — Mutyalathopupalem</h3>
+    <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (సాటిలైట్)</h3>
     <div id="map" class="mt-3"></div>
-    <div class="muted text-sm mt-2 telugu">Boundary shown if Data/mutyalathopu_boundary.geojson exists. Click marker for Google directions.</div>
+    <div class="muted tiny telugu mt-2">సరిహద్దు GeoJSON(ఉన్నట్లయితే) చూపబడుతుంది. మరియూ ఇంటి మార్కర్లు CSV ద్వారా వచ్చి కనిపిస్తాయి.</div>
   </div>
 
-  <!-- Below map: other about info (same as dashboard if needed) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="card">
-      <h4 class="font-semibold telugu">మౌలిక సమాచారం</h4>
-      <div id="basicInfo" class="muted text-sm mt-2">లోడ్ అవుతుంది...</div>
+  <!-- Elders carousel -->
+  <div class="card mb-4">
+    <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
+    <div id="eldersCarousel" class="mt-3"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button id="prevE" class="btn telugu">ముందుకు</button>
+      <button id="nextE" class="btn telugu">తర్వాత</button>
     </div>
-    <div class="card">
-      <h4 class="font-semibold telugu">ఫొటోలు & ఇన్ఫో</h4>
-      <div class="muted text-sm mt-2">ఇక్కడ మీకు కావలసిన వివరాలు ఇస్తాం.</div>
-    </div>
+  </div>
+
+  <!-- Basic info below (optional repeat) -->
+  <div class="card mb-4">
+    <h4 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h4>
+    <div id="basicInfo" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
   </div>
 </main>
 
 <script>
-/* Leaflet map init with Satellite default and GeoJSON border support */
-const center = [14.4371, 80.0224]; // approx center of Mutyalathopupalem
+/* theme toggle */
+const moonToggle = document.getElementById('moonToggle');
+function applyMoonFlag(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1':'0'); moonToggle.textContent = v ? '🌞':'🌙'; }
+const storedMoon = localStorage.getItem('muthya_moon') === '1';
+applyMoonFlag(storedMoon);
+moonToggle.addEventListener('click', ()=> applyMoonFlag(!document.documentElement.classList.contains('moon')));
+
+/* Leaflet map init */
+const center = [14.4371,80.0224];
 const map = L.map('map', { zoomControl:true }).setView(center, 16);
+const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, attribution:'Tiles © Esri' }).addTo(map);
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19, attribution:'© OpenStreetMap' });
+L.control.layers({'Satellite':esri,'Road':osm}, null, { position:'topright', collapsed:false }).addTo(map);
 
-// Esri World Imagery (satellite) as default
-const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-  attribution:'Tiles © Esri', maxZoom: 19
-}).addTo(map);
-
-// Optional road layer
-const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 });
-
-L.control.layers({ 'Satellite': esri, 'Road': osm }, null, { position:'topright', collapsed:false }).addTo(map);
-
-/* Try load GeoJSON boundary if present */
-fetch('Data/mutyalathopu_boundary.geojson').then(r=>{
-  if(!r.ok) throw 'no geojson';
-  return r.json();
-}).then(geo=>{
-  // style
-  const style = { color:'#ff6b00', weight:3, fill:false };
-  const layer = L.geoJSON(geo, { style }).addTo(map);
+/* try load GeoJSON boundary */
+fetch('Data/mutyalathopu_boundary.geojson').then(r=> r.ok ? r.json() : Promise.reject('no')).then(geo=>{
+  const layer = L.geoJSON(geo, { style:{ color:'#ff6b00', weight:3, fill:false } }).addTo(map);
   map.fitBounds(layer.getBounds().pad(0.15));
-}).catch(e=>{
-  // fallback: show a few sample household markers from Data/households.csv (if present)
-  fetch('Data/households.csv').then(r=> r.ok ? r.text() : Promise.reject('no csv')).then(txt=>{
-    // parse CSV (simple)
+}).catch(async ()=>{
+  // fallback: load households.csv markers if exist
+  try{
+    const txt = await (await fetch('Data/households.csv')).text();
     const rows = Papa.parse(txt, { header:true }).data;
     const markers = [];
-    rows.forEach(rw=>{
-      const lat = parseFloat(rw.lat||rw.latitude||'');
-      const lon = parseFloat(rw.lon||rw.longitude||'');
+    rows.forEach(r=>{
+      const lat = parseFloat(r.lat || r.latitude || '');
+      const lon = parseFloat(r.lon || r.longitude || '');
       if(!isFinite(lat) || !isFinite(lon)) return;
-      const m = L.marker([lat,lon]).addTo(map).bindPopup(`<div style="font-weight:600">${rw.name||rw.house_id||''}</div><div style="font-size:12px">${rw.address||''}</div><div style="margin-top:6px"><a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}">Google దిశలు</a></div>`);
+      const m = L.marker([lat,lon]).addTo(map).bindPopup(`<div style="font-weight:600">${r.name||r.house_id||''}</div><div style="font-size:12px">${r.address||''}</div><div style="margin-top:6px"><a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}">Google దిశలు</a></div>`);
       markers.push(m);
     });
     if(markers.length){ const g=L.featureGroup(markers); map.fitBounds(g.getBounds().pad(0.15)); }
-  }).catch(_=>{
-    // nothing available — keep center
+  }catch(e){
     map.setView(center,16);
     L.marker(center).addTo(map).bindPopup('Mutyalathopupalem approximate center').openPopup();
-  });
+  }
 });
 
-/* Basic info loader (same CSV as dashboard) */
-function loadCSVText(path){ return fetch(path).then(r=> r.ok ? r.text() : Promise.reject('no')).then(t => Papa.parse(t, { header:true }).data); }
-loadCSVText('Data/village_info.csv').then(rows=>{
-  const r = rows[0]||{};
-  document.getElementById('basicInfo').innerHTML = `<div><strong>గ్రామం:</strong> ${r.village_name_tel||''} ${r.village_name_en? '('+r.village_name_en+')':''}</div><div><strong>మండలం:</strong> ${r.mandal||''}</div><div><strong>జిల్లా:</strong> ${r.district||''}</div>`;
-}).catch(e=>{
-  document.getElementById('basicInfo').innerHTML = `<div class="muted telugu">Village info not available</div>`;
-});
+/* elders carousel (use village_peddalu.csv) */
+let eidx=0, elders=[];
+async function renderElders(){
+  try{
+    const rows = await fetch('Data/village_peddalu.csv').then(r=> r.ok ? r.text() : Promise.reject('no')).then(t=> Papa.parse(t, { header:true }).data);
+    elders = rows || [];
+  }catch(e){ elders = []; }
+
+  const wrap = document.getElementById('eldersCarousel');
+  if(!elders.length){ wrap.innerHTML = '<div class="muted telugu tiny p-4">గ్రామ పెద్దల వివరాలు అందుబాటులో లేవు.</div>'; return; }
+
+  function show(i){
+    eidx = (i + elders.length) % elders.length;
+    const it = elders[eidx];
+    const role = it.role_tel || it.role || '';
+    const name = it.name_tel || it.name || '';
+    const note = it.note_tel || it.note || '';
+    const photo = it.photo_url || it.photo || 'images/pedda.jpg';
+    wrap.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="width:84px;height:84px;border-radius:9999px;overflow:hidden;background:#f3f4f6;">
+          <img src="${photo}" alt="${name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='images/pedda.jpg'">
+        </div>
+        <div>
+          <div class="font-semibold telugu">${role}</div>
+          <div class="text-lg font-bold telugu">${name}</div>
+          <div class="muted telugu tiny mt-1">${note}</div>
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById('prevE').onclick = ()=> { show(eidx-1); resetAuto(); };
+  document.getElementById('nextE').onclick = ()=> { show(eidx+1); resetAuto(); };
+  show(0);
+  function auto(){ window._eldersTimer = setInterval(()=> show(eidx+1), 5000); }
+  function resetAuto(){ clearInterval(window._eldersTimer); auto(); }
+  auto();
+}
+renderElders();
+
+/* basic info (also show here) */
+async function renderBasic(){
+  try{
+    const txt = await (await fetch('Data/village_info.csv')).text();
+    const rows = Papa.parse(txt, { header:true }).data;
+    const r = rows && rows[0] ? rows[0] : {};
+    const v_tel = r.village_name_tel || r.village_name_en || 'ముత్యాలలోపు';
+    const mandal = r.mandal_tel || r.mandal || '';
+    const district = r.district_tel || r.district || '';
+    document.getElementById('basicInfo').innerHTML = `<div><strong>గ్రామం:</strong> ${v_tel}</div><div><strong>మండలం:</strong> ${mandal}</div><div><strong>జిల్లా:</strong> ${district}</div>`;
+  }catch(e){
+    document.getElementById('basicInfo').innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>';
+  }
+}
+renderBasic();
+
 </script>
 </body>
 </html>
