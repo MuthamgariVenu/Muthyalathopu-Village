@@ -3,194 +3,162 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ముత్యాలలోపు గ్రామానికి స్వాగతం</title>
+  <title>ముత్యాలలోపు — డాష్‌బోర్డ్</title>
 
-  <!-- Tailwind for quick styling -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse to read CSV files -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
-    :root{
-      --bg:#f8fafc; --card:#ffffff; --muted:#6b7280; --accent:#f97316; --text:#0f172a;
-    }
+    :root{ --bg:#f8fafc; --card:#fff; --muted:#6b7280; --accent:#f97316; --text:#0f172a; }
     .moon{ --bg:#07102a; --card:rgba(255,255,255,0.04); --muted:#cbd5e1; --accent:#fb923c; --text:#e6f0ff; }
 
-    html,body{ height:100%; margin:0; }
-    body{
-      font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
-      background:var(--bg); color:var(--text);
-      transition: background .18s, color .18s;
-    }
+    html,body{height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
+    body{ background:var(--bg); color:var(--text); transition:.18s; }
 
-    /* Header fixed */
     header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--card); box-shadow:0 2px 6px rgba(2,6,23,0.06); }
-    .hdr { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; }
-    .hdr-left { display:flex; gap:10px; align-items:center; min-width:0; }
-    .logo { width:44px; height:44px; border-radius:8px; object-fit:cover; }
-    .title-main { font-weight:700; font-size:1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .title-sub { font-size:0.78rem; color:var(--muted); }
+    .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; gap:12px; }
+    .logo{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
+    .title-main{ font-weight:700; font-size:1rem; }
+    .title-sub{ font-size:0.78rem; color:var(--muted); }
 
-    /* modules visible only on >=768px */
-    .modules { display:none; gap:10px; }
-    @media(min-width:768px){ .modules{ display:flex; } .hdr{ padding:14px 18px; } .title-main{ font-size:1.25rem; } }
+    .modules{ display:none; gap:10px; }
+    @media(min-width:768px){ .modules{ display:flex; } .title-main{ font-size:1.2rem; } .hdr{ padding:14px 18px; } }
 
-    /* main spacing to avoid header overlap */
-    main{ max-width:1100px; margin:0 auto; padding:96px 14px 36px; }
+    main{ max-width:1100px; margin:0 auto; padding:92px 14px 28px; }
 
     .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
     .muted{ color:var(--muted); }
     .accent{ color:var(--accent); }
     a.link{ color:var(--accent); text-decoration:none; }
 
-    /* Flash ticker slow */
     .ticker{ white-space:nowrap; overflow:hidden; }
     .ticker__move{ display:inline-block; padding-left:100%; animation:ticker 55s linear infinite; }
-    @keyframes ticker{ 0%{ transform:translateX(0);} 100%{ transform:translateX(-100%);} }
+    @keyframes ticker{ 0%{ transform:translateX(0);}100%{ transform:translateX(-100%);} }
 
-    /* mobile menu panel */
+    /* mobile menu */
     #mobileMenu{ position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:flex-end; }
     #mobileMenu .backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-    #mobileMenu .panel{ position:relative; width:84%; max-width:320px; height:100%; background:var(--card); padding:16px; overflow:auto; box-shadow:-8px 0 20px rgba(2,6,23,0.12); }
+    #mobileMenu .panel{ position:relative; width:84%; max-width:320px; background:var(--card); height:100%; padding:16px; overflow:auto; box-shadow:-8px 0 20px rgba(2,6,23,0.12); }
 
-    .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); font-size:0.95rem; }
-
-    /* small utilities */
+    .btn{ padding:8px 12px; border-radius:8px; background:#f3f4f6; cursor:pointer; border:1px solid rgba(2,6,23,0.03); }
     .tiny{ font-size:0.88rem; }
+    .toggle-small{ padding:6px; border-radius:8px; font-size:16px; }
   </style>
 </head>
 <body id="body">
 
-  <!-- HEADER -->
-  <header>
-    <div class="hdr">
-      <div class="hdr-left">
-        <img src="images/logo.png" alt="లాగో" class="logo" onerror="this.style.display='none'">
-        <div style="min-width:0;">
-          <div class="title-main telugu">ముత్యాలలోపు గ్రామానికి స్వాగతం</div>
-          <div class="title-sub telugu">మన ఊరి సమాచారం — తెలుగు</div>
-        </div>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:10px;">
-        <!-- desktop modules (hidden on mobile) -->
-        <nav class="modules" aria-label="Modules">
-          <a href="about.html" class="btn telugu tiny">గ్రామం గురించి</a>
-          <a href="schemes.html" class="btn telugu tiny">పథకాలు</a>
-          <a href="admin.html" class="btn telugu tiny">నిర్వాహకులు</a>
-        </nav>
-
-        <!-- mobile hamburger (only visible on mobile) -->
-        <button id="openMenuBtn" class="btn md:hidden" aria-label="మెను">☰</button>
+<header>
+  <div class="hdr">
+    <div style="display:flex;gap:10px;align-items:center;min-width:0;">
+      <img src="images/logo.png" alt="లాగో" class="logo" onerror="this.style.display='none'">
+      <div style="min-width:0;">
+        <div class="title-main telugu">ముత్యాలలోపు గ్రామానికి స్వాగతం</div>
+        <div class="title-sub telugu">మన ఊరి సమాచారం — తెలుగు</div>
       </div>
     </div>
-  </header>
 
-  <!-- MOBILE MENU PANEL -->
-  <div id="mobileMenu" aria-hidden="true">
-    <div class="backdrop" onclick="closeMenu()"></div>
-    <div class="panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="display:flex;gap:10px;align-items:center;">
-          <img src="images/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
-          <div>
-            <div class="font-semibold telugu">ముత్యాలలోపు</div>
-            <div class="tiny muted telugu">మెనూ</div>
-          </div>
-        </div>
-        <button onclick="closeMenu()" class="btn">✕</button>
-      </div>
-
-      <nav class="space-y-3">
-        <a href="about.html" class="block p-3 rounded card telugu">గ్రామం గురించి</a>
-        <a href="schemes.html" class="block p-3 rounded card telugu">పథకాలు</a>
-        <a href="admin.html" class="block p-3 rounded card telugu">నిర్వాహకులు</a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <!-- desktop modules -->
+      <nav class="modules">
+        <a href="about.html" class="btn telugu tiny">గ్రామం గురించి</a>
+        <a href="schemes.html" class="btn telugu tiny">పథకాలు</a>
+        <a href="admin.html" class="btn telugu tiny">నిర్వాహకులు</a>
       </nav>
 
-      <div style="margin-top:18px;">
-        <div class="tiny muted telugu">భాష: తెలుగు</div>
+      <!-- mobile hamburger -->
+      <button id="openMenuBtn" class="btn md:hidden" aria-label="మెనూ">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile menu -->
+<div id="mobileMenu" aria-hidden="true">
+  <div class="backdrop" onclick="closeMenu()"></div>
+  <div class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <img src="images/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+        <div>
+          <div class="font-semibold telugu">ముత్యాలలోపు</div>
+          <div class="tiny muted telugu">మెనూ</div>
+        </div>
       </div>
+      <button onclick="closeMenu()" class="btn">✕</button>
+    </div>
+
+    <nav class="space-y-3">
+      <a href="about.html" class="block p-3 rounded card telugu">గ్రామం గురించి</a>
+      <a href="schemes.html" class="block p-3 rounded card telugu">పథకాలు</a>
+      <a href="admin.html" class="block p-3 rounded card telugu">నిర్వాహకులు</a>
+    </nav>
+
+    <div style="margin-top:18px; display:flex; align-items:center; justify-content:space-between;">
+      <div class="tiny muted telugu">భాష: తెలుగు</div>
+      <!-- small moonlight toggle in sidebar -->
+      <button id="moonToggleSidebar" class="toggle-small" title="రాత్రి/పగలు">🌙</button>
+    </div>
+
+  </div>
+</div>
+
+<main>
+  <!-- Flash -->
+  <section class="card mb-4">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
+      <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
+    </div>
+  </section>
+
+  <!-- Basic info -->
+  <section class="card mb-4">
+    <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
+    <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
+  </section>
+
+  <!-- Water & Helpline -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div class="card">
+      <h4 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h4>
+      <div id="waterContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
+    </div>
+    <div class="card">
+      <h4 class="font-semibold telugu">అత్యావశ్యక సహాయం & హెల్ప్‌లైన్</h4>
+      <div id="helplineContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
     </div>
   </div>
 
-  <!-- MAIN -->
-  <main>
-    <!-- Flash news -->
-    <section class="card mb-4">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
-        <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
-      </div>
-    </section>
+  <!-- Schemes placeholder -->
+  <section class="card mb-4">
+    <h4 class="font-semibold telugu">పథకాలు</h4>
+    <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం "పథకాలు" పేజీ చూడండి.</div>
+  </section>
 
-    <!-- Basic Info immediately -->
-    <section class="card mb-4">
-      <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
-      <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-    </section>
-
-    <!-- Water & Electricity and Helpline -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <div class="card">
-        <h4 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h4>
-        <div id="waterContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-      </div>
-
-      <div class="card">
-        <h4 class="font-semibold telugu">అత్యావశ్యక సహాయం & హెల్ప్‌లైన్</h4>
-        <div id="helplineContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
-      </div>
-    </div>
-
-    <!-- Peddalu carousel + sachivalayam (grid) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-      <div class="md:col-span-2 card">
-        <h4 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h4>
-        <div id="peddaluCarousel" class="mt-3"></div>
-        <div style="display:flex;gap:8px;margin-top:10px;">
-          <button id="prevP" class="btn telugu">ముందుకు</button>
-          <button id="nextP" class="btn telugu">తర్వాత</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h4 class="font-semibold telugu">సచివాలయం సమాచారం</h4>
-        <div id="sachivalayamCard" class="mt-2 telugu tiny">
-          <div><strong>సచివాలయ అధికారి:</strong> <span id="secName">—</span></div>
-          <div>ఫోన్: <a id="secPhone" class="link" href="#">—</a></div>
-          <div class="mt-2"><strong>VRO:</strong> <span id="vroName">—</span></div>
-          <div>ఫోన్: <a id="vroPhone" class="link" href="#">—</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- schemes placeholder -->
-    <section class="card mb-4">
-      <h4 class="font-semibold telugu">పథకాలు</h4>
-      <div class="muted mt-2 telugu tiny">పథకాల వివరాలకు పథకాలు పేజీ చూడండి.</div>
-    </section>
-
-    <footer class="text-center muted tiny telugu mt-6">© ముత్యాలలోపు గ్రామం</footer>
-  </main>
+  <footer class="text-center muted tiny telugu mt-6">© ముత్యాలలోపు గ్రామం</footer>
+</main>
 
 <script>
-/* Mobile menu open/close */
+/* mobile menu open/close */
 const mobileMenu = document.getElementById('mobileMenu');
 function openMenu(){ mobileMenu.style.display='flex'; mobileMenu.setAttribute('aria-hidden','false'); }
 function closeMenu(){ mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); }
 document.getElementById('openMenuBtn').addEventListener('click', openMenu);
 
-/* CSV loader (PapaParse) */
+/* moon toggle in sidebar */
+const moonToggleSidebar = document.getElementById('moonToggleSidebar');
+function applyMoon(v){ document.documentElement.classList.toggle('moon', v); localStorage.setItem('muthya_moon', v ? '1':'0'); moonToggleSidebar.textContent = v ? '🌞':'🌙'; }
+const stored = localStorage.getItem('muthya_moon') === '1';
+applyMoon(stored);
+moonToggleSidebar.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
+
+/* CSV loader */
 function loadCSV(path){
-  return new Promise((resolve,reject)=>{
-    Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
-      complete: res => resolve(res.data),
-      error: err => reject(err)
-    });
+  return new Promise((res,rej)=> {
+    Papa.parse(path, { download:true, header:true, skipEmptyLines:true, complete: r=> res(r.data), error: e=> rej(e) });
   });
 }
 
-/* ---------- FLASH NEWS (Telugu) ---------- */
+/* Flash */
 async function renderFlash(){
   const el = document.getElementById('flashTicker');
   try{
@@ -198,88 +166,45 @@ async function renderFlash(){
     if(!rows || !rows.length) throw 'no';
     const parts = rows.map(r => {
       const d = r.date ? `[ ${r.date} ] ` : '';
-      // prefer Telugu title if present (title_tel) else title
       const title = r.title_tel || r.title || '';
       const desc = r.description_tel || r.description || '';
       return `${d}${title} — ${desc}`;
     });
-    const mover = document.createElement('div'); mover.className = 'ticker__move telugu tiny';
-    mover.textContent = parts.join('   ⚫   ');
-    el.innerHTML=''; el.appendChild(mover);
+    const m = document.createElement('div'); m.className = 'ticker__move telugu tiny';
+    m.textContent = parts.join('   ⚫   ');
+    el.innerHTML=''; el.appendChild(m);
   }catch(e){
     el.innerHTML = '<div class="muted telugu tiny">తాజా వార్తలు లేవు</div>';
   }
 }
 
-/* ---------- Translate / mapping helpers ---------- */
-/* Map some common mandal/district English -> Telugu (add more as needed) */
-const placeMap = {
-  'thotapalligudur': 'తోటపల్లిగూడూరు',
-  'thotapalligudurr': 'తోటపల్లిగూడూరు',
-  'thotapalligudur mandal': 'తోటపల్లిగూడూరు',
-  'nellore': 'నెల్లూరు',
-  'nellore district': 'నెల్లూరు'
-};
-
-function translatePlace(s){
-  if(!s) return s;
-  const key = s.toString().trim().toLowerCase();
-  return placeMap[key] || s;
-}
-
-/* ---------- BASIC INFO (Telugu-first) ---------- */
+/* Basic info */
 async function renderBasicInfo(){
   const el = document.getElementById('basicInfoContent');
   try{
     const rows = await loadCSV('Data/village_info.csv');
     const r = rows && rows[0] ? rows[0] : null;
     if(!r) throw 'no';
-    // prefer Telugu columns if present else fallback
-    const v_tel = r.village_name_tel || r.village_tel || r.village_name || r.village_name_en || '';
-    const v_en  = r.village_name_en || r.village_name || '';
-    const mandal_raw = r.mandal || r.mandal_en || r.mandal_name || '';
-    const district_raw = r.district || r.district_en || r.district_name || '';
-    const mandal = translatePlace(mandal_raw);
-    const district = translatePlace(district_raw);
-
-    const pop_total = r.pop_total || r.population || r.total_population || '';
-    const pop_male = r.pop_male || r.males || '';
-    const pop_female = r.pop_female || r.females || '';
-    const houses = r.total_houses || r.houses || r.house_count || '';
-    const main_occ = r.main_occupations || r.occupations || r.main_activities || '';
-
+    const v_tel = r.village_name_tel || r.village_name_en || '';
+    const mandal = (r.mandal_tel || r.mandal) ? (r.mandal_tel || r.mandal) : (r.mandal || '');
+    const district = (r.district_tel || r.district) ? (r.district_tel || r.district) : (r.district || '');
     el.innerHTML = `
-      <div><strong>గ్రామం:</strong> ${v_tel || v_en || 'ముత్యాలలోపు'} ${v_en ? '('+v_en+')' : ''}</div>
+      <div><strong>గ్రామం:</strong> ${v_tel || 'ముత్యాలలోపు'}</div>
       <div><strong>మండలం:</strong> ${mandal || '—'}</div>
       <div><strong>జిల్లా:</strong> ${district || '—'}</div>
-      <div><strong>సంఖ్యలు:</strong> జనాభా మొత్తం ${pop_total || '—'} (పురుషులు ${pop_male || '—'}, మహిళలు ${pop_female || '—'})</div>
-      <div><strong>ఇళ్ళ సంఖ్య:</strong> ${houses || '—'}</div>
-      <div><strong>ప్రధాన కార్యకలాపాలు:</strong> ${main_occ || '—'}</div>
+      <div><strong>సంఖ్యలు:</strong> జనాభా మొత్తం ${r.pop_total||r.population||'—'} (పురుషులు ${r.pop_male||'—'}, మహిళలు ${r.pop_female||'—'})</div>
+      <div><strong>ఇళ్ళ సంఖ్య:</strong> ${r.total_houses||'—'}</div>
+      <div><strong>ప్రధాన కార్యకలాపాలు:</strong> ${r.main_occupations||'—'}</div>
     `;
   }catch(e){
-    el.innerHTML = `<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు — Data/village_info.csv అప్డేట్ చేయండి.</div>`;
+    el.innerHTML = '<div class="muted telugu tiny">గ్రామ సమాచారం అందుబాటులో లేదు.</div>';
   }
 }
 
-/* ---------- WATER & ELECTRICITY (Telugu labels) ---------- */
-const waterKeyMap = {
-  'bore':'బోరు',
-  'bores':'బోర్లు',
-  'borewells':'బోర్లు',
-  'water_supply_schedule':'నీటి సరఫరా షెడ్యూల్',
-  'water_supply':'నీటి సరఫరా',
-  'electricity_line':'విద్యుత్ లైన్ / ఉపకేంద్రం',
-  'electricity':'విద్యుత్',
-  'substation':'సబ్ స్టేషన్'
-};
-function translateWaterKey(k){
-  if(!k) return k;
-  k = k.toString().toLowerCase().trim();
-  for(const key in waterKeyMap){
-    if(k === key || k.includes(key)) return waterKeyMap[key];
-  }
-  return k.replace(/_/g,' ');
-}
+/* Water & Helpline (Telugu labels mapping) */
+const waterMap = { 'water_supply_schedule':'నీటి సరఫరా షెడ్యూల్', 'bore':'బోరు', 'bores':'బోర్లు', 'electricity_line':'విద్యుత్ లైన్ / సబ్ స్టేషన్' };
+function translateWaterKey(k){ if(!k) return k; k=k.toLowerCase(); for(const key in waterMap){ if(k.includes(key)) return waterMap[key]; } return k.replace(/_/g,' '); }
+
 async function renderWater(){
   const el = document.getElementById('waterContent');
   try{
@@ -288,14 +213,9 @@ async function renderWater(){
     let html = '';
     rows.forEach(r=>{
       if(r.type && r.detail){
-        html += `<div><strong>${translateWaterKey(r.type)}:</strong> ${r.detail || '—'}</div>`;
+        html += `<div><strong>${translateWaterKey(r.type)}:</strong> ${r.detail||'—'}</div>`;
       } else {
-        // iterate keys
-        for(const key in r){
-          const val = r[key];
-          if(!val) continue;
-          html += `<div><strong>${translateWaterKey(key)}:</strong> ${val}</div>`;
-        }
+        for(const k in r){ if(!r[k]) continue; html += `<div><strong>${translateWaterKey(k)}:</strong> ${r[k]}</div>`; }
       }
     });
     el.innerHTML = html;
@@ -304,18 +224,13 @@ async function renderWater(){
   }
 }
 
-/* ---------- HELPLINE (Telugu) ---------- */
 async function renderHelpline(){
   const el = document.getElementById('helplineContent');
   try{
     const rows = await loadCSV('Data/helpline.csv');
     if(!rows || !rows.length) throw 'no';
     let html = '<ul class="list-disc pl-5 telugu tiny">';
-    rows.forEach(r=>{
-      const role = r.role_tel || r.role || r.name || '';
-      const phone = r.phone || r.contact || '';
-      html += `<li><strong>${role}:</strong> <a class="link" href="tel:${phone}">${phone || '—'}</a></li>`;
-    });
+    rows.forEach(r=> { html += `<li><strong>${r.role_tel || r.role || r.name || '—'}:</strong> <a class="link" href="tel:${r.phone || r.contact || ''}">${r.phone||r.contact||'—'}</a></li>`; });
     html += '</ul>';
     el.innerHTML = html;
   }catch(e){
@@ -323,65 +238,8 @@ async function renderHelpline(){
   }
 }
 
-/* ---------- PEDDALU CAROUSEL (fixed to show) ---------- */
-let pidx = 0, pslides = [], pAutoTimer;
-async function renderPeddalu(){
-  const wrap = document.getElementById('peddaluCarousel');
-  try{
-    const rows = await loadCSV('Data/village_peddalu.csv');
-    pslides = rows || [];
-  }catch(e){ pslides = []; }
-
-  if(!pslides.length){
-    wrap.innerHTML = '<div class="muted telugu tiny p-4">గ్రామ పెద్దల సమాచారము లేదు.</div>'; return;
-  }
-
-  function show(i){
-    pidx = (i + pslides.length) % pslides.length;
-    const it = pslides[pidx];
-    // prefer telugu role/name fields if present
-    const role = it.role_tel || it.role || '';
-    const name = it.name_tel || it.name || '';
-    const note = it.note_tel || it.note || '';
-    const photo = it.photo_url || it.photo || 'images/pedda.jpg';
-    wrap.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:72px;height:72px;border-radius:9999px;overflow:hidden;background:#f3f4f6;">
-          <img src="${photo}" alt="${name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='images/pedda.jpg'">
-        </div>
-        <div>
-          <div class="font-semibold telugu">${role}</div>
-          <div class="text-lg font-bold telugu">${name}</div>
-          <div class="muted telugu tiny mt-1">${note}</div>
-        </div>
-      </div>
-    `;
-  }
-
-  document.getElementById('prevP').onclick = ()=> { show(pidx-1); resetAuto(); };
-  document.getElementById('nextP').onclick = ()=> { show(pidx+1); resetAuto(); };
-  show(0);
-
-  function auto(){ pAutoTimer = setInterval(()=> show(pidx+1), 4500); }
-  function resetAuto(){ clearInterval(pAutoTimer); auto(); }
-  auto();
-}
-
-/* ---------- Sachivalayam static details (can be read from CSV later) ---------- */
-function fillSachivalayam(){
-  document.getElementById('secName').textContent = 'ఎం. సీతారాం';
-  const secPhone = document.getElementById('secPhone'); secPhone.textContent = '+91 98765 43210'; secPhone.href='tel:+919876543210';
-  document.getElementById('vroName').textContent = 'బి. రవికాంత్';
-  const vroPhone = document.getElementById('vroPhone'); vroPhone.textContent = '+91 99887 66554'; vroPhone.href='tel:+919988766554';
-}
-
-/* ---------- Initialize everything ---------- */
-renderFlash();
-renderBasicInfo();
-renderWater();
-renderHelpline();
-renderPeddalu();
-fillSachivalayam();
+/* Init */
+renderFlash(); renderBasicInfo(); renderWater(); renderHelpline();
 
 </script>
 </body>
