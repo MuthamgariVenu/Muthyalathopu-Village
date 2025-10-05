@@ -1,232 +1,267 @@
 <!doctype html>
 <html lang="te">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>గ్రామం గురించి — ముత్యాలలోపు</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- PapaParse (if you want to load CSVs) -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ముత్యాలతోపు — మా ఊరు</title>
+  <meta name="description" content="ముత్యాలతోపు గ్రామం యొక్క పరిచయం, వివరాలు, పథకాలు మరియు సంప్రదాయాలు.">
   <style>
     :root{
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --muted: #6b7280;
-      --accent: #f97316;
-      --text: #0f172a;
-
-      /* BUTTONS (day) */
-      --btn-bg: #f3f4f6;
-      --btn-text: #0f172a;
-      --btn-border: rgba(2,6,23,0.06);
-
-      /* map poly color */
-      --poly-stroke: #fb923c;
-      --poly-fill: rgba(251,146,60,0.08);
+      --accent:#0ea5a4; /* teal */
+      --bg:#fff8f3; /* soft */
+      --dark:#0b1320;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.6);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Telugu', 'Noto Sans', sans-serif;
     }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#fffbf8 0%, #fff 100%);color:var(--dark);-webkit-font-smoothing:antialiased}
+    .container{max-width:1000px;margin:0 auto;padding:16px}
 
-    /* MOON theme */
-    .moon{
-      --bg: #07102a;
-      --card: rgba(255,255,255,0.03);
-      --muted: #cbd5e1;
-      --accent: #fb923c;
-      --text: #e6f0ff;
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+    .logo{font-weight:700;font-size:18px}
+    .icons{display:flex;gap:12px}
+    .icon-btn{background:transparent;border:none;font-size:18px}
 
-      --btn-bg: rgba(255,255,255,0.06);  /* visible button bg in dark */
-      --btn-text: #e6f0ff;
-      --btn-border: rgba(255,255,255,0.06);
+    /* Hero */
+    .hero{position:relative;border-radius:14px;overflow:hidden;background:#111;height:320px;display:flex;align-items:flex-end}
+    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center}
+    .hero .overlay{position:relative;padding:20px;color:white;width:100%}
+    .hero h1{margin:0;font-size:26px;line-height:1}
+    .tag{margin-top:6px;color:rgba(255,255,255,0.9);font-size:14px}
+    .chips{display:flex;gap:8px;margin-top:12px;overflow:auto;padding-bottom:8px}
+    .chip{background:rgba(255,255,255,0.12);padding:8px 12px;border-radius:999px;font-size:13px;backdrop-filter: blur(4px)}
+    .cta-row{display:flex;gap:8px;margin-top:12px}
+    .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:none;font-weight:600;flex:1}
+    .btn.secondary{background:transparent;color:white;border:1px solid rgba(255,255,255,0.18)}
 
-      --poly-stroke: #fb923c;
-      --poly-fill: rgba(251,146,60,0.06);
+    /* Quick facts */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+    .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 1px 6px rgba(16,24,40,0.06)}
+    .card h3{margin:0;font-size:14px}
+    .card p{margin:6px 0 0;font-size:18px;font-weight:700}
+
+    /* Intro & did you know */
+    .section{margin-top:18px}
+    .lead{font-size:15px;color:var(--muted);line-height:1.5}
+    .bullets{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+    .bullet{display:flex;gap:10px;align-items:flex-start}
+    .bullet .dot{width:10px;height:10px;background:var(--accent);border-radius:50%;margin-top:6px}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+    .gallery img{width:100%;height:100px;object-fit:cover;border-radius:8px}
+
+    /* Timeline */
+    .timeline{margin-top:16px}
+    .timeline-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0}
+    .timeline-item .year{min-width:60px;font-weight:700;color:var(--accent)}
+    .timeline-item .desc{color:var(--muted)}
+
+    /* Services */
+    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+    .service{display:flex;gap:10px;align-items:center;padding:10px;background:linear-gradient(180deg,#fff,#fff);border-radius:8px}
+    .service .icon{width:40px;height:40px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+    /* Schemes */
+    .schemes{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+    .scheme{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:var(--card)}
+    .scheme .meta{font-size:12px;color:var(--muted)}
+
+    /* Testimonials */
+    .testi{display:flex;gap:10px;overflow:auto;padding:8px 0}
+    .testi .box{min-width:220px;background:var(--card);padding:10px;border-radius:8px}
+    .testi .avatar{width:36px;height:36px;border-radius:50%;background:#eee;display:inline-block;margin-right:8px}
+
+    /* Map & contact */
+    .map{height:160px;background:#e6eef0;border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .contact-row{display:flex;gap:8px;margin-top:10px}
+    .phone{background:var(--accent);color:white;padding:10px;border-radius:10px;flex:1;text-align:center}
+    .pdf{background:#ffd6a5;color:#663c00;padding:10px;border-radius:10px;flex:1;text-align:center}
+
+    footer{margin:24px 0 60px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* Responsive */
+    @media(min-width:700px){
+      .hero{height:360px}
+      .grid{grid-template-columns:repeat(4,1fr)}
+      .gallery img{height:120px}
+      .services{grid-template-columns:repeat(4,1fr)}
     }
-
-    html,body { height:100%; margin:0; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text); transition:all .16s; }
-    header{ position:fixed; top:0; left:0; right:0; z-index:50; background:var(--card); padding:10px 14px; box-shadow:0 2px 6px rgba(2,6,23,0.06);}
-    .hdr{ max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .logo{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
-    .title-main{ font-weight:700; font-size:1.05rem; }
-    .title-sub{ font-size:0.82rem; color:var(--muted); }
-
-    main{ max-width:1100px; margin:0 auto; padding:76px 14px 36px; }
-
-    .card{ background:var(--card); border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(2,6,23,0.04); margin-bottom:14px; color:var(--text); }
-    .muted{ color:var(--muted); }
-    .accent{ color:var(--accent); }
-
-    /* Buttons use variables (ensures dark mode contrast) */
-    .btn{
-      display:inline-block;
-      padding:8px 12px;
-      border-radius:8px;
-      background:var(--btn-bg);
-      color:var(--btn-text);
-      border:1px solid var(--btn-border);
-      cursor:pointer;
-      font-weight:600;
-      text-decoration:none;
-    }
-    .btn:active{ transform:translateY(1px); }
-
-    /* Map container */
-    #map { height:420px; width:100%; border-radius:8px; }
-
-    .muted-note{ margin-top:8px; color:var(--muted); font-size:0.92rem; }
-
-    /* small responsive */
-    @media(max-width:640px){
-      #map{ height:320px; }
-      .hdr{ padding:8px 10px; }
-    }
-
   </style>
 </head>
-<body id="page">
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">ముత్యాతోపు</div>
+      <div class="icons">
+        <button class="icon-btn" aria-label="Share">🔗</button>
+        <button class="icon-btn" aria-label="Menu">☰</button>
+      </div>
+    </header>
 
-  <header>
-    <div class="hdr">
-      <div style="display:flex;gap:12px;align-items:center;">
-        <a href="index.html"><img src="images/logo.png" class="logo" alt="logo" onerror="this.style.display='none'"></a>
-        <div>
-          <div class="title-main telugu">గ్రామం గురించి — ముత్యాలలోపు</div>
-          <div class="title-sub telugu">మాప్ & సర్వీసులు</div>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="bg" aria-hidden="true"></div>
+      <div class="overlay">
+        <h1 id="hero-title">ముత్యాలతోపు — మా ఊరు, మా గర్వం</h1>
+        <div class="tag">సాంప్రదాయం, శ్రమ, అభివృద్ధి — చిన్న రూపంలో పెద్ద హృదయం.</div>
+        <div class="chips" aria-hidden="false">
+          <div class="chip">Population: <strong id="count-pop">1,200</strong></div>
+          <div class="chip">Households: <strong id="count-hh">300</strong></div>
+          <div class="chip">Last Fund: <strong id="count-fund">₹5,00,000</strong></div>
+        </div>
+        <div class="cta-row">
+          <button class="btn" id="view-data">గ్రామం వివరాలు చూడండి</button>
+          <button class="btn secondary" id="download-pdf">ఒక పేజీ డౌన్లోడ్</button>
         </div>
       </div>
-
-      <div style="display:flex;gap:8px;align-items:center;">
-        <a href="index.html" class="btn telugu">← డ్యాష్‌బోర్డ్</a>
-        <button id="moonToggle" class="btn" title="రాత్రి/పగల-toggle">🌙</button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="card">
-      <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (సాటిలైట్)</h3>
-      <div id="map" aria-label="Village map"></div>
-      <div class="muted-note telugu">
-        జియోఐస్ఓఎన్ (GeoJSON) ఫైల్ ఉంటే చూపబడుతుంది. లేకపోతే అందుబాటులో లేని సందేశం వస్తుంది.  
-        — GitHub లో `Data/muthyalathopu.geojson` పెట్టి రీ-ఫ్రెష్ చేయండి.
-      </div>
     </section>
 
-    <section class="card" id="basicInfo">
-      <h3 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h3>
-      <div class="muted telugu tiny">
-        బోర్లు: 5<br>
-        నీటి సరఫరా షెడ్యూల్: 6:00-8:00 AM<br>
-        విద్యుత్ లైన్ / ఉపకేంద్రమ్: సబ్ స్టేషన్ 33/11kV
+    <!-- Quick facts -->
+    <section class="grid section" aria-labelledby="quick-facts">
+      <div class="card"><h3>గ్రామ పేరు</h3><p>ముత్యాలోపు</p></div>
+      <div class="card"><h3>పంచాయతీ</h3><p>ముత్యательно</p></div>
+      <div class="card"><h3>జిల్లా</h3><p>Nellore</p></div>
+      <div class="card"><h3>మండలం</h3><p>Indukurpet</p></div>
+    </section>
+
+    <!-- Intro -->
+    <section class="section">
+      <p class="lead">ముత్యాలతోపులో సుమారు 1,200 మంది నివాసం. ఇక్కడి ప్రధాన సంపాదన వ్యవసాయం; పల్లె కుటుంబాలు పథకాల ద్వారా అభివృద్ధి చెందుతున్నాయి. ఈ పేజీ ద్వారా గ్రామం యొక్క మౌలిక సౌకర్యాలు, పథకాలు మరియు తాజా వివరాలు ఒకే చోట చూడొచ్చు.</p>
+      <div class="bullets">
+        <div class="bullet"><div class="dot" aria-hidden></div><div><strong>ఇప్పటివరకు ₹5 లక్షల రూపాయల ఫండ్స్ విడుదలయ్యాయి.</strong></div></div>
+        <div class="bullet"><div class="dot" aria-hidden></div><div><strong>గ్రామానికి దగ్గరలో 2 కి.మీ. చిన్న డ్యామ్ ఉంది.</strong></div></div>
+        <div class="bullet"><div class="dot" aria-hidden></div><div><strong>ప్రతి ఏప్రిల్‌లో జరిగే వార్షిక ఉత్సవం ప్రసిద్ధి.</strong></div></div>
       </div>
     </section>
 
-    <section class="card">
-      <h3 class="font-semibold telugu">అత్యవసర సహాయం & హెల్ప్‌లైన్</h3>
-      <ul class="muted telugu" style="margin:8px 0 0 18px;">
-        <li>అంబులెన్స్: <a class="btn link" href="tel:+919812345678">+91 98123 45678</a></li>
-        <li>పోలీస్: <a class="btn link" href="tel:+919898765432">+91 98987 65432</a></li>
-        <li>VRO: <a class="btn link" href="tel:+919988766554">+91 99887 66554</a></li>
-      </ul>
+    <!-- Gallery -->
+    <section class="section" aria-labelledby="gallery-title">
+      <h2 id="gallery-title">ఛాయాచిత్రాలు</h2>
+      <div class="gallery">
+        <img src="https://images.unsplash.com/photo-1503280311550-3b9fe2d8e3c8?auto=format&fit=crop&w=800&q=60" alt="గ్రామ వీధి">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=60" alt="పాఠశాల">
+        <img src="https://images.unsplash.com/photo-1452948491236-4f6d8a3be4c9?auto=format&fit=crop&w=800&q=60" alt="పంటల పొలం">
+        <img src="https://images.unsplash.com/photo-1488504043456-bf98f6f6f2b4?auto=format&fit=crop&w=800&q=60" alt="ఉత్సవం">
+        <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c?auto=format&fit=crop&w=800&q=60" alt="హెల్త్ సెంటర్">
+        <img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=800&q=60" alt="పంచాయతీ కార్యాలయం">
+      </div>
     </section>
-  </main>
 
-<script>
-/* Theme toggle */
-const page = document.getElementById('page');
-const moonToggle = document.getElementById('moonToggle');
-function applyMoon(v){
-  document.documentElement.classList.toggle('moon', v);
-  localStorage.setItem('muthya_moon', v ? '1' : '0');
-  moonToggle.textContent = v ? '🌞' : '🌙';
-}
-applyMoon(localStorage.getItem('muthya_moon') === '1');
-moonToggle.addEventListener('click', ()=> applyMoon(!document.documentElement.classList.contains('moon')));
+    <!-- Timeline -->
+    <section class="timeline section" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">ఇతిహాసం & ముఖ్యమైన వేళ</h2>
+      <div class="timeline-item"><div class="year">2010</div><div class="desc">గ్రామంలో కొత్త ప్రధాన రూటు నిర్మాణం పూర్తయింది.</div></div>
+      <div class="timeline-item"><div class="year">2018</div><div class="desc">ప్రాథమిక పాఠశాలలో కొత్త తరగతి గదులు ప్రారంభం.</div></div>
+      <div class="timeline-item"><div class="year">2024</div><div class="desc">పంచాయతీ ద్వారా డ్రేనేజ్ పథకం పూర్తి.</div></div>
+    </section>
 
-/* Initialize Leaflet map */
-const map = L.map('map', { zoomControl: true, preferCanvas: false });
-/* Use Esri satellite tiles (good quality) */
-const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-  attribution: 'Tiles © Esri', maxZoom: 19
-}).addTo(map);
+    <!-- Services -->
+    <section class="services section" aria-labelledby="services-title">
+      <h2 id="services-title">మౌలిక సౌకర్యాలు</h2>
+      <div class="service"><div class="icon">🏫</div><div><strong>ప్రాథమిక పాఠశాల</strong><div class="meta">పిల్లల సంఖ్య: 120</div></div></div>
+      <div class="service"><div class="icon">🩺</div><div><strong>ఆరోగ్య కేంద్రం</strong><div class="meta">పరుగుపాపు సేవలు అందుబాటులో</div></div></div>
+      <div class="service"><div class="icon">💧</div><div><strong>పానీయజల వ్యవస్థ</strong><div class="meta">బోర్‌వెల్ మరియు ట్యాంక్</div></div></div>
+      <div class="service"><div class="icon">🛣️</div><div><strong>రోడ్లు</strong><div class="meta">ప్రధాన ఆవకాలు కచ్చితంగా</div></div></div>
+    </section>
 
-/* Road tiles (optional) */
-const osmRoad = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap', maxZoom: 19
-});
+    <!-- Schemes -->
+    <section class="schemes section" aria-labelledby="schemes-title">
+      <h2 id="schemes-title">తాజా పథకాలు & నిధులు</h2>
+      <div class="scheme"><div>
+        <div><strong>MGNREGA — 2025-06</strong></div>
+        <div class="meta">Beneficiaries: 75</div>
+      </div><div>₹1,20,000</div></div>
 
-/* layers control */
-const baseMaps = { "Satellite": esriSat, "Road": osmRoad };
-L.control.layers(baseMaps, {}, { position: 'topright' }).addTo(map);
+      <div class="scheme"><div>
+        <div><strong>PMAY — 2024-11</strong></div>
+        <div class="meta">Houses sanctioned: 10</div>
+      </div><div>—</div></div>
 
-/* Default center fallback (coarse; if GeoJSON not present user can place GeoJSON) */
-const fallbackCenter = [14.4316, 80.1052]; // approximate coastal Nellore area (replaceable)
-map.setView(fallbackCenter, 15);
+      <div class="scheme"><div>
+        <div><strong>Social Pension — 2025-03</strong></div>
+        <div class="meta">Beneficiaries: 34</div>
+      </div><div>—</div></div>
+    </section>
 
-/* Try load GeoJSON from Data/muthyalathopu.geojson */
-async function loadGeoJSON(){
-  try{
-    const res = await fetch('Data/muthyalathopu.geojson', {cache:"no-store"});
-    if(!res.ok) throw new Error('no geojson');
-    const geo = await res.json();
+    <!-- Testimonials -->
+    <section class="section" aria-labelledby="testi-title">
+      <h2 id="testi-title">గ్రామం మాటలు</h2>
+      <div class="testi">
+        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>రమేష్</strong><div class="meta">రైతు</div></div></div><p style="margin-top:8px;color:var(--muted)">“మన గ్రామానికి పంచాయతీ చేసిన చిన్న మార్పే మన జీవితాలు మార్చేశారు.”</p></div>
+        <div class="box"><div style="display:flex;align-items:center"><div class="avatar" aria-hidden></div><div><strong>లక్ష్మి</strong><div class="meta">అమ్మ</div></div></div><p style="margin-top:8px;color:var(--muted)">“పాఠశాలలో ఎలక్ట్రాన్ టేబుల్ వచ్చి పిల్లలు ఆనందంగా ఉన్నాయి.”</p></div>
+      </div>
+    </section>
 
-    // add to map with style
-    const style = {
-      color: getComputedStyle(document.documentElement).getPropertyValue('--poly-stroke')?.trim() || '#fb923c',
-      weight: 3,
-      dashArray: '',
-      fillColor: getComputedStyle(document.documentElement).getPropertyValue('--poly-fill')?.trim() || 'rgba(251,146,60,0.08)',
-      fillOpacity: 0.2
-    };
+    <!-- Map & Contact -->
+    <section class="section">
+      <h2>సంప్రదించండి</h2>
+      <div class="map">Map Placeholder — Google Map ఇక్కడ ఎన్బెడ్డు చేయండి</div>
+      <div class="contact-row">
+        <a class="phone" href="tel:+919876543210">Admin కి కాల్ చేయండి</a>
+        <a class="pdf" href="#">ఒక పేజీ డౌన్లోడ్</a>
+      </div>
+    </section>
 
-    const gj = L.geoJSON(geo, {
-      style: style,
-      onEachFeature: (feat, layer) => {
-        let info = '';
-        if(feat.properties){
-          if(feat.properties.name) info += `<strong>${feat.properties.name}</strong><br/>`;
-          for(const k of Object.keys(feat.properties)){
-            if(k==='name') continue;
-            info += `<small>${k}: ${feat.properties[k]}</small><br/>`;
-          }
-        }
-        if(info) layer.bindPopup(info);
-      }
-    }).addTo(map);
+    <footer>Last updated: 2025-09-30 • Muthyalathopu Village</footer>
+  </div>
 
-    // fit to polygon bounds
-    try{
-      map.fitBounds(gj.getBounds(), { padding: [30,30] });
-    }catch(e){
-      // fallback - set to predefined zoom
-      map.setView(fallbackCenter, 15);
+  <script>
+    // Simple counter animation on view
+    function animateValue(id, start, end, duration) {
+      var obj = document.getElementById(id);
+      if(!obj) return;
+      var range = end - start;
+      var minTimer = 50;
+      var stepTime = Math.max(Math.floor(duration / range), minTimer);
+      var startTime = Date.now();
+      var endTime = startTime + duration;
+      var timer = setInterval(function() {
+        var now = Date.now();
+        var remaining = Math.max((endTime - now) / duration, 0);
+        var value = Math.round(end - (remaining * range));
+        obj.textContent = value.toLocaleString();
+        if (value == end) { clearInterval(timer); }
+      }, stepTime);
     }
-  }catch(err){
-    // No geojson found — show marker and message
-    console.warn('GeoJSON not found or failed to load:', err);
-    // show small sample polygon (non-authoritative) centered near fallback center
-    const samplePoly = [
-      [14.4332, 80.1028],
-      [14.4346, 80.1090],
-      [14.4302, 80.1112],
-      [14.4288, 80.1060],
-      [14.4316, 80.1020]
-    ];
-    const poly = L.polygon(samplePoly, { color: getComputedStyle(document.documentElement).getPropertyValue('--poly-stroke') || '#fb923c', weight:3, fillColor: getComputedStyle(document.documentElement).getPropertyValue('--poly-fill') || 'rgba(251,146,60,0.08)', fillOpacity:0.12 }).addTo(map);
-    map.setView(fallbackCenter, 15);
 
-    // also show a popup/instruction overlay
-    const msg = `సరైన GeoJSON ఫైల్ కనబడలేదు. దయచేసి GitHub repository లో \`Data/muthyalathopu.geojson\` అప్లోడ్ చేయండి (GeoJSON polygon/boundary). కంటే ఆ సమయంలో మీకు ఖచ్చితమైన గ్రామ బౌండరీ కనిపిస్తుంది.`;
-    setTimeout(()=>{ poly.bindPopup(msg).openPopup(); }, 700);
-  }
-}
+    document.addEventListener('DOMContentLoaded', function(){
+      // values could be filled dynamically from CSV/DB later
+      animateValue('count-pop', 0, 1200, 900);
+      animateValue('count-hh', 0, 300, 900);
+      // fund is text, skip animation
 
-/* load on init */
-loadGeoJSON();
+      // scroll reveal for timeline
+      var items = document.querySelectorAll('.timeline-item');
+      function reveal(){
+        var top = window.innerHeight * 0.85;
+        items.forEach(function(it){
+          var r = it.getBoundingClientRect();
+          if(r.top < top) it.style.opacity=1, it.style.transform='none';
+        });
+      }
+      items.forEach(function(it){ it.style.opacity=0; it.style.transform='translateY(12px)'; it.style.transition='all .6s ease'; });
+      window.addEventListener('scroll', reveal); reveal();
 
-</script>
+      // gallery click to open in new tab (simple lightbox-free)
+      document.querySelectorAll('.gallery img').forEach(function(img){
+        img.style.cursor='pointer';
+        img.addEventListener('click', function(){ window.open(img.src, '_blank'); });
+      });
+
+      // CTA handlers (placeholders)
+      document.getElementById('view-data').addEventListener('click', function(){
+        // go to data page
+        window.location.href = './index.html#data' ;
+      });
+      document.getElementById('download-pdf').addEventListener('click', function(e){
+        e.preventDefault();
+        alert('PDF డౌన్లోడ్ లింక్ ఇక్కడ ఉంచండి');
+      });
+    });
+  </script>
 </body>
 </html>
