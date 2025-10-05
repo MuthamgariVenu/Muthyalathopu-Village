@@ -56,7 +56,6 @@
       .carousel-card{ min-width:50%; } /* show 2 per view on desktop */
     }
 
-    /* small footer spacing for neatness */
     footer{ margin-top:18px; color:var(--muted); font-size:0.9rem; text-align:center; }
   </style>
 </head>
@@ -118,7 +117,7 @@
   <!-- MAIN -->
   <main>
     <!-- 1) Flash News -->
-    <section class="card mb-4">
+    <section class="card mb-4" id="section-flash">
       <div style="display:flex;align-items:center;gap:12px;">
         <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
         <div id="flashTicker" class="ticker tiny telugu muted">లోడ్ అవుతుంది...</div>
@@ -126,7 +125,7 @@
     </section>
 
     <!-- 2) Village elders (carousel) -->
-    <section class="card mb-4">
+    <section class="card mb-4" id="section-elders">
       <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెద్ద/మధ్య/చిన్న)</h3>
 
       <div class="carousel-wrap mt-3" id="eldersWrap">
@@ -140,13 +139,13 @@
     </section>
 
     <!-- 3) Village — Basic Information -->
-    <section class="card mb-4">
+    <section class="card mb-4" id="section-basic">
       <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
       <div id="basicInfoContent" class="muted mt-2 telugu tiny">లోడ్ అవుతుంది...</div>
     </section>
 
     <!-- 4) Schemes placeholder -->
-    <section class="card mb-4">
+    <section class="card mb-4" id="section-schemes">
       <h4 class="font-semibold telugu">పథకాలు</h4>
       <div class="muted mt-2 telugu tiny">పథకాల వివరాల కోసం పథకాలు పేజీ చూడండి.</div>
     </section>
@@ -177,7 +176,7 @@ function loadCSV(path){
   });
 }
 
-/* FLASH NEWS (Telugu-first) */
+/* FLASH */
 async function renderFlash(){
   const el = document.getElementById('flashTicker');
   try{
@@ -197,7 +196,7 @@ async function renderFlash(){
   }
 }
 
-/* BASIC INFO (Telugu-first) */
+/* BASIC INFO */
 async function renderBasicInfo(){
   const el = document.getElementById('basicInfoContent');
   try{
@@ -219,7 +218,7 @@ async function renderBasicInfo(){
   }
 }
 
-/* ELDERS CAROUSEL (touch swipe + prev/next + autoplay) */
+/* ELDERS CAROUSEL */
 let eidx = 0, elders = [];
 async function renderElders(){
   try{
@@ -232,7 +231,6 @@ async function renderElders(){
     return;
   }
 
-  // build items
   inner.innerHTML = elders.map(it=>{
     const role = it.role_tel || it.role || '';
     const name = it.name_tel || it.name || '';
@@ -252,7 +250,6 @@ async function renderElders(){
     </div>`;
   }).join('');
 
-  // update position
   function updatePos(){
     const translatePercent = eidx * 100;
     document.getElementById('eldersInner').style.transform = `translateX(-${translatePercent}%)`;
@@ -279,7 +276,7 @@ async function renderElders(){
   window.addEventListener('resize', updatePos);
 }
 
-/* init all */
+/* init */
 renderFlash();
 renderElders();
 renderBasicInfo();
