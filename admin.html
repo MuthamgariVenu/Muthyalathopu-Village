@@ -9,12 +9,13 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
+  /* Theme variables: default = moon/dark. .day toggles light */
   :root{
-    --bg:#07102a;       /* keep page dark by default (you can invert) */
+    --bg: #07102a;
     --card: rgba(255,255,255,0.03);
-    --text:#e6f0ff;
-    --muted:#b9c7dd;
-    --accent:#fb923c;
+    --text: #e6f0ff;
+    --muted: #b9c7dd;
+    --accent: #fb923c;
 
     --btn-bg: rgba(255,255,255,0.06);
     --btn-text: #e6f0ff;
@@ -24,48 +25,60 @@
     --badge-ok-text: #065f46;
     --badge-no-bg: #fff1f0;
     --badge-no-text: #7f1d1d;
-  }
-  /* If you prefer day default, remove above root or override with .day class */
 
-  html,body{height:100%; margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text);}
+    --panel-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  }
+
+  html.day{
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#6b7280;
+    --accent:#f97316;
+
+    --btn-bg:#f3f4f6;
+    --btn-text:#0f172a;
+    --btn-border:rgba(2,6,23,0.06);
+
+    --badge-ok-bg:#dcfce7;
+    --badge-ok-text:#065f46;
+    --badge-no-bg:#fff1f0;
+    --badge-no-text:#7f1d1d;
+
+    --panel-shadow: 0 12px 40px rgba(2,6,23,0.08);
+  }
+
+  html,body{height:100%; margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); transition:background .18s,color .18s;}
   .container{max-width:1100px;margin:18px auto;padding:12px;}
   header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   h1{margin:0;font-size:1.2rem}
-  .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.35); margin-bottom:12px}
+  .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.2); margin-bottom:12px}
   .muted{color:var(--muted)}
   .controls{display:flex;gap:8px;flex-wrap:wrap}
   .btn{padding:8px 12px;border-radius:8px;background:var(--btn-bg);color:var(--btn-text);border:1px solid var(--btn-border);cursor:pointer;font-weight:600}
+  .link-btn{padding:8px 12px;border-radius:8px;background:transparent;color:var(--btn-text);border:1px solid transparent;cursor:pointer;font-weight:600}
   .input{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text)}
   table{width:100%;border-collapse:collapse}
   th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
   th{background:transparent;color:var(--muted)}
   .link{color:var(--accent);cursor:pointer;text-decoration:underline}
-  /* modal (IMPROVED) */
-  .modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:1200; /* high so nothing overlays it */
-  }
-  .modal .backdrop{
-    position:absolute; inset:0; background:rgba(0,0,0,0.6);
-    backdrop-filter: blur(3px);
-  }
+
+  /* modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1200}
+  .modal .backdrop{position:absolute; inset:0; background:rgba(0,0,0,0.6); backdrop-filter: blur(3px);}
   .modal .panel{
     position:relative;
     width:94%;
     max-width:960px;
     box-sizing:border-box;
-    max-height:85vh;        /* crucial: limit height so content doesn't overflow viewport */
-    overflow:auto;         /* enable internal scroll when content large */
+    max-height:85vh;
+    overflow:auto;
     background:var(--card);
     color:var(--text);
     border-radius:12px;
     padding:18px;
     z-index:1201;
-    box-shadow:0 12px 40px rgba(0,0,0,0.6);
+    box-shadow: var(--panel-shadow);
   }
   .modal h3{margin:0 0 6px 0}
   .modal hr{border:none;border-top:1px solid rgba(255,255,255,0.04);margin:10px 0}
@@ -73,8 +86,9 @@
   .badge.ok{ background:var(--badge-ok-bg); color:var(--badge-ok-text); }
   .badge.no{ background:var(--badge-no-bg); color:var(--badge-no-text); }
 
-  /* small responsive */
   @media(max-width:640px){ .container{padding:10px} .modal .panel{padding:12px; max-width:96%} }
+
+  .tiny{font-size:0.92rem}
 </style>
 </head>
 <body id="page">
@@ -85,8 +99,12 @@
       <h1 class="telugu">నిర్వాహకుల పేజీ — Admin</h1>
       <div class="muted tiny telugu">కేవలం అడ్మిన్ వీక్షణ కోసం</div>
     </div>
-    <div>
-      <button id="themeToggle" class="btn">🔆</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <!-- HOME / BACK button (always visible) -->
+      <a href="index.html" class="btn" title="Home">🏠 హోమ్</a>
+
+      <!-- Theme toggle -->
+      <button id="themeToggle" class="btn" title="Toggle Day / Moon">🌙</button>
     </div>
   </header>
 
@@ -103,7 +121,7 @@
     <div class="muted" style="margin-top:8px">గమనిక: ఇది client-side login. production కోసం బ్యాకెండ్ అవసరం.</div>
   </div>
 
-  <!-- Admin Dashboard (hidden until login) -->
+  <!-- Admin Dashboard -->
   <div id="adminArea" style="display:none;">
     <div class="card">
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -125,7 +143,6 @@
       </div>
     </div>
 
-    <!-- Village / House list + order control -->
     <div class="card">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <div>
@@ -153,7 +170,7 @@
 
 </div>
 
-<!-- Resident Details Modal (IMPROVED) -->
+<!-- Modal -->
 <div id="modal" class="modal" aria-hidden="true">
   <div class="backdrop" onclick="safeCloseModal()"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -188,27 +205,14 @@
 </div>
 
 <script>
-/* -------------------------
-  CONFIG / SAMPLE CREDENTIALS
-   - For demo: username=admin  password=admin123
-------------------------- */
+/* HOME URL - change if your home file name is different */
+const HOME_URL = 'index.html';
+
+/* demo credentials */
 const CREDENTIALS = { user:'admin', pass:'admin123' };
 
-/* theme toggle (this page default already dark vars) */
+/* DOM refs */
 const themeToggle = document.getElementById('themeToggle');
-function toggleTheme(){
-  // toggle a "day" appearance quickly: simply invert to light by swapping root vars? for now keep simple: toggle a .day class
-  if(document.documentElement.classList.contains('day')){
-    document.documentElement.classList.remove('day');
-    themeToggle.textContent = '🔆';
-  } else {
-    document.documentElement.classList.add('day');
-    themeToggle.textContent = '🌙';
-  }
-}
-themeToggle.addEventListener('click', toggleTheme);
-
-/* DOM refs & state */
 const loginCard = document.getElementById('loginCard');
 const adminArea = document.getElementById('adminArea');
 const loginBtn = document.getElementById('loginBtn');
@@ -234,27 +238,37 @@ const downloadHouseholds = document.getElementById('downloadHouseholds');
 
 let residents = [], households = [], beneficiaries = [];
 
-/* CSV loader util */
+/* THEME */
+function applySavedTheme(){
+  const v = localStorage.getItem('muthya_theme') || 'moon';
+  if(v === 'day') document.documentElement.classList.add('day');
+  else document.documentElement.classList.remove('day');
+  updateThemeButton();
+}
+function toggleTheme(){
+  const isDay = document.documentElement.classList.toggle('day');
+  localStorage.setItem('muthya_theme', isDay ? 'day' : 'moon');
+  updateThemeButton();
+}
+function updateThemeButton(){
+  const isDay = document.documentElement.classList.contains('day');
+  themeToggle.textContent = isDay ? '🌞' : '🌙';
+}
+applySavedTheme();
+themeToggle.addEventListener('click', toggleTheme);
+
+/* CSV loader util (PapaParse) */
 function loadCSV(path){
   return new Promise((res, rej)=>{
-    Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
-      complete:(r)=>res(r.data), error:(e)=>rej(e)
-    });
+    Papa.parse(path, { download:true, header:true, skipEmptyLines:true, complete:(r)=>res(r.data), error:(e)=>rej(e) });
   });
 }
 
-/* show/hide admin */
+/* login/logout */
 function setLoggedIn(state){
-  if(state){
-    loginCard.style.display='none';
-    adminArea.style.display='block';
-  }else{
-    loginCard.style.display='block';
-    adminArea.style.display='none';
-  }
+  if(state){ loginCard.style.display='none'; adminArea.style.display='block'; }
+  else { loginCard.style.display='block'; adminArea.style.display='none'; }
 }
-
-/* login */
 loginBtn.addEventListener('click', ()=>{
   const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value.trim();
@@ -262,44 +276,28 @@ loginBtn.addEventListener('click', ()=>{
     localStorage.setItem('muthya_admin','1');
     setLoggedIn(true);
     initAdminData();
-  } else {
-    alert('Invalid credentials (demo: admin / admin123)');
-  }
+  } else alert('Invalid credentials (demo: admin / admin123)');
 });
+demoBtn.addEventListener('click', ()=> { localStorage.setItem('muthya_admin','1'); setLoggedIn(true); initAdminData(); });
 
-/* demo */
-demoBtn.addEventListener('click', ()=> {
-  localStorage.setItem('muthya_admin','1');
-  setLoggedIn(true);
-  initAdminData();
-});
-
-/* logout */
-logoutBtn.addEventListener('click', ()=> {
+/* LOGOUT: clear session and redirect to HOME */
+logoutBtn.addEventListener('click', ()=>{
   localStorage.removeItem('muthya_admin');
   setLoggedIn(false);
+  // redirect user back to home (acts as back button)
+  window.location.href = HOME_URL;
 });
 
-/* open/close modal helpers */
-function openModal(){
-  modal.style.display='flex';
-  modal.setAttribute('aria-hidden','false');
-  // prevent background scroll while modal open
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(){
-  modal.style.display='none';
-  modal.setAttribute('aria-hidden','true');
-  document.body.style.overflow = '';
-}
-function safeCloseModal(){ closeModal(); } // used by backdrop click
-
+/* modal open/close */
+function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+function safeCloseModal(){ closeModal(); }
 closeModalBtn.addEventListener('click', closeModal);
 
-/* escape html */
+/* escape */
 function esc(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-/* render residents list */
+/* Render residents */
 function renderResidents(){
   const q = (searchBox.value||'').toLowerCase().trim();
   let list = [...residents];
@@ -315,9 +313,7 @@ function renderResidents(){
   } else if(order === 'house'){
     list.sort((a,b)=> (a.house_id||'').localeCompare(b.house_id||''));
   }
-
   if(q) list = list.filter(r => (r.name_tel||r.name||'').toLowerCase().includes(q) || (r.phone||'').toLowerCase().includes(q) || (r.house_id||'').toLowerCase().includes(q));
-
   resTableBody.innerHTML = '';
   list.forEach(r=>{
     const tr = document.createElement('tr');
@@ -332,13 +328,12 @@ function renderResidents(){
   });
 }
 
-/* view resident details */
+/* view resident */
 window.viewResident = function(id){
   const r = residents.find(x=> (x.id||'')===(id||''));
   if(!r){ alert('Record not found'); return; }
   modalTitle.textContent = r.name_tel || r.name || '';
   modalSubtitle.textContent = `ID: ${r.id || ''}  •  House: ${r.house_id || ''}`;
-
   modalDetails.innerHTML = `
     <div><strong class="telugu">పేరు:</strong> ${esc(r.name_tel||r.name||'')}</div>
     <div><strong class="telugu">వయసు:</strong> ${esc(r.age||'—')}</div>
@@ -346,8 +341,7 @@ window.viewResident = function(id){
     <div><strong class="telugu">ఫోన్:</strong> <a class="link" href="tel:${r.phone||''}">${esc(r.phone||'—')}</a></div>
     <div><strong class="telugu">హౌస్ హెడ్:</strong> ${ (r.head_of_house && (r.head_of_house.toLowerCase()==='yes' || r.head_of_house.toLowerCase()==='true')) ? 'Yes' : 'No' }</div>
   `;
-
-  // docs: use classes to show clear badges
+  // docs
   const docs = [
     {k:'aadhar_status', label:'Aadhar'},
     {k:'ration_status', label:'Ration Card'},
@@ -363,8 +357,7 @@ window.viewResident = function(id){
     span.textContent = `${d.label}: ${ ok ? 'Yes' : 'No' }`;
     docStatus.appendChild(span);
   });
-
-  // schemes for this resident
+  // schemes
   const resSchemes = beneficiaries.filter(b => (b.resident_id || b.resident || '') == (r.id || r.name || ''));
   if(!resSchemes.length){
     modalSchemes.innerHTML = '<div class="muted telugu">ఈ వ్యక్తికి పథకాలు కనబడలేదు.</div>';
@@ -376,18 +369,15 @@ window.viewResident = function(id){
       </div>`;
     }).join('');
   }
-
   openModal();
 }
 
-/* compute totals */
+/* totals & downloads */
 function computeTotals(){
   totalPop.textContent = residents.length;
   const housesCount = (households && households.length) ? households.length : new Set(residents.map(r=> r.house_id)).size;
   totalHouses.textContent = housesCount;
 }
-
-/* download csv helper */
 function downloadCSV(arr, filename){
   if(!arr || !arr.length){ alert('No data'); return; }
   const keys = Object.keys(arr[0]);
@@ -397,22 +387,18 @@ function downloadCSV(arr, filename){
   const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
-
-/* event bindings */
 downloadResidents.addEventListener('click', ()=> downloadCSV(residents, 'residents_export.csv'));
 downloadHouseholds.addEventListener('click', ()=> downloadCSV(households, 'households_export.csv'));
 searchBox.addEventListener('input', renderResidents);
 orderSelect.addEventListener('change', renderResidents);
 
-/* init admin data (load CSVs or fallback) */
+/* init admin data */
 async function initAdminData(){
   try{
     residents = await loadCSV('Data/residents.csv').catch(()=> []);
     households = await loadCSV('Data/households.csv').catch(()=> []);
     beneficiaries = await loadCSV('Data/scheme_beneficiaries.csv').catch(()=> []);
   }catch(e){ console.warn('CSV load fail', e); }
-
-  // fallback demo data if empty
   if(!residents || residents.length===0){
     residents = [
       { id:'RES-001', name_tel:'రామయ్య', name:'Ramayya', house_id:'H-001', age:'68', gender:'Male', phone:'+919812345678', aadhar_status:'yes', ration_status:'yes', pan_status:'no', voter_status:'yes', head_of_house:'yes', order:'1' },
@@ -437,14 +423,13 @@ async function initAdminData(){
   renderResidents();
 }
 
-/* restore login */
+/* restore login on load */
 if(localStorage.getItem('muthya_admin')==='1'){
   setLoggedIn(true); initAdminData();
-}
+} else setLoggedIn(false);
 
-/* expose viewResident (already attached to window earlier) */
-window.viewResident = window.viewResident;
-
+/* safeClose for backdrop */
+window.safeCloseModal = safeCloseModal;
 </script>
 </body>
 </html>
