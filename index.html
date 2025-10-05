@@ -3,471 +3,108 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ముత్యాలతోపు గ్రామ దర్శిని — About</title>
+  <title>ముత్యాలోopu — About (Map)</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PapaParse -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- Leaflet (for interactive map) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    :root{
-      --bg: #f8fafc; --card:#fff; --muted:#6b7280; --accent:#f97316; --text:#0f172a; --link:#2563eb;
-    }
-    .moon { --bg:#07102a; --card:rgba(255,255,255,0.04); --muted:#cbd5e1; --accent:#fb923c; --text:#e6f0ff; --link:#93c5fd; }
-    body{ background:var(--bg); color:var(--text); transition: background .22s,color .22s; font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; }
-    .card{ background:var(--card); border-radius:10px; box-shadow: 0 1px 4px rgba(2,6,23,0.06); padding:0.75rem; transition: background .22s;}
-    .muted { color:var(--muted); } .accent { color:var(--accent); } a.link{ color:var(--link); text-decoration:none; }
-    /* ticker slow */
-    .ticker { white-space: nowrap; overflow: hidden; }
-    .ticker__move { display:inline-block; padding-left:100%; animation: ticker 55s linear infinite; }
-    @keyframes ticker { 0%{ transform:translateX(0);} 100%{ transform:translateX(-100%);} }
-
-    /* responsive */
-    @media (max-width:640px){ .grid-md-2{ grid-template-columns: 1fr; } }
+    body{ font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#f8fafc; color:#0f172a; margin:0; padding-top:72px; }
+    header{ position:fixed; top:0; left:0; right:0; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.06); z-index:40; }
+    main{ max-width:1100px; margin:0 auto; padding:18px; }
+    #map{ width:100%; height:520px; border-radius:10px; overflow:hidden; }
+    .card{ background:white; border-radius:10px; padding:12px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
+    .muted{ color:#6b7280; }
   </style>
 </head>
-<body id="body">
+<body>
 
-<!-- HEADER -->
-<header class="sticky top-0 z-40">
-  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 p-4">
+<header>
+  <div class="max-w-6xl mx-auto p-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <button id="menuToggle" class="sm:hidden p-2 rounded card">☰</button>
-      <img src="images/logo.png" alt="logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
-      <div>
-        <h1 id="mainTitle" class="text-xl font-bold telugu">ముత్యాతోపు గ్రామ దర్శిని</h1>
-        <div class="text-sm muted telugu">మన ఊరి సమాచారం — తెలుగు</div>
-      </div>
+      <a href="index.html" class="text-sm telugu card px-3 py-2">Back to Dashboard</a>
+      <div class="text-lg font-semibold telugu">గ్రామం గురించి — ముత్యాలోopu (About)</div>
     </div>
-
-    <div class="flex items-center gap-3">
-      <nav class="hidden sm:flex gap-3">
-        <button class="px-3 py-2 rounded card telugu" onclick="scrollToSection('about')">గ్రామం గురించి</button>
-        <button class="px-3 py-2 rounded card telugu" onclick="scrollToSection('schemes')">పథకాలు</button>
-        <button class="px-3 py-2 rounded card telugu" onclick="scrollToSection('admin')">నిర్వాహకులు</button>
-      </nav>
-
-      <!-- theme toggle -->
-      <button id="themeToggle" class="ml-2 p-2 rounded card" title="రాత్రి/పగలు">🌙</button>
-    </div>
+    <div class="muted text-sm telugu">Map centered on Mutyalathopupalem — Satellite default</div>
   </div>
 </header>
 
-<!-- MOBILE SIDEBAR -->
-<div id="sidebar" class="fixed inset-0 z-50 hidden">
-  <div onclick="toggleSidebar(false)" class="absolute inset-0" style="background:rgba(0,0,0,0.45)"></div>
-  <aside class="relative z-10 w-72 h-full card overflow-auto">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-3">
-        <img src="images/logo.png" alt="logo" class="w-10 h-10 rounded-full object-cover" onerror="this.style.display='none'">
-        <div>
-          <div class="font-semibold telugu">ముత్యాతోపు</div>
-          <div class="text-sm muted telugu">మెనూ</div>
-        </div>
-      </div>
-      <button onclick="toggleSidebar(false)" class="p-2 rounded">✕</button>
-    </div>
-    <nav class="space-y-2">
-      <a class="block p-2 rounded hover:bg-gray-50 telugu" onclick="toggleSidebar(false); scrollToSection('about')">గ్రామం గురించి</a>
-      <a class="block p-2 rounded hover:bg-gray-50 telugu" onclick="toggleSidebar(false); scrollToSection('schemes')">పథకాలు</a>
-      <a class="block p-2 rounded hover:bg-gray-50 telugu" onclick="toggleSidebar(false); scrollToSection('admin')">నిర్వాహకులు</a>
-    </nav>
-  </aside>
-</div>
+<main>
+  <!-- Map first -->
+  <div class="card mb-4">
+    <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (సాటెలైట్) — Mutyalathopupalem</h3>
+    <div id="map" class="mt-3"></div>
+    <div class="muted text-sm mt-2 telugu">Boundary shown if Data/mutyalathopu_boundary.geojson exists. Click marker for Google directions.</div>
+  </div>
 
-<!-- MAIN -->
-<main class="max-w-6xl mx-auto p-4 space-y-6">
-
-  <!-- Flash -->
-  <section class="card">
-    <div class="flex items-center gap-3">
-      <div class="font-semibold telugu accent">📢 తాజా వార్తలు</div>
-      <div id="flashTicker" class="flex-1 ticker muted telugu"></div>
-    </div>
-  </section>
-
-  <!-- ABOUT MODULE -->
-  <section id="about" class="space-y-4">
-    <h2 class="text-2xl font-semibold telugu">గ్రామం గురించి</h2>
-
-    <!-- MOVED: Map is now first inside About -->
+  <!-- Below map: other about info (same as dashboard if needed) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="card">
-      <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (ఇంటరాక్టివ్)</h3>
-      <div id="villageMap" style="width:100%;height:360px;border-radius:8px;margin-top:8px;"></div>
-      <div class="text-sm muted telugu mt-2">మార్కర్లు ఇంటికి సంబంధించిన వాటిని చూపిస్తాయి. క్లిక్ చేసి Google దిశలు తీసుకోవచ్చు.</div>
+      <h4 class="font-semibold telugu">మౌలిక సమాచారం</h4>
+      <div id="basicInfo" class="muted text-sm mt-2">లోడ్ అవుతుంది...</div>
     </div>
-
-    <!-- 1. Basic Info -->
-    <div id="basicInfo" class="card">
-      <h3 class="font-semibold telugu">గ్రామం — మౌలిక సమాచారం</h3>
-      <div id="basicInfoContent" class="text-sm muted telugu mt-2">లోడ్ అవుతుంది...</div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- 3. Water & Electricity -->
-      <div id="waterCard" class="card">
-        <h4 class="font-semibold telugu">నీరు & విద్యుత్ సమాచారం</h4>
-        <div id="waterContent" class="text-sm muted telugu mt-2">లోడ్ అవుతుంది...</div>
-      </div>
-
-      <!-- 6. Emergency & Helpline -->
-      <div id="helplineCard" class="card">
-        <h4 class="font-semibold telugu">అత్యావశ్యక సహాయం & హెల్ప్‌లైన్</h4>
-        <div id="helplineContent" class="text-sm muted telugu mt-2">లోడ్ అవుతుంది...</div>
-      </div>
-    </div>
-
-    <!-- 7. Panchayat & Committee Members -->
     <div class="card">
-      <h3 class="font-semibold telugu">పంచాయితీ & కమిటీ సభ్యులు</h3>
-      <div id="committeeList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-    </div>
-
-    <!-- 8. Festivals & Events calendar -->
-    <div class="card">
-      <h3 class="font-semibold telugu">పండుగలు & ఈవెంట్స్ కాలెండర్</h3>
-      <div id="eventsList" class="mt-3 text-sm muted telugu">లోడ్ అవుతుంది...</div>
-    </div>
-
-    <!-- Links to other modules -->
-    <div class="card flex gap-3 items-center">
-      <div class="text-sm telugu">ఇతర మాడ్యూల్స్:</div>
-      <button class="px-3 py-2 rounded card telugu" onclick="scrollToSection('schemes')">పథకాలు</button>
-      <button class="px-3 py-2 rounded card telugu" onclick="scrollToSection('admin')">నిర్వాహకులు</button>
-    </div>
-
-  </section>
-
-  <!-- SCHEMES placeholder -->
-  <section id="schemes" class="card">
-    <h2 class="text-xl font-semibold telugu">పథకాలు</h2>
-    <div class="text-sm muted telugu mt-2">(ఇక్కడ పథకాల summary, beneficiary features etc. తర్వాత చేర్చాలి.)</div>
-  </section>
-
-  <!-- ADMIN placeholder (peddalu + sachivalayam) -->
-  <section id="admin" class="card">
-    <h2 class="text-xl font-semibold telugu">నిర్వాహకులు</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-      <div class="md:col-span-2">
-        <h3 class="font-semibold telugu">గ్రామ పెద్దలు (పెడ్డు/మధ్య/చిన్న) - carousel</h3>
-        <div id="peddaluCarousel" class="mt-3 card"></div>
-        <div class="flex gap-2 mt-2">
-          <button id="prevP" class="px-3 py-1 rounded card telugu">ముందుకు</button>
-          <button id="nextP" class="px-3 py-1 rounded card telugu">తర్వాత</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 class="font-semibold telugu">సచివాలయం సమాచారం</h3>
-        <div id="sachivalayamCard" class="text-sm mt-2 telugu">
-          <div><strong>సచివాలయ అధికారి:</strong> <span id="secName">ఎం. సీతారాం</span></div>
-          <div>ఫోన్: <a id="secPhone" class="link" href="tel:+919876543210">+91 98765 43210</a></div>
-          <div class="mt-2"><strong>VRO:</strong> <span id="vroName">బి. రవికాంత్</span></div>
-          <div>ఫోన్: <a id="vroPhone" class="link" href="tel:+919988766554">+91 99887 66554</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<!-- Image modal (used by peddalu if images) -->
-<div id="imgModal" class="fixed inset-0 hidden items-center justify-center z-50">
-  <div class="absolute inset-0" style="background:rgba(0,0,0,0.6)"></div>
-  <div class="relative z-10 max-w-3xl w-full p-4">
-    <div class="card">
-      <div class="text-right"><button id="closeModal" class="px-2 telugu">మూసివేయి</button></div>
-      <img id="modalImg" src="" alt="photo" class="w-full object-contain"/>
+      <h4 class="font-semibold telugu">ఫొటోలు & ఇన్ఫో</h4>
+      <div class="muted text-sm mt-2">ఇక్కడ మీకు కావలసిన వివరాలు ఇస్తాం.</div>
     </div>
   </div>
-</div>
+</main>
 
 <script>
-/* ----------------------
-  Utilities & CSV loader
------------------------*/
-function loadCSV(path){
-  return new Promise((resolve,reject)=>{
-    Papa.parse(path, { download:true, header:true, skipEmptyLines:true,
-      complete: (res)=> resolve(res.data),
-      error: (err)=> reject(err)
-    });
-  });
-}
+/* Leaflet map init with Satellite default and GeoJSON border support */
+const center = [14.4371, 80.0224]; // approx center of Mutyalathopupalem
+const map = L.map('map', { zoomControl:true }).setView(center, 16);
 
-/* ----------------------
-   Theme toggle (moon/light)
------------------------*/
-const themeToggleBtn = document.getElementById('themeToggle');
-function applyTheme(isMoon){
-  if(isMoon) document.documentElement.classList.add('moon');
-  else document.documentElement.classList.remove('moon');
-  localStorage.setItem('muthya_theme_moon', isMoon ? '1' : '0');
-  themeToggleBtn.textContent = isMoon ? '🌞' : '🌙';
-}
-const savedMoon = localStorage.getItem('muthya_theme_moon') === '1';
-applyTheme(savedMoon);
-themeToggleBtn.addEventListener('click', ()=> applyTheme(!document.documentElement.classList.contains('moon')));
+// Esri World Imagery (satellite) as default
+const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution:'Tiles © Esri', maxZoom: 19
+}).addTo(map);
 
-/* Sidebar toggle */
-const sidebarEl = document.getElementById('sidebar');
-document.getElementById('menuToggle').addEventListener('click', ()=> sidebarEl.classList.toggle('hidden'));
-function toggleSidebar(v){ sidebarEl.classList.toggle('hidden', v===undefined ? undefined : !v); }
+// Optional road layer
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 });
 
-/* Scroll helper */
-function scrollToSection(id){
-  const el = document.getElementById(id);
-  if(el){
-    // scroll so map (if in that section) becomes visible at top
-    el.scrollIntoView({ behavior:'smooth', block:'start' });
-    // if map inside, after a tiny delay invalidate map size (Leaflet needs resize)
-    if(id === 'about'){
-      setTimeout(()=> { if(window._villageMap) window._villageMap.invalidateSize(); }, 600);
-    }
-  }
-}
+L.control.layers({ 'Satellite': esri, 'Road': osm }, null, { position:'topright', collapsed:false }).addTo(map);
 
-/* ----------------------
-   Flash News ticker (Telugu)
------------------------*/
-async function renderFlash(){
-  const ticker = document.getElementById('flashTicker');
-  try{
-    const data = await loadCSV('Data/flash_news.csv');
-    if(!data || !data.length) throw 'no';
-    const parts = data.map(it => {
-      const d = it.date ? `[ ${it.date} ] ` : '';
-      return `${d}${it.title || ''} — ${it.description || ''}`;
-    });
-    const mover = document.createElement('div'); mover.className='ticker__move telugu';
-    mover.textContent = parts.join('   ⚫   ');
-    ticker.innerHTML = ''; ticker.appendChild(mover);
-  }catch(e){
-    ticker.innerHTML = '<div class="muted telugu">తాజా వార్తలు లేవు</div>';
-  }
-}
-
-/* ----------------------
-   1. Village Basic Info
------------------------*/
-async function renderBasicInfo(){
-  const container = document.getElementById('basicInfoContent');
-  try{
-    const rows = await loadCSV('Data/village_info.csv');
-    const r = (rows && rows[0]) ? rows[0] : null;
-    if(!r) throw 'no';
-    container.innerHTML = `
-      <div><strong>గ్రామం:</strong> ${r.village_name_tel || r.village_name_en || '—' } ${r.village_name_en ? '('+r.village_name_en+')' : ''}</div>
-      <div><strong>మండలం:</strong> ${r.mandal || '—'}</div>
-      <div><strong>జిల్లా:</strong> ${r.district || '—'}</div>
-      <div><strong>సంఖ్యలు:</strong> జనాభా మొత్తం ${r.pop_total || '—'} (పురుషులు ${r.pop_male || '—'}, మహిళలు ${r.pop_female || '—'})</div>
-      <div><strong>ఇళ్ళ సంఖ్య:</strong> ${r.total_houses || '—'}</div>
-      <div><strong>ప్రధాన కార్యకలాపాలు:</strong> ${r.main_occupations || '—'}</div>
-    `;
-  }catch(err){
-    container.innerHTML = `
-      <div><strong>గ్రామం:</strong> ముత్యాలతోపు (Mutyalathopupalem)</div>
-      <div><strong>మండలం:</strong> తోటపల్లిగూడూరు</div>
-      <div><strong>జిల్లా:</strong> నెల్లూరు</div>
-      <div><strong>సంఖ్యలు:</strong> జనాభా సమాచారం కోసం admin ద్వారా అప్డేట్ చేయండి</div>
-      <div><strong>ఇళ్ళ సంఖ్య:</strong> —</div>
-      <div><strong>ప్రధాన కార్యకలాపాలు:</strong> వ్యవసాయం, మత్స్యకారుడు</div>
-    `;
-  }
-}
-
-/* ----------------------
-   2. Interactive map (Leaflet) - Now placed at top of About
------------------------*/
-async function initVillageMap(){
-  const defaultCenter = [14.4371,80.0224]; // approx
-  const map = L.map('villageMap', { zoomControl:true }).setView(defaultCenter, 16);
-  window._villageMap = map;
-
-  const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom:19, attribution:'Tiles © Esri'
-  }).addTo(map);
-
-  const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19, attribution:'© OpenStreetMap' });
-
-  L.control.layers({"Satellite":esri,"Road":street}, null, { collapsed:true, position:'topright' }).addTo(map);
-
-  try{
-    const data = await loadCSV('Data/households.csv');
+/* Try load GeoJSON boundary if present */
+fetch('Data/mutyalathopu_boundary.geojson').then(r=>{
+  if(!r.ok) throw 'no geojson';
+  return r.json();
+}).then(geo=>{
+  // style
+  const style = { color:'#ff6b00', weight:3, fill:false };
+  const layer = L.geoJSON(geo, { style }).addTo(map);
+  map.fitBounds(layer.getBounds().pad(0.15));
+}).catch(e=>{
+  // fallback: show a few sample household markers from Data/households.csv (if present)
+  fetch('Data/households.csv').then(r=> r.ok ? r.text() : Promise.reject('no csv')).then(txt=>{
+    // parse CSV (simple)
+    const rows = Papa.parse(txt, { header:true }).data;
     const markers = [];
-    data.forEach(row=>{
-      const lat = parseFloat(row.lat || row.latitude || '');
-      const lon = parseFloat(row.lon || row.longitude || '');
+    rows.forEach(rw=>{
+      const lat = parseFloat(rw.lat||rw.latitude||'');
+      const lon = parseFloat(rw.lon||rw.longitude||'');
       if(!isFinite(lat) || !isFinite(lon)) return;
-      const name = row.name || row.house_id || 'అజ్ఞాత';
-      const house = row.house_id || '';
-      const addr = row.address || '';
-      const popup = `
-        <div style="min-width:180px">
-          <div style="font-weight:600">${name}</div>
-          <div style="font-size:13px;color:#444">${house} ${addr ? '· ' + addr : ''}</div>
-          <div style="margin-top:6px"><a class="link" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}">Google దిశలు</a></div>
-        </div>`;
-      const m = L.marker([lat,lon]).addTo(map).bindPopup(popup);
+      const m = L.marker([lat,lon]).addTo(map).bindPopup(`<div style="font-weight:600">${rw.name||rw.house_id||''}</div><div style="font-size:12px">${rw.address||''}</div><div style="margin-top:6px"><a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}">Google దిశలు</a></div>`);
       markers.push(m);
     });
-    if(markers.length){
-      const g = L.featureGroup(markers);
-      map.fitBounds(g.getBounds().pad(0.15));
-    }
-  }catch(e){
-    console.warn('households.csv not loaded', e);
-    // no markers — map stays centered
-  }
-}
-
-/* ----------------------
-  3. Water & Electricity
------------------------*/
-async function renderWater(){
-  const el = document.getElementById('waterContent');
-  try{
-    const rows = await loadCSV('Data/water_elec.csv');
-    if(!rows || !rows.length) throw 'no';
-    let html = '';
-    rows.forEach(r=> html += `<div><strong>${r.type||'—'}:</strong> ${r.detail||'—'}</div>`);
-    el.innerHTML = html;
-  }catch(e){
-    el.innerHTML = `<div class="muted telugu">నీరు/విద్యుత్ వివరాలు ప్రస్తుతం అందుబాటులో లేవు. admin ద్వారా అప్డేట్ చేయండి.</div>`;
-  }
-}
-
-/* ----------------------
-  6. Helpline
------------------------*/
-async function renderHelpline(){
-  const el = document.getElementById('helplineContent');
-  try{
-    const rows = await loadCSV('Data/helpline.csv');
-    if(!rows || !rows.length) throw 'no';
-    let html = '<ul class="list-disc pl-5">';
-    rows.forEach(r=> html += `<li><strong>${r.role || r.name || '—'}:</strong> <a class="link" href="tel:${r.phone || ''}">${r.phone || '—'}</a></li>`);
-    html += '</ul>';
-    el.innerHTML = html;
-  }catch(e){
-    el.innerHTML = `<div class="muted telugu">హెల్ప్‌లైన్ సమాచారం లేనిది. admin ద్వారా జమ చేయండి.</div>`;
-  }
-}
-
-/* ----------------------
-  7. Committee members
------------------------*/
-async function renderCommittee(){
-  const box = document.getElementById('committeeList');
-  try{
-    const rows = await loadCSV('Data/committee.csv');
-    if(!rows || !rows.length) throw 'no';
-    box.innerHTML = '';
-    rows.forEach(r=>{
-      const card = document.createElement('div');
-      card.className = 'p-3 card flex gap-3 items-center';
-      card.innerHTML = `
-        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-100">
-          <img src="${r.photo_url || 'images/pedda.jpg'}" alt="${r.name||''}" class="w-full h-full object-cover">
-        </div>
-        <div>
-          <div class="font-semibold telugu">${r.role || ''}</div>
-          <div class="telugu">${r.name || ''} ${r.note ? '· ' + r.note : ''}</div>
-          <div><a class="link" href="tel:${r.phone || ''}">${r.phone || ''}</a></div>
-        </div>
-      `;
-      box.appendChild(card);
-    });
-  }catch(e){
-    box.innerHTML = `<div class="muted telugu">పంచాయితీ సభ్యులు డేటా లేనివి.</div>`;
-  }
-}
-
-/* ----------------------
-  8. Events
------------------------*/
-async function renderEvents(){
-  const el = document.getElementById('eventsList');
-  try{
-    const rows = await loadCSV('Data/events.csv');
-    if(!rows || !rows.length) throw 'no';
-    rows.sort((a,b)=> (a.date||'').localeCompare(b.date||''));
-    let html = '<div class="space-y-3">';
-    rows.forEach(r=>{
-      html += `<div class="p-2 card">
-        <div class="font-semibold telugu">${r.title || ''} <span class="muted text-sm">(${r.date||''})</span></div>
-        <div class="muted telugu text-sm mt-1">${r.description || ''}</div>
-        ${ r.location ? '<div class="mt-1"><strong class="telugu">స్థలం:</strong> ' + r.location + '</div>' : '' }
-      </div>`;
-    });
-    html += '</div>';
-    el.innerHTML = html;
-  }catch(e){
-    el.innerHTML = `<div class="muted telugu">ఈవెంట్స్ డేటా లేనివి.</div>`;
-  }
-}
-
-/* ----------------------
-  Peddalu carousel
------------------------*/
-let pidx=0, pslides=[], ptimer;
-async function renderPeddalu(){
-  const wrap = document.getElementById('peddaluCarousel');
-  try{
-    const rows = await loadCSV('Data/village_peddalu.csv');
-    pslides = rows || [];
-  }catch(e){
-    pslides = [];
-  }
-  if(!pslides.length){ wrap.innerHTML = '<div class="muted telugu p-4">పెద్దల వివరాలు లేవు</div>'; return; }
-
-  function show(i){
-    pidx = (i + pslides.length) % pslides.length;
-    const it = pslides[pidx];
-    wrap.innerHTML = `
-      <div class="flex items-center gap-4">
-        <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
-          <img src="${it.photo_url||'images/pedda.jpg'}" alt="${it.name||''}" class="w-full h-full object-cover">
-        </div>
-        <div>
-          <div class="font-semibold telugu">${it.role||''}</div>
-          <div class="text-lg font-bold telugu mt-1">${it.name||''}</div>
-          <div class="muted telugu mt-1">${it.note||''}</div>
-        </div>
-      </div>
-    `;
-  }
-  document.getElementById('prevP').onclick = ()=>{ show(pidx-1); resetAuto(); };
-  document.getElementById('nextP').onclick = ()=>{ show(pidx+1); resetAuto(); };
-  show(0);
-  function auto(){ ptimer = setInterval(()=> show(pidx+1), 4500); }
-  function resetAuto(){ clearInterval(ptimer); auto(); }
-  auto();
-}
-
-/* ----------------------
-   Init everything
------------------------*/
-renderFlash();
-renderBasicInfo();
-initVillageMap();
-renderWater();
-renderHelpline();
-renderCommittee();
-renderEvents();
-renderPeddalu();
-
-/* modal handlers */
-document.getElementById('closeModal').addEventListener('click', ()=>{
-  document.getElementById('imgModal').classList.add('hidden');
+    if(markers.length){ const g=L.featureGroup(markers); map.fitBounds(g.getBounds().pad(0.15)); }
+  }).catch(_=>{
+    // nothing available — keep center
+    map.setView(center,16);
+    L.marker(center).addTo(map).bindPopup('Mutyalathopupalem approximate center').openPopup();
+  });
 });
-function openModal(src){ document.getElementById('modalImg').src = src; document.getElementById('imgModal').classList.remove('hidden'); }
 
+/* Basic info loader (same CSV as dashboard) */
+function loadCSVText(path){ return fetch(path).then(r=> r.ok ? r.text() : Promise.reject('no')).then(t => Papa.parse(t, { header:true }).data); }
+loadCSVText('Data/village_info.csv').then(rows=>{
+  const r = rows[0]||{};
+  document.getElementById('basicInfo').innerHTML = `<div><strong>గ్రామం:</strong> ${r.village_name_tel||''} ${r.village_name_en? '('+r.village_name_en+')':''}</div><div><strong>మండలం:</strong> ${r.mandal||''}</div><div><strong>జిల్లా:</strong> ${r.district||''}</div>`;
+}).catch(e=>{
+  document.getElementById('basicInfo').innerHTML = `<div class="muted telugu">Village info not available</div>`;
+});
 </script>
 </body>
 </html>
