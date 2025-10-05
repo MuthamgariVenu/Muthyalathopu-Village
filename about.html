@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ముత్యాలోopu — About (Map)</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body{ font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#f8fafc; color:#0f172a; margin:0; padding-top:72px; }
+    header{ position:fixed; top:0; left:0; right:0; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.06); z-index:40; }
+    main{ max-width:1100px; margin:0 auto; padding:18px; }
+    #map{ width:100%; height:520px; border-radius:10px; overflow:hidden; }
+    .card{ background:white; border-radius:10px; padding:12px; box-shadow:0 1px 4px rgba(2,6,23,0.04); }
+    .muted{ color:#6b7280; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="max-w-6xl mx-auto p-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="text-sm telugu card px-3 py-2">Back to Dashboard</a>
+      <div class="text-lg font-semibold telugu">గ్రామం గురించి — ముత్యాలోopu (About)</div>
+    </div>
+    <div class="muted text-sm telugu">Map centered on Mutyalathopupalem — Satellite default</div>
+  </div>
+</header>
+
+<main>
+  <!-- Map first -->
+  <div class="card mb-4">
+    <h3 class="font-semibold telugu">గ్రామ మ్యాప్ (సాటెలైట్) — Mutyalathopupalem</h3>
+    <div id="map" class="mt-3"></div>
+    <div class="muted text-sm mt-2 telugu">Boundary shown if Data/mutyalathopu_boundary.geojson exists. Click marker for Google directions.</div>
+  </div>
+
+  <!-- Below map: other about info (same as dashboard if needed) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="card">
+      <h4 class="font-semibold telugu">మౌలిక సమాచారం</h4>
+      <div id="basicInfo" class="muted text-sm mt-2">లోడ్ అవుతుంది...</div>
+    </div>
+    <div class="card">
+      <h4 class="font-semibold telugu">ఫొటోలు & ఇన్ఫో</h4>
+      <div class="muted text-sm mt-2">ఇక్కడ మీకు కావలసిన వివరాలు ఇస్తాం.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* Leaflet map init with Satellite default and GeoJSON border support */
+const center = [14.4371, 80.0224]; // approx center of Mutyalathopupalem
+const map = L.map('map', { zoomControl:true }).setView(center, 16);
+
+// Esri World Imagery (satellite) as default
+const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution:'Tiles © Esri', maxZoom: 19
+}).addTo(map);
+
+// Optional road layer
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 });
+
+L.control.layers({ 'Satellite': esri, 'Road': osm }, null, { position:'topright', collapsed:false }).addTo(map);
+
+/* Try load GeoJSON boundary if present */
+fetch('Data/mutyalathopu_boundary.geojson').then(r=>{
+  if(!r.ok) throw 'no geojson';
+  return r.json();
+}).then(geo=>{
+  // style
+  const style = { color:'#ff6b00', weight:3, fill:false };
+  const layer = L.geoJSON(geo, { style }).addTo(map);
+  map.fitBounds(layer.getBounds().pad(0.15));
+}).catch(e=>{
+  // fallback: show a few sample household markers from Data/households.csv (if present)
+  fetch('Data/households.csv').then(r=> r.ok ? r.text() : Promise.reject('no csv')).then(txt=>{
+    // parse CSV (simple)
+    const rows = Papa.parse(txt, { header:true }).data;
+    const markers = [];
+    rows.forEach(rw=>{
+      const lat = parseFloat(rw.lat||rw.latitude||'');
+      const lon = parseFloat(rw.lon||rw.longitude||'');
+      if(!isFinite(lat) || !isFinite(lon)) return;
+      const m = L.marker([lat,lon]).addTo(map).bindPopup(`<div style="font-weight:600">${rw.name||rw.house_id||''}</div><div style="font-size:12px">${rw.address||''}</div><div style="margin-top:6px"><a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}">Google దిశలు</a></div>`);
+      markers.push(m);
+    });
+    if(markers.length){ const g=L.featureGroup(markers); map.fitBounds(g.getBounds().pad(0.15)); }
+  }).catch(_=>{
+    // nothing available — keep center
+    map.setView(center,16);
+    L.marker(center).addTo(map).bindPopup('Mutyalathopupalem approximate center').openPopup();
+  });
+});
+
+/* Basic info loader (same CSV as dashboard) */
+function loadCSVText(path){ return fetch(path).then(r=> r.ok ? r.text() : Promise.reject('no')).then(t => Papa.parse(t, { header:true }).data); }
+loadCSVText('Data/village_info.csv').then(rows=>{
+  const r = rows[0]||{};
+  document.getElementById('basicInfo').innerHTML = `<div><strong>గ్రామం:</strong> ${r.village_name_tel||''} ${r.village_name_en? '('+r.village_name_en+')':''}</div><div><strong>మండలం:</strong> ${r.mandal||''}</div><div><strong>జిల్లా:</strong> ${r.district||''}</div>`;
+}).catch(e=>{
+  document.getElementById('basicInfo').innerHTML = `<div class="muted telugu">Village info not available</div>`;
+});
+</script>
+</body>
+</html>
