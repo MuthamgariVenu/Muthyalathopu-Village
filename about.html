@@ -8,26 +8,34 @@
   <style>
     :root{
       /* Light theme */
-      --bg-page: #fffbf8;
-      --bg-card: #ffffff;
+      --page-bg-1: #fffbf8;
+      --page-bg-2: #ffffff;
+      --card-bg: #ffffff;
       --text: #0b1320;
       --muted: #6b7280;
       --accent: #0ea5a4;
       --accent-contrast: #ffffff;
-      --control-bg: #ffffff;
+      --chip-bg: rgba(14,165,164,0.12);
+      --chip-text: #052226;
       --shadow: 0 1px 6px rgba(16,24,40,0.06);
+      --muted-light: rgba(11,19,32,0.45);
+      --scheme-amount: #f97316; /* orange */
     }
 
     /* Dark (moonlight) theme variables */
     body.dark {
-      --bg-page: #071018;
-      --bg-card: #0d1720;
+      --page-bg-1: #071018;
+      --page-bg-2: #08131a;
+      --card-bg: #0d1720;
       --text: #e6f0f2;
       --muted: #98a6ad;
       --accent: #60d4cc;
       --accent-contrast: #062226;
-      --control-bg: #0f1720;
-      --shadow: 0 6px 20px rgba(2,6,23,0.6);
+      --chip-bg: rgba(255,255,255,0.06);
+      --chip-text: #e6f0f2;
+      --shadow: 0 8px 28px rgba(2,6,23,0.6);
+      --muted-light: rgba(230,240,242,0.12);
+      --scheme-amount: #ffb07a;
     }
 
     *{box-sizing:border-box}
@@ -35,11 +43,11 @@
     body{
       margin:0;
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Telugu', 'Noto Sans', sans-serif;
-      background: linear-gradient(180deg,var(--bg-page) 0%, #fff 100%);
+      background: linear-gradient(180deg,var(--page-bg-1) 0%, var(--page-bg-2) 100%);
       color:var(--text);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      transition: background .25s ease, color .25s ease;
+      transition: background .22s ease, color .22s ease;
     }
 
     .container{
@@ -48,7 +56,7 @@
       padding:16px;
     }
 
-    /* Header: flex layout with proper alignment */
+    /* Header */
     header{
       display:flex;
       align-items:center;
@@ -56,145 +64,50 @@
       gap:12px;
       padding:8px 0;
     }
-    .left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
+    .left{display:flex;align-items:center;gap:12px}
     .back-btn{
       background:transparent;
       border:1px solid rgba(0,0,0,0.06);
-      padding:8px 10px;
-      border-radius:8px;
-      color:var(--accent);
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-weight:600;
-      background:var(--control-bg);
-      box-shadow:var(--shadow);
-    }
-    .logo{
-      font-weight:800;
-      font-size:18px;
-      letter-spacing:0.2px;
-    }
-
-    .icons{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .icon-btn{
-      background:var(--control-bg);
-      border-radius:10px;
-      padding:8px;
-      border:none;
-      width:40px;
-      height:40px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:var(--shadow);
-      color:var(--text);
-      font-size:18px;
-    }
-    .icon-btn:focus{outline:3px solid rgba(14,165,164,0.15);outline-offset:2px}
-
-    /* Moon button active look */
-    .icon-btn.moon.active{
-      background:linear-gradient(90deg,#1f2937,#4b5563);
-      color:white;
-    }
-    /* Hero */
-    .hero{
-      display:flex;
-      align-items:flex-end;
-      border-radius:14px;
-      overflow:hidden;
-      position:relative;
-      height:320px;
-      margin-top:12px;
-      box-shadow:var(--shadow);
-      transition:box-shadow .2s, transform .2s;
-    }
-    .hero .bg{
-      position:absolute;
-      inset:0;
-      background-image:
-        linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.45)),
-        url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');
-      background-size:cover;
-      background-position:center;
-      filter: none;
-      transition: filter .25s ease, transform .25s ease;
-    }
-    /* Slight hero adjustment in moon (darker) */
-    body.dark .hero .bg{
-      filter: grayscale(.45) brightness(.55) contrast(.95);
-      transform: scale(1.02);
-    }
-
-    .hero .overlay{
-      position:relative;
-      padding:20px;
-      color:white;
-      width:100%;
-      z-index:2;
-      background: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 100%);
-    }
-    .hero h1{margin:0;font-size:26px;line-height:1; font-weight:800}
-    .tag{margin-top:6px;color:rgba(255,255,255,0.95);font-size:14px}
-    .chips{
-      display:flex;
-      gap:8px;
-      margin-top:12px;
-      overflow:auto;
-      padding-bottom:8px;
-    }
-    .chip{
-      background: rgba(255,255,255,0.12);
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:13px;
-      backdrop-filter: blur(4px);
-      min-width:fit-content;
-    }
-
-    .cta-row{display:flex;gap:8px;margin-top:12px}
-    .btn{
-      background:var(--accent);
-      color:var(--accent-contrast);
-      padding:10px 14px;
-      border-radius:10px;
-      border:none;
-      font-weight:700;
-      flex:1;
-      cursor:pointer;
-      box-shadow:var(--shadow);
-    }
-    .btn.secondary{
+      padding:8px 10px;border-radius:8px;
+      color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700;
       background:transparent;
-      color:var(--accent-contrast);
-      border:1px solid rgba(255,255,255,0.18);
     }
+    body.dark .back-btn{border-color:rgba(255,255,255,0.06); color:var(--accent)}
+    .logo{font-weight:800;font-size:18px}
 
-    /* Main content grid & cards */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      margin-top:18px;
+    .icons{display:flex;align-items:center;gap:8px}
+    .icon-btn{
+      background:var(--card-bg);
+      border-radius:10px;padding:8px;border:none;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;
+      cursor:pointer;box-shadow:var(--shadow);color:var(--text);font-size:18px;
     }
-    .card{
-      background:var(--bg-card);
-      padding:12px;
-      border-radius:10px;
-      box-shadow:var(--shadow);
-      color:var(--text);
+    .icon-btn:focus{outline:3px solid rgba(0,0,0,0.06);outline-offset:2px}
+    body.dark .icon-btn:focus{outline:3px solid rgba(96,212,204,0.15)}
+
+    .icon-btn.moon.active{background:linear-gradient(90deg,#1f2937,#4b5563);color:white}
+    body.dark .icon-btn.moon.active{background:linear-gradient(90deg,#052226,#134041);}
+
+    /* HERO */
+    .hero{display:flex;align-items:flex-end;border-radius:14px;overflow:hidden;position:relative;height:320px;margin-top:12px;box-shadow:var(--shadow)}
+    .hero .bg{position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.45)), url('https://images.unsplash.com/photo-1508873699372-7ae4b2a2b8e7?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;transition:filter .25s, transform .25s}
+    body.dark .hero .bg{filter:grayscale(.45) brightness(.55) contrast(.95);transform:scale(1.02)}
+    .hero .overlay{position:relative;padding:20px;color:white;width:100%;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 100%)}
+    .hero h1{margin:0;font-size:26px;line-height:1;font-weight:800}
+    .tag{margin-top:6px;color:rgba(255,255,255,0.95);font-size:14px}
+
+    /* chips/buttons in hero */
+    .chips{display:flex;gap:8px;margin-top:12px;overflow:auto;padding-bottom:8px}
+    .chip{
+      background:var(--chip-bg);color:var(--chip-text);padding:8px 12px;border-radius:999px;font-size:13px;backdrop-filter: blur(4px);
+      box-shadow:0 4px 18px rgba(2,6,23,0.06);
     }
+    .cta-row{display:flex;gap:8px;margin-top:12px}
+    .btn{background:var(--accent);color:var(--accent-contrast);padding:10px 14px;border-radius:10px;border:none;font-weight:700;flex:1;cursor:pointer;box-shadow:var(--shadow)}
+    .btn.secondary{background:transparent;color:var(--accent-contrast);border:1px solid rgba(255,255,255,0.18)}
+
+    /* Main area */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+    .card{background:var(--card-bg);padding:12px;border-radius:10px;box-shadow:var(--shadow);color:var(--text)}
     .card h3{margin:0;font-size:14px}
     .card p{margin:6px 0 0;font-size:18px;font-weight:700}
 
@@ -214,19 +127,21 @@
     .timeline-item .desc{color:var(--muted)}
 
     .services{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
-    .service{display:flex;gap:10px;align-items:center;padding:10px;background:linear-gradient(180deg,var(--bg-card),var(--bg-card));border-radius:8px}
-    .service .icon{width:40px;height:40px;border-radius:8px;background:var(--bg-page);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .service{display:flex;gap:10px;align-items:center;padding:10px;background:linear-gradient(180deg,var(--card-bg),var(--card-bg));border-radius:8px}
+    .service .icon{width:40px;height:40px;border-radius:8px;background:var(--page-bg-1);display:flex;align-items:center;justify-content:center;font-weight:700}
 
     .schemes{margin-top:14px;display:flex;flex-direction:column;gap:8px}
-    .scheme{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:var(--bg-card);box-shadow:var(--shadow)}
+    .scheme{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:var(--card-bg);box-shadow:var(--shadow)}
     .scheme .meta{font-size:12px;color:var(--muted)}
+    .scheme .amount{color:var(--scheme-amount);font-weight:800}
 
     .testi{display:flex;gap:10px;overflow:auto;padding:8px 0}
-    .testi .box{min-width:220px;background:var(--bg-card);padding:10px;border-radius:8px;box-shadow:var(--shadow)}
+    .testi .box{min-width:220px;background:var(--card-bg);padding:10px;border-radius:8px;box-shadow:var(--shadow)}
     .testi .avatar{width:36px;height:36px;border-radius:50%;background:#eee;display:inline-block;margin-right:8px}
 
-    .map{height:240px;background:var(--bg-card);border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden;box-shadow:var(--shadow)}
-    .map img{width:100%;height:100%;object-fit:cover;display:block}
+    .map{height:260px;background:var(--card-bg);border-radius:10px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden;box-shadow:var(--shadow)}
+    .map img{width:100%;height:100%;object-fit:cover;display:block;filter:none;transition:filter .22s ease}
+    body.dark .map img{filter:none} /* ensure map remains visible in dark mode */
 
     .contact-row{display:flex;gap:8px;margin-top:10px}
     .phone{background:var(--accent);color:var(--accent-contrast);padding:10px;border-radius:10px;flex:1;text-align:center;cursor:pointer}
@@ -234,14 +149,13 @@
 
     footer{margin:24px 0 60px;text-align:center;color:var(--muted);font-size:13px}
 
-    /* Responsive adjustments */
-    @media(min-width:700px){
-      .hero{height:360px}
-      .grid{grid-template-columns:repeat(4,1fr)}
-      .gallery img{height:120px}
-      .services{grid-template-columns:repeat(4,1fr)}
-    }
+    /* Responsive */
+    @media(min-width:700px){ .hero{height:360px} .grid{grid-template-columns:repeat(4,1fr)} .gallery img{height:120px} .services{grid-template-columns:repeat(4,1fr)} }
 
+    /* Small tweaks to improve readability in dark mode */
+    body.dark .lead { color: rgba(230,240,242,0.75); }
+    body.dark .card h3, body.dark .card p { color: var(--text); }
+    body.dark .chip { color: var(--chip-text); border: 1px solid rgba(255,255,255,0.04); }
   </style>
 </head>
 <body>
@@ -249,11 +163,10 @@
     <header>
       <div class="left">
         <button class="back-btn" onclick="location.href='index.html'">◀ Dashboard</button>
-        <div class="logo">ముత్యాలతోపు</div>
+        <div class="logo">ముత్యాతోపు</div>
       </div>
 
       <div class="icons" role="toolbar" aria-label="Top actions">
-        <!-- Moon toggle (header) -->
         <button id="moonBtn" class="icon-btn moon" title="Toggle moonlight (Dark mode)" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
         <button class="icon-btn" title="Share link" aria-label="Share">🔗</button>
         <button class="icon-btn" title="Menu" aria-label="Menu">☰</button>
@@ -268,9 +181,9 @@
         <div class="tag">సాంప్రదాయం, శ్రమ, అభివృద్ధి — చిన్న రూపంలో పెద్ద హృదయం.</div>
 
         <div class="chips" aria-hidden="false">
-          <div class="chip">Population: <strong id="count-pop">1,200</strong></div>
-          <div class="chip">Households: <strong id="count-hh">300</strong></div>
-          <div class="chip">Last Fund: <strong id="count-fund">₹5,00,000</strong></div>
+          <div class="chip">జనసంఖ్య: <strong id="count-pop">1,200</strong></div>
+          <div class="chip">ఇళ్ళు: <strong id="count-hh">300</strong></div>
+          <div class="chip">తాజా నిధి: <strong id="count-fund">₹5,00,000</strong></div>
         </div>
 
         <div class="cta-row" style="margin-top:14px;">
@@ -290,7 +203,7 @@
 
     <!-- Intro -->
     <section class="section">
-      <p class="lead">ముత్యాలతోపులో సుమారు 1,200 మంది నివాసం. ఇక్కడి ప్రధాన సంపాదన వ్యవసాయం; పల్లె కుటుంబాలు పథకాల ద్వారా అభివృద్ధి చెందుతున్నాయి. ఈ పేజీ ద్వారా గ్రామం యొక్క మౌలిక సౌకర్యాలు, పథకాలు మరియు తాజా వివరాలు ఒకే చోట చూడొచ్చు.</p>
+      <p class="lead">ముత్యాలలోపులో సుమారు 1,200 మంది నివాసం. ఇక్కడి ప్రధాన సంపాదన వ్యవసాయం; పల్లె కుటుంబాలు పథకాల ద్వారా అభివృద్ధి చెందుతున్నాయి. ఈ పేజీ ద్వారా గ్రామం యొక్క మౌలిక సౌకర్యాలు, పథకాలు మరియు తాజా వివరాలు ఒకే చోట చూడొచ్చు.</p>
 
       <div class="bullets">
         <div class="bullet"><div class="dot" aria-hidden></div><div><strong>ఇప్పటివరకు ₹5 లక్షల రూపాయల ఫండ్స్ విడుదలయ్యాయి.</strong></div></div>
@@ -332,9 +245,9 @@
     <!-- Schemes -->
     <section class="schemes section" aria-labelledby="schemes-title">
       <h2 id="schemes-title">తాజా పథకాలు & నిధులు</h2>
-      <div class="scheme"><div><div><strong>MGNREGA — 2025-06</strong></div><div class="meta">Beneficiaries: 75</div></div><div>₹1,20,000</div></div>
-      <div class="scheme"><div><div><strong>PMAY — 2024-11</strong></div><div class="meta">Houses sanctioned: 10</div></div><div>—</div></div>
-      <div class="scheme"><div><div><strong>Social Pension — 2025-03</strong></div><div class="meta">Beneficiaries: 34</div></div><div>—</div></div>
+      <div class="scheme"><div><div><strong>MGNREGA — 2025-06</strong></div><div class="meta">Beneficiaries: 75</div></div><div class="amount">₹1,20,000</div></div>
+      <div class="scheme"><div><div><strong>PMAY — 2024-11</strong></div><div class="meta">Houses sanctioned: 10</div></div><div class="amount">—</div></div>
+      <div class="scheme"><div><div><strong>Social Pension — 2025-03</strong></div><div class="meta">Beneficiaries: 34</div></div><div class="amount">—</div></div>
     </section>
 
     <!-- Testimonials -->
@@ -350,7 +263,7 @@
     <section class="section">
       <h2>సంప్రదించండి</h2>
       <div class="map" id="map-container">
-        <!-- Replace the path below with your actual map image file name -->
+        <!-- Place your map image in the same folder with name 'mutyalathopupalem_map.png' -->
         <img src="./mutyalathopupalem_map.png" alt="Mutyalathopupalem map (place map image 'mutyalathopupalem_map.png' in same folder)">
       </div>
       <div class="contact-row">
@@ -363,15 +276,12 @@
   </div>
 
   <script>
-    // Animated counters (simple)
+    // counters
     function animateValue(id, start, end, duration) {
-      var obj = document.getElementById(id);
-      if(!obj) return;
-      var range = end - start;
-      var minTimer = 50;
+      var obj = document.getElementById(id); if(!obj) return;
+      var range = end - start; var minTimer = 50;
       var stepTime = Math.max(Math.floor(duration / range), minTimer);
-      var startTime = Date.now();
-      var endTime = startTime + duration;
+      var startTime = Date.now(); var endTime = startTime + duration;
       var timer = setInterval(function() {
         var now = Date.now();
         var remaining = Math.max((endTime - now) / duration, 0);
@@ -385,63 +295,36 @@
       animateValue('count-pop', 0, 1200, 900);
       animateValue('count-hh', 0, 300, 900);
 
-      // Moon/dark toggle button logic (header)
+      // dark / moon toggle
       var moonBtn = document.getElementById('moonBtn');
       var body = document.body;
-
-      // Initialize from localStorage if set
       var stored = localStorage.getItem('muthyal_dark');
-      if(stored === '1'){
-        body.classList.add('dark');
-        moonBtn.classList.add('active');
-        moonBtn.setAttribute('aria-pressed','true');
-      }
+      if(stored === '1'){ body.classList.add('dark'); moonBtn.classList.add('active'); moonBtn.setAttribute('aria-pressed','true'); }
 
       function toggleDark(){
         var isDark = body.classList.toggle('dark');
-        if(isDark){
-          moonBtn.classList.add('active');
-          moonBtn.setAttribute('aria-pressed','true');
-          localStorage.setItem('muthyal_dark','1');
-        } else {
-          moonBtn.classList.remove('active');
-          moonBtn.setAttribute('aria-pressed','false');
-          localStorage.removeItem('muthyal_dark');
-        }
+        if(isDark){ moonBtn.classList.add('active'); moonBtn.setAttribute('aria-pressed','true'); localStorage.setItem('muthyal_dark','1'); }
+        else{ moonBtn.classList.remove('active'); moonBtn.setAttribute('aria-pressed','false'); localStorage.removeItem('muthyal_dark'); }
       }
-
       moonBtn.addEventListener('click', toggleDark);
-      moonBtn.addEventListener('keydown', function(e){
-        if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggleDark(); }
-      });
+      moonBtn.addEventListener('keydown', function(e){ if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggleDark(); } });
 
-      // Scroll reveal for timeline (simple)
+      // ensure map image shows properly (if missing, show alt text)
+      var mapImg = document.querySelector('.map img');
+      mapImg.addEventListener('error', function(){ this.style.objectFit='contain'; this.style.opacity=0.85; });
+
+      // reveal timeline
       var items = document.querySelectorAll('.timeline-item');
-      function reveal(){
-        var top = window.innerHeight * 0.85;
-        items.forEach(function(it){
-          var r = it.getBoundingClientRect();
-          if(r.top < top) it.style.opacity=1, it.style.transform='none';
-        });
-      }
+      function reveal(){ var top = window.innerHeight * 0.85; items.forEach(function(it){ var r = it.getBoundingClientRect(); if(r.top < top) it.style.opacity=1, it.style.transform='none'; }); }
       items.forEach(function(it){ it.style.opacity=0; it.style.transform='translateY(12px)'; it.style.transition='all .6s ease'; });
-      window.addEventListener('scroll', reveal);
-      reveal();
+      window.addEventListener('scroll', reveal); reveal();
 
       // gallery click to open in new tab
-      document.querySelectorAll('.gallery img').forEach(function(img){
-        img.style.cursor='pointer';
-        img.addEventListener('click', function(){ window.open(img.src, '_blank'); });
-      });
+      document.querySelectorAll('.gallery img').forEach(function(img){ img.style.cursor='pointer'; img.addEventListener('click', function(){ window.open(img.src, '_blank'); }); });
 
-      // CTA placeholders
-      document.getElementById('view-data').addEventListener('click', function(){
-        window.location.href = './index.html#data';
-      });
-      document.getElementById('download-link').addEventListener('click', function(e){
-        e.preventDefault();
-        alert('PDF డౌన్లోడ్ లింక్ ఇక్కడ ఉంచండి');
-      });
+      // CTAs placeholders
+      document.getElementById('view-data').addEventListener('click', function(){ window.location.href = './index.html#data'; });
+      document.getElementById('download-link').addEventListener('click', function(e){ e.preventDefault(); alert('PDF డౌన్లోడ్ లింక్ ఇక్కడ ఉంచండి'); });
     });
   </script>
 </body>
